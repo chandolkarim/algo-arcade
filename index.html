@@ -30,9 +30,9 @@
   <div class="led-strip" aria-hidden="true">
     <div class="led-track">
       <span><span class="on">●</span> TRADING FLOOR 모의투자 가동 중</span>
-      <span><span class="build">◆</span> 2번 기계 조립 중</span>
-      <span><span class="build">◆</span> 3번 기계 조립 중</span>
-      <span><span class="build">◆</span> 4번 기계 조립 중</span>
+      <span><span class="build">◆</span> REBOUND 25/200 · 일봉 되돌림 연구</span>
+      <span><span class="on">●</span> KIMCHI GAUGE 실시간 관측 중</span>
+      <span><span class="on">●</span> FOREIGN FLOW 검증 완료</span>
       <span>실제 주문은 나가지 않습니다</span>
       <span>구경은 자유, 실행은 주인만</span>
     </div>
@@ -69,36 +69,42 @@
         </li>
 
         <li>
-          <div class="cabinet" style="--cab-color: var(--pink)">
-            <div class="cabinet-marquee">2번 기계</div>
+          <a class="cabinet" href="machines/rebound.html" style="--cab-color: var(--pink)">
+            <div class="cabinet-marquee">REBOUND 25/200</div>
             <div class="cabinet-body">
-              <div class="cabinet-screen"><span class="blink">조립 중</span></div>
-              <p class="cabinet-desc">새 알고리즘 한 줄 설명이 들어갈 자리입니다.</p>
-              <div class="cabinet-status"><span class="lamp build"></span>조립 중</div>
+              <div class="cabinet-screen" aria-hidden="true">
+                <svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><path d="M4 12H60M4 24H60M4 36H60" stroke="#2e2560"/><path d="M4 36L14 34L24 32L34 30L44 28L60 26" fill="none" stroke="#ffd23f" stroke-width="2" stroke-dasharray="2 2"/><path d="M4 16L14 14L24 16L34 22L44 20L60 14" fill="none" stroke="#ff85c0" stroke-width="2"/><path d="M4 15L10 12L16 18L22 14L28 22L34 28L40 24L46 18L52 20L60 8" fill="none" stroke="#f3eeff" stroke-width="2"/><rect x="31" y="25" width="6" height="6" fill="#ffd23f"/></svg>
+              </div>
+              <p class="cabinet-desc">BNF의 아이디어에서 출발. 200일선으로 방향을 정하고, 25일선에서 멀어진 가격의 되돌림을 기다립니다.</p>
+              <div class="cabinet-status"><span class="lamp build"></span>백테스트 · 모의 기록</div>
             </div>
-          </div>
+          </a>
         </li>
 
         <li>
-          <div class="cabinet" style="--cab-color: var(--coin)">
-            <div class="cabinet-marquee">3번 기계</div>
+          <a class="cabinet" href="machines/kimchi-gauge.html" style="--cab-color: var(--coin)">
+            <div class="cabinet-marquee">KIMCHI GAUGE</div>
             <div class="cabinet-body">
-              <div class="cabinet-screen"><span class="blink">조립 중</span></div>
-              <p class="cabinet-desc">새 알고리즘 한 줄 설명이 들어갈 자리입니다.</p>
-              <div class="cabinet-status"><span class="lamp build"></span>조립 중</div>
+              <div class="cabinet-screen" data-scene="mini-gauge">
+                <span>김프 게이지</span>
+              </div>
+              <p class="cabinet-desc">업비트와 바이낸스의 비트코인 가격 차이(김치 프리미엄)를 실시간으로 잽니다.</p>
+              <div class="cabinet-status"><span class="lamp on"></span>실시간 관측 중</div>
             </div>
-          </div>
+          </a>
         </li>
 
         <li>
-          <div class="cabinet" style="--cab-color: var(--down)">
-            <div class="cabinet-marquee">4번 기계</div>
+          <a class="cabinet" href="machines/foreign-flow.html" style="--cab-color: var(--pink)">
+            <div class="cabinet-marquee">FOREIGN FLOW</div>
             <div class="cabinet-body">
-              <div class="cabinet-screen"><span class="blink">조립 중</span></div>
-              <p class="cabinet-desc">새 알고리즘 한 줄 설명이 들어갈 자리입니다.</p>
-              <div class="cabinet-status"><span class="lamp build"></span>조립 중</div>
+              <div class="cabinet-screen" data-scene="mini-flow">
+                <span>외국인 매매 검증</span>
+              </div>
+              <p class="cabinet-desc">외국인이 코스피를 많이 사면 다음 날 오를까? 14년치 거래일로 직접 셉니다.</p>
+              <div class="cabinet-status"><span class="lamp on"></span>검증 완료</div>
             </div>
-          </div>
+          </a>
         </li>
 
         <li>
@@ -122,7 +128,7 @@
           <li>모든 성적은 모의투자 기록입니다. 실제 주문은 나가지 않습니다.</li>
           <li>투자 조언이 아닙니다. 매매 신호를 제공하지 않습니다.</li>
           <li>잘 된 기록만 고르지 않습니다. 틀린 판정도 그대로 남깁니다.</li>
-          <li>방문자가 기계를 직접 돌릴 수는 없습니다. 작동 모습과 기록만 공개합니다.</li>
+          <li>실제 기계는 주인만 돌립니다. 방문자는 AI도 주문도 없는 데모 재생만 할 수 있습니다.</li>
         </ul>
       </div>
     </section>

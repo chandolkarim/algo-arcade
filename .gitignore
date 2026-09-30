@@ -15,3 +15,12 @@ trading-floor/
 .claude/
 __pycache__/
 *.zip
+
+# 공개 시세 원본 캐시 (생성 결과와 모의 장부는 별도 보관)
+rebound/cache/
+
+# KRX에서 로그인해 받은 원본 CSV — 재배포 조건 확인 전까지 올리지 않는다
+foreign-flow/raw/
+
+# FOREIGN FLOW 코스피 시세 캐시 (다시 받을 수 있음)
+foreign-flow/cache/

@@ -101,6 +101,38 @@
     return svg(64, 48, s);
   };
 
+  // 김프 게이지 화면: 원화 동전과 달러 동전 사이의 눈금과 바늘
+  const miniGauge = () => {
+    let s = `<rect width="64" height="48" fill="#0f0b24"/>`;
+    const segs = ["#1f5fa8", "#3ea1ff", "#3a3170", "#ff4d6d", "#b3163c"];
+    segs.forEach((c, i) => { s += `<rect x="${7 + i * 10}" y="12" width="10" height="6" fill="${c}"/>`; });
+    s += `<rect x="6" y="11" width="52" height="1" fill="${INK}"/><rect x="6" y="18" width="52" height="1" fill="${INK}"/>`;
+    s += `<g class="bob"><rect x="35" y="8" width="3" height="14" fill="#ffd23f"/></g>`;
+    // 양쪽 거래소의 동전 더미. 빨강·파랑은 시세 방향에만 쓰므로 동전은 노랑.
+    const gold = { y: "#ffd23f", o: "#e09a1a" };
+    s += rectsFor(SPRITES.coin, gold, 8, 28);
+    s += rectsFor(SPRITES.coin, gold, 8, 32);
+    s += rectsFor(SPRITES.coin, gold, 48, 32);
+    s += `<rect x="24" y="36" width="16" height="2" fill="#bfb5ea"/><rect x="24" y="36" width="2" height="2" fill="#ffd23f"/><rect x="38" y="36" width="2" height="2" fill="#ffd23f"/>`;
+    return svg(64, 48, s);
+  };
+
+  // 외국인 매매 화면: 하루하루 순매수 막대와 "다음 날은?" 물음표
+  const miniFlow = () => {
+    let s = `<rect width="64" height="48" fill="#0f0b24"/>`;
+    s += `<rect x="4" y="22" width="44" height="1" fill="#bfb5ea"/>`;
+    // 빨강·파랑은 시세 방향에만 쓰므로 매수는 민트, 매도는 연보라
+    [6, -3, 9, 4, -7, 11, -2, 5].forEach((h, i) => {
+      const x = 6 + i * 5;
+      s += h > 0
+        ? `<rect x="${x}" y="${22 - h}" width="3" height="${h}" fill="#3ce0a8"/>`
+        : `<rect x="${x}" y="23" width="3" height="${-h}" fill="#bfb5ea"/>`;
+    });
+    s += rectsFor(["yyy.", "...y", "..y.", "....", "..y."], { y: "#ffd23f" }, 52, 16);
+    s += `<g class="bob">${person("#1b1438", "#ff85c0", 28, 34)}</g>`;
+    return svg(64, 48, s);
+  };
+
   // 상세 페이지 큰 화면: 전광판과 책상 한 줄
   const bigFloor = () => {
     const W = 160, H = 70;
@@ -131,6 +163,8 @@
     const scene = el.dataset.scene;
     if (scene === "mini-floor") el.innerHTML = miniFloor();
     if (scene === "big-floor") el.innerHTML = bigFloor();
+    if (scene === "mini-gauge") el.innerHTML = miniGauge();
+    if (scene === "mini-flow") el.innerHTML = miniFlow();
     if (scene === "coin") el.innerHTML = svg(8, 8, rectsFor(SPRITES.coin, { y: "#ffd23f", o: "#e09a1a" }));
     if (scene === "maker") el.innerHTML = svg(8, 10, person("#1b1438", "#ff85c0", 0, 0));
     if (scene === "crew") el.innerHTML = crewSprite(el.dataset.hair, el.dataset.shirt, el.dataset.kind);
