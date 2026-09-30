@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>알고리즘 오락실 · 정찬민</title>
+  <meta name="description" content="직접 만든 자동매매 알고리즘을 한 대씩 들여놓는 오락실. 구경은 자유, 실행은 주인만.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="index.html">
+        <span class="logo-coin" data-scene="coin"></span>
+        알고리즘 오락실
+      </a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <ul>
+          <li><a href="#machines">기계들</a></li>
+          <li><a href="#rules">이용 수칙</a></li>
+          <li><a href="#about">소개</a></li>
+          <li><a href="#contact">문의</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="led-strip" aria-hidden="true">
+    <div class="led-track">
+      <span><span class="on">●</span> TRADING FLOOR 모의투자 가동 중</span>
+      <span><span class="build">◆</span> 2번 기계 조립 중</span>
+      <span><span class="build">◆</span> 3번 기계 조립 중</span>
+      <span><span class="build">◆</span> 4번 기계 조립 중</span>
+      <span>실제 주문은 나가지 않습니다</span>
+      <span>구경은 자유, 실행은 주인만</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <h1 id="hero-title">알고리즘<br>오락실</h1>
+      <p class="hero-lead">
+        직접 만든 자동매매 알고리즘을 한 대씩 들여놓는 곳입니다.
+        <strong>기계마다 어떻게 판단하고, 모의투자에서 실제로 어땠는지</strong> 구경할 수 있어요.
+        돌리는 건 주인만 합니다.
+      </p>
+    </section>
+
+    <section class="floor wrap" id="machines" aria-labelledby="machines-title">
+      <div class="floor-head">
+        <h2 class="section-title" id="machines-title">기계들</h2>
+        <p class="floor-note">불 켜진 기계를 누르면 안을 볼 수 있어요.</p>
+      </div>
+
+      <ul class="cabinets">
+        <li>
+          <a class="cabinet" href="machines/trading-floor.html" style="--cab-color: var(--mint)">
+            <div class="cabinet-marquee">TRADING FLOOR</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" data-scene="mini-floor">
+                <span>AI 트레이더 13명</span>
+              </div>
+              <p class="cabinet-desc">AI 에이전트 13명이 분석하고, 편을 갈라 토론하고, 심사를 거쳐 매매 판정을 냅니다.</p>
+              <div class="cabinet-status"><span class="lamp on"></span>모의투자 가동 중</div>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <div class="cabinet" style="--cab-color: var(--pink)">
+            <div class="cabinet-marquee">2번 기계</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen"><span class="blink">조립 중</span></div>
+              <p class="cabinet-desc">새 알고리즘 한 줄 설명이 들어갈 자리입니다.</p>
+              <div class="cabinet-status"><span class="lamp build"></span>조립 중</div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="cabinet" style="--cab-color: var(--coin)">
+            <div class="cabinet-marquee">3번 기계</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen"><span class="blink">조립 중</span></div>
+              <p class="cabinet-desc">새 알고리즘 한 줄 설명이 들어갈 자리입니다.</p>
+              <div class="cabinet-status"><span class="lamp build"></span>조립 중</div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="cabinet" style="--cab-color: var(--down)">
+            <div class="cabinet-marquee">4번 기계</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen"><span class="blink">조립 중</span></div>
+              <p class="cabinet-desc">새 알고리즘 한 줄 설명이 들어갈 자리입니다.</p>
+              <div class="cabinet-status"><span class="lamp build"></span>조립 중</div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="cabinet is-empty">
+            <div class="cabinet-marquee">빈자리</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen"><span aria-hidden="true">?</span></div>
+              <p class="cabinet-desc">다음에 들어올 기계 자리. 아이디어를 모으는 중입니다.</p>
+              <div class="cabinet-status"><span class="lamp"></span>예정</div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section wrap" id="rules" aria-labelledby="rules-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="rules-title">이용 수칙</h2>
+        <p>여기 있는 기계들은 연구하고 기록하려고 만든 것입니다. 구경하기 전에 이것만 알아두세요.</p>
+        <ul class="rules">
+          <li>모든 성적은 모의투자 기록입니다. 실제 주문은 나가지 않습니다.</li>
+          <li>투자 조언이 아닙니다. 매매 신호를 제공하지 않습니다.</li>
+          <li>잘 된 기록만 고르지 않습니다. 틀린 판정도 그대로 남깁니다.</li>
+          <li>방문자가 기계를 직접 돌릴 수는 없습니다. 작동 모습과 기록만 공개합니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section wrap" id="about" aria-labelledby="about-title">
+      <div class="two-col">
+        <div>
+          <h2 class="section-title" id="about-title">만든 사람 · 정찬민</h2>
+          <p class="hero-lead">
+            재미로 자동매매 알고리즘을 만들고,
+            AI가 내놓는 숫자를 코드로 한 번 더 검증하는 걸 좋아합니다.
+          </p>
+          <dl class="player-card">
+            <dt>학교</dt><dd>한국외국어대학교</dd>
+            <dt>전공</dt><dd>아랍어과 · Business AI</dd>
+          </dl>
+          <div class="coin-slot">
+            <a class="btn" href="https://github.com/chandolkarim">GitHub 보기</a>
+          </div>
+        </div>
+        <div class="maker-sprite" data-scene="maker"></div>
+      </div>
+
+      <h3 class="sub-title" id="interests">관심 분야</h3>
+      <ul class="interests">
+        <li class="px-box">
+          <h4>알고리즘 트레이딩</h4>
+          <p>판단 규칙을 코드로 옮기고, 모의투자 기록으로 맞았는지 확인합니다. 틀린 판정도 지우지 않고 남깁니다.</p>
+        </li>
+        <li class="px-box">
+          <h4>멀티 에이전트 AI</h4>
+          <p>AI 여러 명이 역할을 나눠 분석·토론·심사하면 판단이 어떻게 달라지는지 봅니다. TRADING FLOOR가 첫 실험입니다.</p>
+        </li>
+        <li class="px-box">
+          <h4>AI 결과 검증</h4>
+          <p>청산 거리나 손절 위치처럼 틀리면 안 되는 값은 모델에게 맡기지 않고 코드가 다시 계산하게 만듭니다.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="contact-title">문의</h2>
+        <p>기계가 궁금하거나, 비슷한 걸 만들어보고 싶다면 메일 주세요. 프로그램이나 만드는 방법에 대해 이야기할 수 있어요.</p>
+        <div class="coin-slot">
+          <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr">메일 보내기</a>
+          <a class="btn btn-ghost" href="https://github.com/chandolkarim">GitHub</a>
+        </div>
+        <p class="mail-text">메일 앱이 열리지 않으면 주소를 복사해 주세요: <span>wjdcksals24@hufs.ac.kr</span></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>알고리즘 오락실의 모든 기록은 모의투자 결과이며 투자 조언이 아닙니다.</p>
+      <p>픽셀 글꼴: 갈무리(Galmuri, SIL Open Font License 1.1)</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>

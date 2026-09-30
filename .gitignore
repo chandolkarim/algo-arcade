@@ -1,0 +1,17 @@
+# 비밀값: API 키·인증 정보는 절대 올리지 않는다
+.env
+.env.*
+*.key
+*.pem
+*secret*
+*credential*
+config.local.*
+
+# 오락기 원본 코드는 이 저장소에 넣지 않는다 (소개 페이지만 공개)
+trading-floor/
+
+# 로컬 도구·시스템 파일
+.DS_Store
+.claude/
+__pycache__/
+*.zip

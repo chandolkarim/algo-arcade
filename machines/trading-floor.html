@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRADING FLOOR · 알고리즘 오락실</title>
+  <meta name="description" content="AI 에이전트 13명이 분석하고 토론하고 심사해서 매매 판정을 내는 기계.">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="../index.html">
+        <span class="logo-coin" data-scene="coin"></span>
+        알고리즘 오락실
+      </a>
+      <nav class="site-nav" aria-label="이 기계 안내">
+        <ul>
+          <li><a href="#flow">진행 순서</a></li>
+          <li><a href="#modes">모드</a></li>
+          <li><a href="#records">기록</a></li>
+          <li><a href="#contact">문의</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="machine-hero wrap" aria-labelledby="machine-title">
+      <a class="back-link" href="../index.html#machines">◀ 기계들로 돌아가기</a>
+      <h1 class="machine-title" id="machine-title">TRADING FLOOR</h1>
+      <p class="machine-lead">
+        종목 이름 하나를 넣으면 AI 에이전트 13명이 실시간 시세를 각자의 관점으로 분석하고,
+        강세·약세로 편을 갈라 토론한 뒤, 리스크 위원회와 포트폴리오 매니저의 심사를 거쳐 매매 판정을 냅니다.
+      </p>
+      <ul class="tags" aria-label="기계 상태">
+        <li class="on">● 모의투자 가동 중</li>
+        <li>코인 · 미국 주식 · SK하이닉스 · 삼성전자</li>
+        <li>관람만 가능</li>
+      </ul>
+      <div class="big-screen" data-scene="big-floor"></div>
+    </section>
+
+    <section class="section wrap" id="flow" aria-labelledby="flow-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="flow-title">진행 순서</h2>
+        <p>
+          멀티 에이전트 금융 의사결정 논문(TradingAgents)의 구조를 참고해 직접 다시 구현했습니다.
+          같은 종목의 지난 판정과 그 뒤 가격 흐름을 다시 읽고 판단에 반영하는 회고 단계도 들어 있습니다.
+        </p>
+
+        <ol class="stages">
+          <li class="stage">
+            <div>
+              <h3>애널리스트 팀이 동시에 분석</h3>
+              <p>바이낸스·야후 파이낸스 시세, 뉴스, 공포·탐욕 지수, 환율을 네 명이 나눠 봅니다.</p>
+              <ul class="crew">
+                <li><span data-scene="crew" data-hair="#6b3b1f" data-shirt="#3ce0a8"></span><b>TARO</b><span>기술적 분석</span></li>
+                <li><span data-scene="crew" data-hair="#1b1438" data-shirt="#ffd23f"></span><b>DIANA</b><span>기본적 분석</span></li>
+                <li><span data-scene="crew" data-hair="#ff85c0" data-shirt="#3ea1ff"></span><b>NOVA</b><span>뉴스</span></li>
+                <li><span data-scene="crew" data-hair="#ffd23f" data-shirt="#ff85c0"></span><b>VIBE</b><span>시장 심리</span></li>
+              </ul>
+            </div>
+          </li>
+          <li class="stage">
+            <div>
+              <h3>강세·약세 토론 4턴</h3>
+              <p>BULL이 오를 근거를 주장하면 BEAR가 그 주장을 직접 반박합니다.</p>
+              <ul class="crew">
+                <li><span data-scene="crew" data-hair="#6b3b1f" data-shirt="#ff4d6d"></span><b>BULL</b><span>매수 논거</span></li>
+                <li><span data-scene="crew" data-hair="#3ea1ff" data-shirt="#3ea1ff"></span><b>BEAR</b><span>매도 논거</span></li>
+              </ul>
+            </div>
+          </li>
+          <li class="stage">
+            <div>
+              <h3>수석 트레이더의 1차 판정</h3>
+              <p>ACE가 전부 종합해 매수·매도·관망과 진입가·손절가·목표가를 정합니다.</p>
+              <ul class="crew">
+                <li><span data-scene="crew" data-hair="#c0c0d8" data-shirt="#ffd23f" data-kind="boss"></span><b>ACE</b><span>수석 트레이더</span></li>
+              </ul>
+            </div>
+          </li>
+          <li class="stage">
+            <div>
+              <h3>리스크 위원회 심사</h3>
+              <p>공격적 → 보수적 → 중립 순서로 계획을 뜯어봅니다.</p>
+              <ul class="crew">
+                <li><span data-scene="crew" data-hair="#ff4d6d" data-shirt="#ff85c0"></span><b>RISKY</b><span>공격적</span></li>
+                <li><span data-scene="crew" data-hair="#1b1438" data-shirt="#3ce0a8"></span><b>SAFE</b><span>보수적</span></li>
+                <li><span data-scene="crew" data-hair="#6b3b1f" data-shirt="#f3eeff"></span><b>NEUTRAL</b><span>중재</span></li>
+              </ul>
+            </div>
+          </li>
+          <li class="stage">
+            <div>
+              <h3>포트폴리오 매니저 최종 승인</h3>
+              <p>PM이 ACE의 계획을 승인하거나, 고쳐서 승인하거나, 기각합니다.</p>
+              <ul class="crew">
+                <li><span data-scene="crew" data-hair="#c0c0d8" data-shirt="#1b1438" data-kind="boss"></span><b>PM</b><span>최종 관문</span></li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section wrap" id="modes" aria-labelledby="modes-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="modes-title">세 가지 모드</h2>
+        <div class="modes">
+          <div class="mode">
+            <h3>알고리즘</h3>
+            <p>스윙·중장기용. 위의 다섯 단계를 모두 거칩니다.</p>
+            <dl>
+              <dt>AI 호출</dt><dd>13회</dd>
+              <dt>판정</dt><dd>매수 · 매도 · 관망</dd>
+            </dl>
+          </div>
+          <div class="mode">
+            <h3>스캘핑</h3>
+            <p>15분봉 단타용. 격리 20배 기준으로 청산까지 거리를 코드가 먼저 계산해 넘깁니다.</p>
+            <dl>
+              <dt>AI 호출</dt><dd>5회</dd>
+              <dt>판정</dt><dd>롱 · 숏 · 패스</dd>
+            </dl>
+          </div>
+          <div class="mode warn">
+            <h3>공격</h3>
+            <p>근거가 부족해도 방향을 고르게 만든 연출용 모드입니다. 모델이 관망을 원했으면 그 사실을 판정문에 남깁니다.</p>
+            <dl>
+              <dt>AI 호출</dt><dd>5회</dd>
+              <dt>판정</dt><dd>롱 · 숏 (관망 금지)</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" aria-labelledby="checks-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="checks-title">AI 숫자를 그대로 믿지 않는 장치</h2>
+        <div class="facts">
+          <div class="fact">
+            <h3>청산 거리는 코드가 계산</h3>
+            <p>모델이 다시 계산하다 틀리는 걸 막으려고, 레버리지 청산까지 거리를 코드가 먼저 구해 사실로 넘깁니다.</p>
+          </div>
+          <div class="fact">
+            <h3>어긋난 주문은 거부</h3>
+            <p>손절이 진입가 반대편에 있거나, 계좌 위험 한도를 넘으면 조용히 고치지 않고 이유와 함께 거부합니다.</p>
+          </div>
+          <div class="fact">
+            <h3>회귀 테스트 102건</h3>
+            <p>대부분 실제로 한 번 터졌던 버그입니다. 에러 없이 틀린 값을 내던 경우를 값의 범위로 막아둡니다.</p>
+          </div>
+          <div class="fact">
+            <h3>하루 호출 1,920회 → 240회</h3>
+            <p>자동 스캐너가 시세만 보고 먼저 거른 뒤, 결정 지점에 가까운 종목만 AI에게 물어봅니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="records" aria-labelledby="records-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="records-title">플레이 기록</h2>
+        <p>모의투자 기록을 정리해 올릴 예정입니다. 지금은 회고에 쌓인 실측 사례 두 건만 먼저 보여드려요. 둘 다 틀린 판정입니다.</p>
+        <div class="log">
+          <p><span class="muted">공격 모드</span> <span>롱 · 확신도 44%</span> <span class="down">▼ 이후 -1.17%</span> <span>방향이 틀림</span></p>
+          <p><span class="muted">스캘핑 모드</span> <span>패스 · 확신도 75%</span> <span class="down">▼ 이후 -1.12%</span> <span>관망이 나았음</span></p>
+        </div>
+        <p class="empty-note">전체 기록과 적중률은 모의투자 표본이 더 쌓이면 이 자리에 올라옵니다.</p>
+      </div>
+    </section>
+
+    <section class="section wrap" aria-labelledby="demo-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="demo-title">구경하기</h2>
+        <p>이 기계는 집 컴퓨터에서만 돌아갑니다. 대신 AI 없이 실제 시세로 전 과정을 재생하는 데모를 브라우저용으로 옮기는 중입니다.</p>
+        <p class="empty-note">브라우저 데모 준비 중</p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="contact-title">이 기계에 대해 묻기</h2>
+        <p>구조나 만드는 방법이 궁금하면 메일 주세요.</p>
+        <div class="coin-slot">
+          <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=TRADING%20FLOOR%20문의">메일 보내기</a>
+          <a class="btn btn-ghost" href="../index.html#machines">다른 기계 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>AI 시뮬레이션입니다. 투자 조언이 아니며, 실제 주문은 발생하지 않습니다.</p>
+      <p>픽셀 글꼴: 갈무리(Galmuri, SIL Open Font License 1.1)</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+</body>
+</html>
