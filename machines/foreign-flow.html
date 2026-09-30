@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FOREIGN FLOW · 알고리즘 오락실</title>
+  <meta name="description" content="외국인이 코스피를 사면 다음 날 오를까? 14년치 거래일로 센 검증 기계.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/foreign-flow.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="../index.html">
+        <span class="logo-coin" data-scene="coin"></span>
+        알고리즘 오락실
+      </a>
+      <nav class="site-nav" aria-label="이 기계 안내">
+        <ul>
+          <li><a href="#results">결과</a></li>
+          <li><a href="#today">오늘</a></li>
+          <li><a href="#method">방법</a></li>
+          <li><a href="#contact">문의</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="machine-hero wrap" aria-labelledby="machine-title">
+      <a class="back-link" href="../index.html#machines">◀ 기계들로 돌아가기</a>
+      <h1 class="machine-title machine-title-pink" id="machine-title">FOREIGN FLOW</h1>
+      <p class="machine-lead">
+        외국인이 코스피를 많이 사면 다음 날 오를까? 속설을 믿기 전에,
+        KRX 투자자별 매매 기록과 코스피 종가로 직접 세어 봤습니다.
+      </p>
+      <ul class="tags" aria-label="기계 상태">
+        <li class="on">● 검증 완료</li>
+        <li>코스피 · 외국인 순매수</li>
+        <li id="ff-range-tag">2012–2026 거래일</li>
+      </ul>
+    </section>
+
+    <section class="section wrap" id="results" aria-labelledby="results-title">
+      <h2 class="section-title ff-on-carpet" id="results-title">결과</h2>
+      <p class="ff-summary" id="ff-summary">계산 결과를 불러오는 중…</p>
+      <noscript>
+        <p class="ff-summary">결과 카드는 JavaScript가 필요합니다. <a href="../data/foreign-flow.json">계산 결과 JSON 보기</a></p>
+      </noscript>
+      <div class="ff-questions" id="ff-questions"></div>
+      <p class="gauge-note">“오른 비율”은 신호가 난 날 뒤 코스피가 오른 경우의 비율, “기준선”은 같은 구간의 모든 날에서 오른 비율입니다. 과거 기록이며 투자 조언이 아닙니다.</p>
+    </section>
+
+    <section class="section wrap" id="today" aria-labelledby="today-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="today-title">가장 최근 거래일</h2>
+        <div id="ff-today"><p>불러오는 중…</p></div>
+        <p class="empty-note">자동 갱신은 아직 연결하지 않았습니다. KRX 자료는 로그인이 필요해 직접 내려받은 뒤 다시 계산합니다.</p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="method" aria-labelledby="method-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="method-title">방법</h2>
+        <p>기준은 <strong>결과를 보기 전(2026-09-30)</strong>에 정해 파일로 고정했습니다. 결과를 보고 기준을 고치면 우연을 효과로 착각하기 쉽기 때문입니다.</p>
+
+        <div class="facts">
+          <div class="fact">
+            <h3>금액 대신 표준화 값</h3>
+            <p>외국인 하루 매매 규모는 2025년에서 2026년 사이에만 약 4배 커졌습니다. 그래서 그날 순매수를 <strong>그 전 60거래일</strong>의 평균·표준편차로 나눈 값(표준화 값)으로 비교합니다. 그날 이후 자료는 쓰지 않습니다.</p>
+          </div>
+          <div class="fact">
+            <h3>두 구간으로 나눠 확인</h3>
+            <p>2012–2021년(설계 구간)과 2022년 이후(검증 구간)를 따로 셉니다. 두 구간 모두에서 같은 방향으로 뚜렷해야 “효과 있음”입니다.</p>
+          </div>
+          <div class="fact">
+            <h3>판정 규칙</h3>
+            <p>오른 비율이 기준선과 다른지 이항검정으로 봅니다(p &lt; 0.05, 신호 20건 이상). 두 구간 모두 해당하면 효과 있음, 둘 다 아니면 효과 없음, 그 사이는 불확실입니다.</p>
+          </div>
+          <div class="fact">
+            <h3>5일 연속은 첫날만</h3>
+            <p>6일, 7일째 연속도 세면 같은 흐름이 여러 번 들어갑니다. 연속 순매수가 5일째가 된 날만 한 번 셉니다.</p>
+          </div>
+        </div>
+
+        <h3 class="ff-sub">한계</h3>
+        <ul class="ff-limits">
+          <li>외국인 매매 기록은 장이 끝난 뒤 나옵니다. “다음 날 등락”은 종가 대 종가 비교라, 실제로 따라 사면 결과가 다를 수 있습니다. 거래 비용도 넣지 않았습니다.</li>
+          <li>질문이 네 개라 하나쯤은 우연히 유의하게 나올 수 있습니다. 그래서 두 구간 모두 확인하도록 했습니다.</li>
+          <li>기관·개인은 보지 않았습니다. 2026년 8월 이후 기타법인이 매일 비슷한 금액을 사는 흐름이 보이는데, 원인은 확인하지 못했습니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section wrap" aria-labelledby="source-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="source-title">데이터 출처</h2>
+        <div class="facts">
+          <div class="fact">
+            <h3>외국인 순매수</h3>
+            <p>KRX 정보데이터시스템 · 투자자별 거래실적(일별추이) · KOSPI · 거래대금 순매수. 원본은 로그인해 내려받았고, 재배포 조건을 확인하기 전이라 <strong>원본 일별 값은 공개하지 않고</strong> 계산한 요약만 싣습니다.</p>
+          </div>
+          <div class="fact">
+            <h3>코스피 종가</h3>
+            <p>Yahoo Finance ^KS11 일별 종가. 두 자료에 모두 있는 날만 썼고, KRX에만 있는 4일은 뺐습니다.</p>
+          </div>
+        </div>
+        <p><a class="ff-link" href="../data/foreign-flow.json">계산 결과 JSON 보기</a></p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="contact-title">이 기계에 대해 묻기</h2>
+        <p>계산 방법이나 데이터가 궁금하면 메일 주세요.</p>
+        <div class="coin-slot">
+          <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=FOREIGN%20FLOW%20문의">메일 보내기</a>
+          <a class="btn btn-ghost" href="../index.html#machines">다른 기계 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>출처: KRX 정보데이터시스템(투자자별 거래실적), Yahoo Finance(^KS11). 과거 기록을 센 결과이며 투자 조언이 아닙니다.</p>
+      <p>픽셀 글꼴: 갈무리(Galmuri, SIL Open Font License 1.1)</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+  <script src="../data/foreign-flow-data.js"></script>
+  <script src="../assets/foreign-flow.js"></script>
+</body>
+</html>

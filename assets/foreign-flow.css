@@ -1,0 +1,102 @@
+/* FOREIGN FLOW 전용 — 공통 토큰(style.css)을 그대로 쓴다. */
+
+.machine-title-pink {
+  text-shadow:
+    var(--px) var(--px) 0 var(--pink),
+    calc(var(--px) * 2) calc(var(--px) * 2) 0 var(--ink);
+}
+.ff-on-carpet { margin-bottom: 12px; }
+.ff-summary {
+  max-width: 44em;
+  margin: 0 0 28px;
+  font-size: 17px;
+  color: var(--on-carpet);
+}
+.ff-summary a { color: var(--coin); }
+
+.ff-questions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+  gap: 28px;
+}
+.ff-card { padding: 20px; }
+.ff-card.is-trap { background: #fff8d9; }
+.ff-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+}
+.ff-card h3 {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 18px;
+}
+.ff-badge {
+  padding: 2px 10px;
+  border: 2px solid var(--ink);
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  white-space: nowrap;
+}
+/* 판정 배지는 시세색(빨강·파랑)을 쓰지 않는다 */
+.ff-badge.is-effect { background: var(--mint); }
+.ff-badge.is-none { background: #fff; }
+.ff-badge.is-uncertain { background: #e4def7; }
+.ff-badge.is-trap { background: var(--coin); }
+
+.ff-rule {
+  margin: 10px 0 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.ff-periods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 12px;
+}
+.ff-period {
+  padding: 12px;
+  border: 2px solid #c9bfe8;
+  background: #fff;
+}
+.ff-period h4 {
+  margin: 0 0 8px;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.ff-period dl,
+dl.ff-today {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+  margin: 0;
+  font-size: 14px;
+}
+.ff-period dt,
+dl.ff-today dt { color: var(--ink-soft); }
+.ff-period dd,
+dl.ff-today dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+dl.ff-today { max-width: 360px; font-size: 16px; }
+.ff-card .up { color: var(--up-ink); }
+.ff-card .down { color: var(--down-ink); }
+.ff-reason {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.ff-sub {
+  margin: 32px 0 8px;
+  font-family: var(--font-pixel);
+  font-size: 18px;
+}
+.ff-limits { margin: 0; padding-left: 20px; font-size: 15px; }
+.ff-limits li + li { margin-top: 6px; }
+.ff-link { font-weight: 600; }

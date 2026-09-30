@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "fixed_at": "2026-09-30",
+  "note": "결과를 보기 전에 고정한 기준. 바꾸면 version을 올리고 페이지에 바꾼 이유를 적는다.",
+  "window": 60,
+  "z_threshold": 2.0,
+  "streak_days": 5,
+  "streak_horizon": 5,
+  "validation_start": "2022-01-01",
+  "alpha": 0.05,
+  "min_samples": 20
+}
