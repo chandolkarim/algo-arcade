@@ -7,6 +7,7 @@
   <meta name="description" content="AI 에이전트 13명이 분석하고 토론하고 심사해서 매매 판정을 내는 기계.">
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="stylesheet" href="../assets/floor-demo.css">
+  <link rel="stylesheet" href="../assets/records.css">
 </head>
 <body>
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -167,12 +168,22 @@
     <section class="section wrap" id="records" aria-labelledby="records-title">
       <div class="panel px-box">
         <h2 class="section-title" id="records-title">플레이 기록</h2>
-        <p>모의투자 기록을 정리해 올릴 예정입니다. 지금은 회고에 쌓인 실측 사례 두 건만 먼저 보여드려요. 둘 다 틀린 판정입니다.</p>
-        <div class="log">
-          <p><span class="muted">공격 모드</span> <span>롱 · 확신도 44%</span> <span class="down">▼ 이후 -1.17%</span> <span>방향이 틀림</span></p>
-          <p><span class="muted">스캘핑 모드</span> <span>패스 · 확신도 75%</span> <span class="down">▼ 이후 -1.12%</span> <span>관망이 나았음</span></p>
+        <p>
+          기계가 실제로 낸 판정을 빠짐없이 적습니다. 코인 기록은 <strong>판정 24시간 뒤 가격</strong>과 비교해
+          원본 기계와 같은 규칙으로 맞았는지 가립니다(±1% 미만은 “움직임 작음”). 잘 된 기록만 고르지 않습니다.
+        </p>
+        <p class="rc-summary" id="rc-summary">기록을 불러오는 중…</p>
+        <noscript><p class="empty-note">기록 목록은 JavaScript가 필요합니다. <a href="../data/records.json">기록 JSON 보기</a></p></noscript>
+
+        <div class="rc-filter" id="rc-filter" role="group" aria-label="모드로 거르기" hidden>
+          <button type="button" data-mode="" aria-pressed="true">전체</button>
+          <button type="button" data-mode="알고리즘" aria-pressed="false">알고리즘</button>
+          <button type="button" data-mode="스캘핑" aria-pressed="false">스캘핑</button>
+          <button type="button" data-mode="공격" aria-pressed="false">공격</button>
         </div>
-        <p class="empty-note">전체 기록과 적중률은 모의투자 표본이 더 쌓이면 이 자리에 올라옵니다.</p>
+        <p class="rc-count" id="rc-count" role="status"></p>
+        <ol class="rc-list" id="rc-list"></ol>
+        <p class="rc-meta" id="rc-meta"></p>
       </div>
     </section>
 
@@ -235,5 +246,7 @@
 
   <script src="../assets/script.js"></script>
   <script src="../assets/floor-demo.js"></script>
+  <script src="../data/records-data.js"></script>
+  <script src="../assets/records.js"></script>
 </body>
 </html>

@@ -1,0 +1,64 @@
+/* TRADING FLOOR 플레이 기록 — 공통 토큰(style.css)을 그대로 쓴다. */
+
+.rc-summary { font-weight: 600; }
+.rc-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.rc-filter button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 2px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  cursor: pointer;
+}
+.rc-filter button[aria-pressed="true"] { background: var(--ink); color: var(--coin); }
+.rc-count {
+  margin: 12px 0 0;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.rc-list {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.rc-item {
+  padding: 10px 14px;
+  border: 2px solid #c9bfe8;
+  background: #fff;
+}
+.rc-head, .rc-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 0;
+  font-size: 14px;
+}
+.rc-head b { font-family: var(--font-pixel); font-size: 15px; }
+.rc-date { font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+.rc-body { margin-top: 4px; }
+.rc-body .up { color: var(--up-ink); font-weight: 600; }
+.rc-body .down { color: var(--down-ink); font-weight: 600; }
+/* 판정 결과 표시는 시세색(빨강·파랑)을 쓰지 않는다 */
+.rc-chip {
+  padding: 0 8px;
+  border: 2px solid var(--ink);
+  font-size: 12px;
+}
+.rc-chip.is-hit { background: var(--mint); }
+.rc-chip.is-miss { background: #e4def7; }
+.rc-chip.is-small, .rc-chip.is-unsupported { background: #fff; }
+.rc-chip.is-pending, .rc-chip.is-failed { background: var(--coin); }
+.rc-memo { margin: 4px 0 0; font-size: 13px; color: var(--ink-soft); }
+.rc-empty { padding: 12px; border: 2px dashed var(--ink-soft); color: var(--ink-soft); }
+.rc-meta { margin-top: 16px; font-size: 13px; color: var(--ink-soft); }
