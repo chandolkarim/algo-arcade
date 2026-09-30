@@ -1,0 +1,80 @@
+# 알고리즘 오락실 — 테스트 → 데이터 생성 → GitHub Pages 배포
+#
+# 언제 실행되나
+#   push        main에 코드를 올릴 때 (테스트 결과를 먼저 확인)
+#   schedule    매시 7분(UTC) = 한국 시각 매시 7분. 김프 기록 1건 추가, 플레이 기록 다시 계산
+#               GitHub 예약 실행은 정확한 시각을 보장하지 않아 몇 분 늦거나 빠질 수 있다.
+#   workflow_dispatch  구글 시트를 고친 뒤 Actions 화면의 Run workflow로 바로 반영
+#
+# 테스트가 실패하거나 시트 데이터가 잘못되면 배포하지 않는다. 이전에 배포한 화면이 그대로 남는다.
+# 인증키는 쓰지 않는다. 시트 주소는 공개돼도 되는 값이라 Secrets가 아니라 Variables(SHEET_CSV_URL)에 둔다.
+name: Site
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 4번 FOREIGN FLOW 계산 테스트
+        run: python -m unittest discover -s foreign-flow -p 'test_*.py' -v
+      - name: 2번 REBOUND 엔진 테스트
+        run: python -m unittest discover -s rebound -p 'test_*.py' -v
+      - name: 1번 플레이 기록 검사 테스트
+        run: python -m unittest discover -s records -p 'test_*.py' -v
+      - name: 3번 김프 기록 테스트
+        run: python -m unittest discover -s kimchi -p 'test_*.py' -v
+      - name: 화면 스크립트 문법 검사
+        run: for f in assets/*.js; do node --check "$f"; done
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 1번 플레이 기록 (구글 시트 → 검사 → 24시간 뒤 결과)
+        env:
+          SHEET_CSV_URL: ${{ vars.SHEET_CSV_URL }}
+        run: python records/build.py
+      - name: 3번 김프 기록 1건 추가 (배포된 기록을 이어 받음)
+        run: python kimchi/record.py --previous "https://chandolkarim.github.io/algo-arcade/data/kimchi-history.json"
+      - name: 공개할 파일만 모으기
+        run: |
+          mkdir _site
+          cp -r index.html machines assets data _site/
+          echo "배포 커밋 ${GITHUB_SHA::7} · $(date -u +%FT%TZ)" > _site/build.txt
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
