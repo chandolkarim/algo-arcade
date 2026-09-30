@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KIMCHI GAUGE · 알고리즘 오락실</title>
+  <meta name="description" content="업비트와 바이낸스의 비트코인 가격 차이(김치 프리미엄)를 실시간으로 재는 기계.">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="../index.html">
+        <span class="logo-coin" data-scene="coin"></span>
+        알고리즘 오락실
+      </a>
+      <nav class="site-nav" aria-label="이 기계 안내">
+        <ul>
+          <li><a href="#gauge">게이지</a></li>
+          <li><a href="#method">계산법</a></li>
+          <li><a href="#rule">규칙</a></li>
+          <li><a href="#contact">문의</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="machine-hero wrap" aria-labelledby="machine-title">
+      <a class="back-link" href="../index.html#machines">◀ 기계들로 돌아가기</a>
+      <h1 class="machine-title machine-title-coin" id="machine-title">KIMCHI GAUGE</h1>
+      <p class="machine-lead">
+        같은 비트코인이 한국 거래소(업비트)에서 얼마나 더 비싸거나 싸게 팔리는지,
+        해외 거래소(바이낸스) 가격과 환율로 계산해 실시간으로 보여 줍니다.
+      </p>
+      <ul class="tags" aria-label="기계 상태">
+        <li class="on">● 실시간 관측 중</li>
+        <li>비트코인 · 업비트 vs 바이낸스</li>
+        <li>관람만 가능</li>
+      </ul>
+    </section>
+
+    <section class="section wrap" id="gauge" aria-labelledby="gauge-title">
+      <div class="gauge-panel">
+        <h2 class="visually-hidden" id="gauge-title">지금 김치 프리미엄</h2>
+        <p class="gauge-label">지금 김치 프리미엄</p>
+        <p class="gauge-value" id="kp-value" data-dir="none">--.--%</p>
+
+        <div class="gauge-bar" aria-hidden="true">
+          <div class="gauge-scale">
+            <span>▼ -5%</span><span>0</span><span>+5% ▲</span>
+          </div>
+          <div class="gauge-track">
+            <span class="gauge-needle" id="kp-needle"></span>
+          </div>
+        </div>
+
+        <dl class="gauge-inputs">
+          <div>
+            <dt>업비트 BTC</dt>
+            <dd id="kp-upbit">-</dd>
+          </div>
+          <div>
+            <dt>바이낸스 BTC</dt>
+            <dd id="kp-binance">-</dd>
+          </div>
+          <div>
+            <dt>원/달러 환율</dt>
+            <dd id="kp-fx">-</dd>
+          </div>
+          <div>
+            <dt>테더 프리미엄</dt>
+            <dd id="kp-tether">-</dd>
+          </div>
+        </dl>
+
+        <p class="gauge-status" id="kp-status" role="status">시세를 불러오는 중…</p>
+        <noscript><p class="gauge-status is-error">JavaScript가 꺼져 있어 실시간 값을 표시할 수 없습니다. 계산 방법은 아래에서 볼 수 있어요.</p></noscript>
+      </div>
+      <p class="gauge-note">관측값일 뿐 매매 신호가 아닙니다. 값은 방문자의 브라우저가 30초마다 거래소 공개 시세를 직접 받아 계산합니다.</p>
+    </section>
+
+    <section class="section wrap" id="method" aria-labelledby="method-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="method-title">계산 방법</h2>
+        <p>
+          바이낸스 가격(달러 기준)을 환율로 원화로 바꾼 값과 업비트 가격을 비교합니다.
+          업비트가 더 비싸면 김치 프리미엄(<span class="up">▲ 김프</span>), 더 싸면 역프리미엄(<span class="down">▼ 역프</span>)입니다.
+        </p>
+        <p class="formula">김프 = 업비트 BTC ÷ (바이낸스 BTC × 환율) − 1</p>
+
+        <div class="facts">
+          <div class="fact">
+            <h3>업비트</h3>
+            <p>원화 마켓의 비트코인(KRW-BTC)과 테더(KRW-USDT) 최근 체결가. 인증키 없는 공개 시세입니다.</p>
+          </div>
+          <div class="fact">
+            <h3>바이낸스</h3>
+            <p>BTCUSDT 최근 체결가. 공개 시세 전용 주소(data-api.binance.vision)를 씁니다. 1 USDT는 1달러로 봅니다.</p>
+          </div>
+          <div class="fact">
+            <h3>환율</h3>
+            <p>ExchangeRate-API 무료 환율. 하루 한 번 갱신되므로 장중 환율 변동만큼 오차가 생길 수 있습니다.</p>
+          </div>
+          <div class="fact">
+            <h3>테더 프리미엄</h3>
+            <p>업비트 테더 가격 ÷ 환율 − 1. 환율 오차를 가늠하는 보조 지표로 함께 보여 줍니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="rule" aria-labelledby="rule-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="rule-title">모의 매매 규칙</h2>
+        <p>
+          계획: 김프가 최근 7일 평균에서 크게 벌어지면 “24시간 안에 다시 좁혀진다”에 모의로 걸고,
+          맞았는지 틀렸는지를 그대로 기록합니다. 기준값은 관측 기록이 쌓인 뒤 정합니다.
+        </p>
+        <p class="empty-note">관측 기록을 1시간마다 쌓는 기능을 준비 중입니다. 모의 매매 기록은 그 뒤에 이 자리에 올라옵니다.</p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="contact-title">이 기계에 대해 묻기</h2>
+        <p>계산 방법이나 데이터가 궁금하면 메일 주세요.</p>
+        <div class="coin-slot">
+          <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=KIMCHI%20GAUGE%20문의">메일 보내기</a>
+          <a class="btn btn-ghost" href="../index.html#machines">다른 기계 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>시세 출처: 업비트 · 바이낸스 공개 시세, ExchangeRate-API 환율. 관측값이며 투자 조언이 아닙니다.</p>
+      <p>픽셀 글꼴: 갈무리(Galmuri, SIL Open Font License 1.1)</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+  <script src="../assets/kimchi.js"></script>
+</body>
+</html>
