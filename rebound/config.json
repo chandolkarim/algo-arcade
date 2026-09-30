@@ -1,0 +1,12 @@
+{
+  "backtest_start": "2022-01-01",
+  "holdout_start": "2025-01-01",
+  "assets": [
+    {"symbol": "BTCUSDT", "name": "비트코인", "market": "crypto", "currency": "USDT", "timezone": "UTC", "fee": 0.0005},
+    {"symbol": "ETHUSDT", "name": "이더리움", "market": "crypto", "currency": "USDT", "timezone": "UTC", "fee": 0.0005},
+    {"symbol": "AAPL", "name": "애플", "market": "stock", "currency": "USD", "timezone": "America/New_York", "fee": 0.001},
+    {"symbol": "SPY", "name": "S&P 500 ETF", "market": "stock", "currency": "USD", "timezone": "America/New_York", "fee": 0.001},
+    {"symbol": "005930.KS", "name": "삼성전자", "market": "stock", "currency": "KRW", "timezone": "Asia/Seoul", "fee": 0.001},
+    {"symbol": "000660.KS", "name": "SK하이닉스", "market": "stock", "currency": "KRW", "timezone": "Asia/Seoul", "fee": 0.001}
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "started_at": "2026-09-30T12:26:30.962998+00:00",
+  "anchor_date": "2026-09-29",
+  "rules_hash": "82f7760e2b5986eb09955c9eb5a81dddbab52cc1c7b0bcaaaeaa47460f4543dd",
+  "last_row": {
+    "date": "2026-09-29",
+    "open": 766.8300170898438,
+    "high": 766.97998046875,
+    "low": 762.3499755859375,
+    "close": 764.2000122070312,
+    "dividend": 0,
+    "sma25": 765.596396484375,
+    "sma200": 719.2479995727539,
+    "atr": 6.559300647220551
+  },
+  "account": {
+    "balance": 10000.0,
+    "position": null,
+    "trades": [],
+    "curve": [
+      {
+        "date": "2026-09-29",
+        "equity": 10000.0
+      }
+    ],
+    "last_date": "2026-09-29",
+    "cancellations": 0
+  },
+  "observations": []
+}

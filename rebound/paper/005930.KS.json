@@ -1,0 +1,32 @@
+{
+  "started_at": "2026-09-30T12:34:15.961279+00:00",
+  "first_trade_date": "2026-10-01",
+  "anchor_date": "2026-09-29",
+  "rules_hash": "6014d0d444df59601ab18c8630412043f537d0f3e166d4d3f61dbd72b92b7d57",
+  "last_row": {
+    "date": "2026-09-29",
+    "open": 266000.0,
+    "high": 276000.0,
+    "low": 266000.0,
+    "close": 272500.0,
+    "dividend": 0,
+    "source": "Yahoo Finance",
+    "sma25": 262240.0,
+    "sma200": 224153.25,
+    "atr": 12227.302538908289
+  },
+  "account": {
+    "balance": 10000000.0,
+    "position": null,
+    "trades": [],
+    "curve": [
+      {
+        "date": "2026-09-29",
+        "equity": 10000000.0
+      }
+    ],
+    "last_date": "2026-09-29",
+    "cancellations": 0
+  },
+  "observations": []
+}
