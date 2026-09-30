@@ -6,6 +6,7 @@
   <title>TRADING FLOOR · 알고리즘 오락실</title>
   <meta name="description" content="AI 에이전트 13명이 분석하고 토론하고 심사해서 매매 판정을 내는 기계.">
   <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/floor-demo.css">
 </head>
 <body>
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -177,9 +178,38 @@
 
     <section class="section wrap" aria-labelledby="demo-title">
       <div class="panel px-box">
-        <h2 class="section-title" id="demo-title">구경하기</h2>
-        <p>이 기계는 집 컴퓨터에서만 돌아갑니다. 대신 AI 없이 실제 시세로 전 과정을 재생하는 데모를 브라우저용으로 옮기는 중입니다.</p>
-        <p class="empty-note">브라우저 데모 준비 중</p>
+        <h2 class="section-title" id="demo-title">구경하기 <span class="fd-badge">DEMO</span></h2>
+        <p>
+          진짜 기계는 집 컴퓨터에서만 돌아갑니다. 여기서는 <strong>AI를 한 번도 부르지 않고</strong>,
+          코인의 실제 시세로 지표를 계산해 13명의 진행 순서를 연출로 재생합니다. 주문은 나가지 않습니다.
+        </p>
+        <p class="empty-note" id="fd-noscript">데모 재생에는 JavaScript가 필요합니다.</p>
+
+        <div class="fd" id="fd-demo" hidden>
+          <div class="fd-controls">
+            <label for="fd-symbol">코인</label>
+            <select id="fd-symbol">
+              <option value="BTCUSDT|BTC">BTC 비트코인</option>
+              <option value="ETHUSDT|ETH">ETH 이더리움</option>
+              <option value="SOLUSDT|SOL">SOL 솔라나</option>
+              <option value="XRPUSDT|XRP">XRP 리플</option>
+            </select>
+            <button class="btn" type="button" id="fd-play">재생</button>
+            <button class="btn btn-ghost" type="button" id="fd-skip" disabled>끝까지 건너뛰기</button>
+          </div>
+
+          <ol class="fd-stages" aria-label="진행 단계">
+            <li data-stage="data">데이터</li>
+            <li data-stage="analysts">① 분석</li>
+            <li data-stage="research">② 토론</li>
+            <li data-stage="trader">③ ACE</li>
+            <li data-stage="risk">④ 리스크</li>
+            <li data-stage="pm">⑤ PM</li>
+          </ol>
+          <p class="fd-status" id="fd-status" role="status">코인을 고르고 재생을 누르세요. 15초쯤 걸립니다.</p>
+          <div class="fd-feed" id="fd-feed"></div>
+          <p class="fd-note">대사는 지표 값에서 정해진 규칙으로 만들어집니다. 실제 기계의 AI 판단과 다르며, 판정에 아무 의미가 없습니다. 뉴스는 받지 않습니다.</p>
+        </div>
       </div>
     </section>
 
@@ -204,5 +234,6 @@
   </footer>
 
   <script src="../assets/script.js"></script>
+  <script src="../assets/floor-demo.js"></script>
 </body>
 </html>

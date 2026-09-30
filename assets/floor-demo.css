@@ -1,0 +1,139 @@
+/* TRADING FLOOR 브라우저 데모 — 공통 토큰(style.css)을 그대로 쓴다. */
+
+.fd-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #6d28d9;
+  color: #fff;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.fd { margin-top: 24px; }
+.fd-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.fd-controls label {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+}
+.fd-controls select {
+  min-height: 48px;
+  padding: 0 12px;
+  border: var(--px) solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+}
+.fd-controls .btn { min-height: 48px; }
+.fd-controls .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.fd-stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: 6px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fd-stages li {
+  padding: 6px 4px;
+  border: 2px solid #c9bfe8;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+.fd-stages li.is-done { border-color: var(--ink); color: var(--ink); }
+.fd-stages li.is-done::before { content: "✓ "; }
+.fd-stages li.is-now { background: var(--coin); border-color: var(--ink); color: var(--ink); }
+.fd-stages li.is-now::before { content: "▶ "; }
+
+.fd-status {
+  margin: 12px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.fd-feed {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+.fd-card {
+  padding: 14px 16px;
+  border: 2px solid var(--ink);
+  background: #fff;
+}
+.fd-market { background: var(--screen); color: var(--on-carpet); border-color: var(--ink); }
+.fd-market .fd-who { color: var(--coin); }
+.fd-market .up { color: var(--up); }
+.fd-market .down { color: var(--down); }
+.fd-verdict { box-shadow: 0 0 0 var(--px) var(--coin); }
+
+.fd-who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.fd-who b {
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  color: var(--ink);
+}
+/* 판정·태도 표시는 시세색을 쓰지 않는다 */
+.fd-chip {
+  padding: 0 8px;
+  border: 2px solid var(--ink);
+  background: var(--coin);
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: var(--ink);
+}
+.fd-bubble {
+  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+.fd-card details { margin-top: 8px; font-size: 14px; }
+.fd-card summary {
+  cursor: pointer;
+  color: var(--ink-soft);
+  font-family: var(--font-pixel);
+  font-size: 12px;
+}
+.fd-card details p { margin: 6px 0 0; color: var(--ink-soft); }
+
+.fd-plan {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+  margin: 10px 0 0;
+  font-size: 14px;
+}
+.fd-plan dt { color: inherit; opacity: 0.75; }
+.fd-plan dd { margin: 0; overflow-wrap: anywhere; }
+
+.fd-warn {
+  margin: 0;
+  padding: 8px 12px;
+  border: 2px dashed var(--ink-soft);
+  font-size: 14px;
+}
+.fd-note {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
