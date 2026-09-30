@@ -804,6 +804,30 @@ a.cabinet:focus-visible .cabinet-body { outline: var(--px) solid var(--coin); ou
   color: var(--on-carpet-soft);
 }
 
+/* 김프 지난 기록 */
+.kh-chart { margin: 20px 0 0; color: var(--ink); }
+.kh-chart svg {
+  display: block;
+  width: 100%;
+  height: 96px;
+  border: 2px solid #c9bfe8;
+  background: #fff;
+}
+.kh-chart figcaption { margin-top: 6px; font-size: 13px; color: var(--ink-soft); }
+.kh-stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  margin: 16px 0 0;
+  font-size: 15px;
+}
+.kh-stats dt { color: var(--ink-soft); }
+.kh-stats dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.kh-stats .up { color: var(--up-ink); }
+.kh-stats .down { color: var(--down-ink); }
+.kh-meta { margin: 12px 0 0; font-size: 13px; color: var(--ink-soft); }
+.kh-error { color: var(--ink); font-weight: 600; }
+
 .empty-note {
   margin-top: 20px;
   padding: 16px 20px;

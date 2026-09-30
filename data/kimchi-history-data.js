@@ -1,0 +1,1 @@
+window.KIMCHI_HISTORY = {"schema":1,"generated_at":"2026-09-30T13:17:32+00:00","keep_days":30,"last_error":null,"points":[{"t":"2026-09-30T22:17+09:00","kp":-0.099,"tp":-0.124}]};

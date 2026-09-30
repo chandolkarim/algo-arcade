@@ -19,8 +19,8 @@
       <nav class="site-nav" aria-label="이 기계 안내">
         <ul>
           <li><a href="#gauge">게이지</a></li>
+          <li><a href="#history">기록</a></li>
           <li><a href="#method">계산법</a></li>
-          <li><a href="#rule">규칙</a></li>
           <li><a href="#contact">문의</a></li>
         </ul>
       </nav>
@@ -82,6 +82,14 @@
       <p class="gauge-note">관측값일 뿐 매매 신호가 아닙니다. 값은 방문자의 브라우저가 30초마다 거래소 공개 시세를 직접 받아 계산합니다.</p>
     </section>
 
+    <section class="section wrap" id="history" aria-labelledby="history-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="history-title">지난 기록</h2>
+        <p>GitHub Actions가 1시간마다 한 번 김프를 재서 최근 30일을 남깁니다. 예약 실행은 몇 분 늦거나 가끔 빠질 수 있습니다.</p>
+        <div id="kh-body"><p class="empty-note">기록을 불러오는 중…</p></div>
+      </div>
+    </section>
+
     <section class="section wrap" id="method" aria-labelledby="method-title">
       <div class="panel px-box">
         <h2 class="section-title" id="method-title">계산 방법</h2>
@@ -119,7 +127,7 @@
           계획: 김프가 최근 7일 평균에서 크게 벌어지면 “24시간 안에 다시 좁혀진다”에 모의로 걸고,
           맞았는지 틀렸는지를 그대로 기록합니다. 기준값은 관측 기록이 쌓인 뒤 정합니다.
         </p>
-        <p class="empty-note">관측 기록을 1시간마다 쌓는 기능을 준비 중입니다. 모의 매매 기록은 그 뒤에 이 자리에 올라옵니다.</p>
+        <p class="empty-note">1시간 관측 기록은 위 “지난 기록”에 쌓이고 있습니다. 기준값은 며칠치가 모인 뒤 정하고, 모의 매매 기록은 그때부터 이 자리에 올라옵니다.</p>
       </div>
     </section>
 
@@ -145,5 +153,7 @@
 
   <script src="../assets/script.js"></script>
   <script src="../assets/kimchi.js"></script>
+  <script src="../data/kimchi-history-data.js"></script>
+  <script src="../assets/kimchi-history.js"></script>
 </body>
 </html>
