@@ -71,3 +71,7 @@
   .rb-meter-grid strong { font-size: 15px; }
   .rb-result-controls select { font-size: 13px; }
 }
+@media (max-width: 480px) {
+  .rebound-page th, .rebound-page td { padding: 10px 6px; font-size: 13px; }
+  .rebound-page th { white-space: normal; }
+}

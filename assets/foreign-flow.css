@@ -100,3 +100,14 @@ dl.ff-today { max-width: 360px; font-size: 16px; }
 .ff-limits { margin: 0; padding-left: 20px; font-size: 15px; }
 .ff-limits li + li { margin-top: 6px; }
 .ff-link { font-weight: 600; }
+
+/* 신호 뒤 vs 평소 오른 비율 막대 */
+.ff-bars { display: grid; gap: 6px; margin: 8px 0 10px; }
+.ff-bar { display: grid; grid-template-columns: 3.6em minmax(0, 1fr) 3.6em; gap: 8px; align-items: center; font-size: 14px; }
+.ff-bar-name { font-weight: 600; }
+.ff-bar-val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+.ff-track { position: relative; height: 18px; border: 2px solid var(--ink); background: #fff; }
+.ff-fill { position: absolute; inset: 0 auto 0 0; }
+.ff-fill.is-signal { background: var(--coin); }
+.ff-fill.is-base { background: #c9bfe8; }
+.ff-half { position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }

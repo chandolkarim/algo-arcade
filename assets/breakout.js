@@ -23,56 +23,16 @@
     $(id).textContent = pct(value);
     $(id).className = tone(value);
   };
-  function chart(id, rows, series, height, light, label, events = []) {
-    const svg = $(id);
-    svg.replaceChildren();
-    svg.setAttribute("aria-labelledby", `${id}-title`);
-    svg.append(svgel("title", { id: `${id}-title` }, label));
-    if (!rows.length) { svg.append(svgel("text", { x: 40, y: 100 }, "표시할 기록이 없습니다.")); return; }
-    const width = Math.max(280, Math.min(960, Math.floor(svg.getBoundingClientRect().width)));
-    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-    const left = 72, right = width - 18, top = 20, bottom = height - 38;
-    const dates = new Map(rows.map((r,i)=>[r.date,i]));
-    const marks = events.filter(e=>dates.has(e.date));
-    const values = rows.flatMap((r) => series.map((s) => r[s.key])).concat(marks.map(e=>e.price)).filter(Number.isFinite);
-    let min = Math.min(...values), max = Math.max(...values);
-    if (!Number.isFinite(min) || !Number.isFinite(max)) return;
-    const pad = (max - min) * .08 || Math.max(Math.abs(max) * .01, 1);
-    min -= pad; max += pad;
-    const x = (i) => left + i / Math.max(rows.length - 1, 1) * (right - left);
-    const y = (v) => bottom - (v - min) / (max - min) * (bottom - top);
-    const ink = light ? "#4a4270" : "#bfb5ea";
-    for (let i = 0; i < 4; i++) {
-      const val = min + (max - min) * i / 3, py = y(val);
-      svg.append(svgel("line", { x1: left, y1: py, x2: right, y2: py, stroke: light ? "#d1c7e7" : "#302449", "stroke-width": 1 }));
-      svg.append(svgel("text", { x: left - 10, y: py + 4, fill: ink, "text-anchor": "end", "font-size": 12 }, num(val, max > 1000 ? 0 : 2)));
-    }
-    const ticks = width < 600 ? [0, rows.length - 1] : [0, Math.floor((rows.length - 1) / 2), rows.length - 1];
-    for (const i of [...new Set(ticks)]) {
-      svg.append(svgel("text", { x: x(i), y: height - 10, fill: ink, "text-anchor": i === 0 ? "start" : i === rows.length - 1 ? "end" : "middle", "font-size": 12 }, rows[i].date));
-    }
-    for (const seriesItem of series) {
-      let d = "", active = false, previousSegment;
-      rows.forEach((r, i) => {
-        if (!Number.isFinite(r[seriesItem.key])) { active = false; return; }
-        if (seriesItem.key === "stop" && r.segment !== previousSegment) active = false;
-        previousSegment = r.segment;
-        d += `${active ? "L" : "M"}${x(i).toFixed(2)},${y(r[seriesItem.key]).toFixed(2)} `;
-        active = true;
-      });
-      svg.append(svgel("path", { d, fill: "none", stroke: seriesItem.color, "stroke-width": 2.5, "stroke-dasharray": seriesItem.dash || "none", "stroke-linejoin": "round" }));
-      if (rows.length === 1 && Number.isFinite(rows[0][seriesItem.key])) {
-        svg.append(svgel("circle", { cx: x(0), cy: y(rows[0][seriesItem.key]), r: 4, fill: seriesItem.color }));
-      }
-    }
-    for (const e of marks) {
-      const px = x(dates.get(e.date)), py = y(e.price);
-      const points = e.kind === "exit" ? `${px},${py-5} ${px+5},${py} ${px},${py+5} ${px-5},${py}` : e.side === 1 ? `${px},${py-6} ${px+5},${py+4} ${px-5},${py+4}` : `${px},${py+6} ${px+5},${py-4} ${px-5},${py-4}`;
-      const mark = svgel("polygon", {points, fill: e.kind === "exit" ? "#0f0b24" : "#ffd23f", stroke: "#ffd23f", "stroke-width":1.5});
-      mark.append(svgel("title",{},`${e.date} ${e.kind === "exit" ? "청산" : sideLabel(e.side)+" 진입"} ${num(e.price)}`));
-      svg.append(mark);
-    }
-  }
+  // 공용 선 차트(assets/linechart.js)로 그린다
+  const chart = (id, opts) => window.LineChart.draw($(id), opts);
+  const signedPct = (v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(1)}%`;
+  let days = 90;  // 가격 차트 기간: 3개월 / 1년
+  document.querySelectorAll("#bo-range button").forEach((b) => b.addEventListener("click", () => {
+    days = Number(b.dataset.days);
+    document.querySelectorAll("#bo-range button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    renderResults();
+  }));
+
   if (!data || data.schema !== 1 || data.strategy !== "breakout" || !Array.isArray(data.assets) || !data.assets.length) {
     $("bo-global-status").textContent = "저장된 관측 데이터를 불러오지 못했습니다. 아래에서 전략 규칙과 출처를 확인할 수 있습니다.";
     return;
@@ -104,12 +64,20 @@
       {date:t.entry_date,price:t.entry,side:t.side,kind:"entry"},
       ...(t.exit_date ? [{date:t.exit_date,price:t.exit,side:t.side,kind:"exit"}] : [])
     ]);
-    chart("bo-price-chart",points,[
-      {key:"close",color:"#f3eeff"},{key:"upper",color:"#3ce0a8",dash:"8 4"},
-      {key:"lower",color:"#ffd23f",dash:"2 5"},{key:"stop",color:"#ff85c0",dash:"5 3"}
-    ],320,false,`${asset.name} 종가와 당일 봉을 제외한 20일 범위, 선택한 기록의 모의 체결과 손절선`,events);
+    const shown = points.slice(-days);
+    chart("bo-price-chart", {
+      rows: shown, height: 300, theme: "dark", legend: $("bo-price-legend"), markers: events, segmentKey: "segment",
+      label: `${asset.name} 최근 ${shown.length}일 종가와 당일 봉을 뺀 20일 범위, 선택한 기록의 모의 체결과 손절선`,
+      band: { lo: "lower", hi: "upper", color: "#3ce0a8", label: "20일 범위(벽)" },
+      series: [{ key: "close", label: "종가", color: "#f3eeff", width: 3 },
+               { key: "stop", label: "손절선", color: "#ff85c0", width: 2.5, dash: "6 4", segmented: true }],
+    });
+    const L = asset.latest;
+    $("bo-price-say").textContent = L.signal === "long" ? "종가가 어제까지의 20일 최고가(벽 위쪽)를 넘었습니다. 다음 시가가 여전히 위면 롱 진입." :
+      L.signal === "short" ? "종가가 어제까지의 20일 최저가(벽 아래쪽) 밑으로 빠졌습니다. 다음 시가가 여전히 아래면 숏 진입." :
+      `종가가 20일 범위(초록 띠) 안에 있어 기다리는 중. 위 벽까지 ${L.to_upper_pct.toFixed(1)}%, 아래 벽까지 ${L.to_lower_pct.toFixed(1)}%.`;
     const periodText = $("bo-period").selectedOptions[0].textContent;
-    $("bo-chart-range").textContent = `${asset.chart[0].date} ~ ${asset.end} · ${asset.currency} · 거래 표시: ${periodText} · ${asset.source}`;
+    $("bo-chart-range").textContent = `${shown[0].date} ~ ${asset.end} · ${asset.currency} · 거래 표시: ${periodText} · 차트를 짚으면 그날 값 · ${asset.source}`;
   }
   function renderResults() {
     const asset = assetNow(), period = $("bo-period").value;
@@ -135,7 +103,15 @@
     $("bo-average-bars").textContent = result.average_bars === null ? "표본 없음" : `${num(result.average_bars,1)}개 봉`;
     $("bo-position").textContent = `${period === "paper" ? "모의 장부" : "백테스트 종료 시점"}: ${positionText(result.position,currency)} · 진입 취소 ${result.cancellations}건`;
     const equity = result.curve.map(r=>({date:r.date,return_pct:(r.equity/result.initial-1)*100}));
-    chart("bo-equity-chart",equity,[{key:"return_pct",color:"#22644f"}],230,true,"선택 구간 계좌 누적 수익률 (%)");
+    chart("bo-equity-chart", {
+      rows: equity, height: 250, theme: "light", zero: true, yfmt: signedPct, legend: $("bo-equity-legend"),
+      label: "선택 구간 계좌 누적 수익률(%)",
+      series: [{ key: "return_pct", label: "계좌", color: "#1b1438", width: 3.5 }],
+    });
+    $("bo-equity-say").textContent = `이 구간 계좌는 ${signedPct(result.return_pct)}, 가장 깊이 빠졌을 때 고점 대비 −${result.max_drawdown_pct.toFixed(1)}%. ` +
+      (result.win_rate != null && result.win_rate < 50 && result.return_pct > 0
+        ? `${result.count}번 중 ${result.win_rate.toFixed(0)}%만 벌었는데도 남은 건, 번 거래가 잃은 거래보다 크게 벌었기 때문입니다.`
+        : `${result.count}번 중 ${result.win_rate == null ? "-" : result.win_rate.toFixed(0) + "%"}가 이익이었습니다.`);
     $("bo-sides").replaceChildren(...["long","short"].map(side=>{
       const s = result.sides[side];
       const tr = tableRow([side === "long" ? "롱" : "숏",`${s.count}건`,s.win_rate === null ? "표본 없음" : `${num(s.win_rate,1)}%`,money(s.net, currency)]);

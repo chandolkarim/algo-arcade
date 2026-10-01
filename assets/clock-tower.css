@@ -126,3 +126,25 @@
 .ct-ranks li + li { margin-top: 6px; }
 .ct-limits { margin: 0; padding-left: 20px; font-size: 15px; }
 .ct-limits li + li { margin-top: 6px; }
+
+/* 요일별 24시간 막대그래프 */
+.ct-day-title { margin: 0 0 10px; font-family: var(--font-pixel); font-size: 18px; color: var(--on-carpet); }
+.ct-week-title { margin-top: 32px; padding-top: 20px; border-top: 2px dashed #3a3170; }
+.ct-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.ct-days button {
+  min-height: 40px;
+  border: 2px solid var(--on-carpet-soft);
+  background: transparent;
+  color: var(--on-carpet);
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  cursor: pointer;
+}
+.ct-days button[aria-pressed="true"] { background: var(--coin); border-color: var(--coin); color: var(--ink); }
+.ct-bars { margin: 12px 0 0; }
+.ct-bars svg { display: block; width: 100%; height: auto; font-family: var(--font-pixel); }
+.ct-bars .ct-bar { cursor: pointer; }
+.ct-bars figcaption { margin-top: 6px; font-size: 13px; color: var(--on-carpet-soft); }
+.ct-bins { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; }
+.ct-bin { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; color: var(--on-carpet); }
+.ct-bin i { display: inline-block; width: 14px; height: 14px; border: 1px solid #000; }

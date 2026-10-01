@@ -82,3 +82,7 @@
 .bo-terminal .bo-legend-stop { color: #ff85c0; }
 .bo-proof { padding: 16px; border-left: 4px solid #386b59; background: #e2eade; }
 @media(max-width:640px) { .bo-average-grid,.bo-lesson { grid-template-columns:1fr; } }
+@media (max-width: 480px) {
+  .breakout-page th, .breakout-page td { padding: 10px 6px; font-size: 13px; }
+  .breakout-page th { white-space: normal; }
+}

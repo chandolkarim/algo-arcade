@@ -23,42 +23,16 @@
     $(id).textContent = pct(value);
     $(id).className = tone(value);
   };
-  function chart(id, rows, series, height, light, label) {
-    const svg = $(id);
-    svg.replaceChildren();
-    svg.setAttribute("aria-labelledby", `${id}-title`);
-    svg.append(svgel("title", { id: `${id}-title` }, label));
-    if (!rows.length) { svg.append(svgel("text", { x: 40, y: 100 }, "표시할 기록이 없습니다.")); return; }
-    const width = Math.max(280, Math.min(960, Math.floor(svg.getBoundingClientRect().width)));
-    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-    const left = 72, right = width - 18, top = 20, bottom = height - 38;
-    const values = rows.flatMap((r) => series.map((s) => r[s.key])).filter(Number.isFinite);
-    let min = Math.min(...values), max = Math.max(...values);
-    if (!Number.isFinite(min) || !Number.isFinite(max)) return;
-    const pad = (max - min) * .08 || Math.max(Math.abs(max) * .01, 1);
-    min -= pad; max += pad;
-    const x = (i) => left + i / Math.max(rows.length - 1, 1) * (right - left);
-    const y = (v) => bottom - (v - min) / (max - min) * (bottom - top);
-    const ink = light ? "#4a4270" : "#bfb5ea";
-    for (let i = 0; i < 4; i++) {
-      const val = min + (max - min) * i / 3, py = y(val);
-      svg.append(svgel("line", { x1: left, y1: py, x2: right, y2: py, stroke: light ? "#d1c7e7" : "#302449", "stroke-width": 1 }));
-      svg.append(svgel("text", { x: left - 10, y: py + 4, fill: ink, "text-anchor": "end", "font-size": 12 }, num(val, max > 1000 ? 0 : 2)));
-    }
-    const ticks = width < 600 ? [0, rows.length - 1] : [0, Math.floor((rows.length - 1) / 2), rows.length - 1];
-    for (const i of [...new Set(ticks)]) {
-      svg.append(svgel("text", { x: x(i), y: height - 10, fill: ink, "text-anchor": i === 0 ? "start" : i === rows.length - 1 ? "end" : "middle", "font-size": 12 }, rows[i].date));
-    }
-    for (const seriesItem of series) {
-      let d = "", active = false;
-      rows.forEach((r, i) => {
-        if (!Number.isFinite(r[seriesItem.key])) { active = false; return; }
-        d += `${active ? "L" : "M"}${x(i).toFixed(2)},${y(r[seriesItem.key]).toFixed(2)} `;
-        active = true;
-      });
-      svg.append(svgel("path", { d, fill: "none", stroke: seriesItem.color, "stroke-width": 2.5, "stroke-dasharray": seriesItem.dash || "none", "stroke-linejoin": "round" }));
-    }
-  }
+  // 공용 선 차트(assets/linechart.js)로 그린다
+  const chart = (id, opts) => window.LineChart.draw($(id), opts);
+  const signedPct = (v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(1)}%`;
+  let days = 90;  // 가격 차트 기간: 3개월 / 1년
+  document.querySelectorAll("#rb-range button").forEach((b) => b.addEventListener("click", () => {
+    days = Number(b.dataset.days);
+    document.querySelectorAll("#rb-range button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    renderAsset();
+  }));
+
   if (!data || data.schema !== 1 || !Array.isArray(data.assets)) {
     $("rb-global-status").textContent = "관측 데이터를 불러오지 못했습니다. 결과 파일이 준비되지 않았거나 함께 복사되지 않았습니다. 아래 규칙과 출처를 확인할 수 있습니다.";
     return;
@@ -110,7 +84,15 @@
       const baseMap = new Map(base.curve.map((r) => [r.date, r.equity]));
       const points = result.curve.map((r) => ({ date: r.date, filtered: (r.equity / result.initial - 1) * 100,
         baseline: (baseMap.get(r.date) / base.initial - 1) * 100 }));
-      chart("rb-equity-chart", points, [{ key: "filtered", color: "#804c86" }, { key: "baseline", color: "#4a4270", dash: "5 5" }], 230, true, "200일선 적용 여부에 따른 계좌 누적 수익률 (%)");
+      chart("rb-equity-chart", {
+        rows: points, height: 250, theme: "light", zero: true, yfmt: signedPct, legend: $("rb-equity-legend"),
+        label: "200일선 적용 여부에 따른 계좌 누적 수익률(%)",
+        series: [{ key: "filtered", label: "200일선 적용", color: "#1b1438", width: 3.5 },
+                 { key: "baseline", label: "미적용", color: "#d6589a", width: 2.5, dash: "7 4" }],
+      });
+      const diff = result.return_pct - base.return_pct;
+      $("rb-equity-say").textContent = `200일선을 넣으면 ${signedPct(result.return_pct)}, 빼면 ${signedPct(base.return_pct)}. ` +
+        (diff > 0 ? `필터가 ${Math.abs(diff).toFixed(1)}%p 덜 잃게 했습니다.` : diff < 0 ? `이 구간에서는 필터가 ${Math.abs(diff).toFixed(1)}%p 손해였습니다.` : "차이가 없었습니다.");
     }
     $("rb-sides").replaceChildren(...["long", "short"].map((side) => {
       const s = result.sides[side];
@@ -153,10 +135,19 @@
     $("rb-atr").textContent = `${num(r.atr)} ${asset.currency}`;
     const trendText = r.trend === "long" ? "200일선 + 1 ATR 위에 있습니다." : r.trend === "short" ? "200일선 − 1 ATR 아래에 있습니다." : "200일선 주변 ±1 ATR 구간이어서 신규 진입하지 않습니다.";
     $("rb-reason").textContent = `${trendText} ${r.signal !== "wait" ? "25일선과 2 ATR 이상 벌어져 진입 후보 조건을 충족했습니다." : r.trend !== "neutral" ? "허용 방향의 25일선 괴리 조건을 아직 충족하지 않았습니다." : ""} (괴리율 ${num(r.deviation_pct)}%)`;
-    chart("rb-price-chart", asset.chart, [
-      { key: "close", color: "#f3eeff" }, { key: "sma25", color: "#ff85c0", dash: "8 4" }, { key: "sma200", color: "#ffd23f", dash: "2 5" }
-    ], 300, false, `${asset.name}, ${asset.chart[0].date}부터 ${asset.end}까지 종가와 25·200일 이동평균선, ${asset.currency} 기준`);
-    $("rb-chart-range").textContent = `최근 ${asset.chart.length}개 봉 · ${asset.chart[0].date} ~ ${asset.end} · 출처: ${asset.source}`;
+    const rows = asset.chart.slice(-days);
+    chart("rb-price-chart", {
+      rows, height: 290, theme: "dark", legend: $("rb-price-legend"),
+      label: `${asset.name} 최근 ${rows.length}일 종가와 25·200일 이동평균선, ${asset.currency} 기준`,
+      series: [{ key: "close", label: "종가", color: "#f3eeff", width: 3 },
+               { key: "sma25", label: "25일선", color: "#ff85c0", width: 2.5, dash: "8 5" },
+               { key: "sma200", label: "200일선", color: "#ffd23f", width: 2.5, dash: "3 4" }],
+    });
+    const gap25 = (r.close / r.sma25 - 1) * 100, gap200 = (r.close / r.sma200 - 1) * 100;
+    $("rb-price-say").textContent = `종가는 25일선보다 ${signedPct(gap25)}, 200일선보다 ${signedPct(gap200)}. ` +
+      (r.signal === "long" ? "흐름 위에서 크게 빠졌으니 롱 후보입니다." : r.signal === "short" ? "흐름 아래에서 크게 올랐으니 숏 후보입니다." :
+        r.trend === "neutral" ? "200일선에 너무 가까워 방향을 정하지 않고 쉽니다." : `${r.trend === "long" ? "롱" : "숏"}만 보는 구간이지만, 25일선에서 2 ATR만큼 벌어지길 기다립니다.`);
+    $("rb-chart-range").textContent = `${rows[0].date} ~ ${asset.end} · 차트를 짚으면 그날 값 · 출처: ${asset.source}`;
     $("rb-values").replaceChildren(...asset.chart.slice(-10).reverse().map((v) => tableRow([v.date, num(v.close), num(v.sma25), num(v.sma200)])));
     renderResults();
   }

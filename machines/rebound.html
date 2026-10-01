@@ -15,6 +15,7 @@
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/quiz.css">
   <link rel="stylesheet" href="../assets/rebound.css">
+  <link rel="stylesheet" href="../assets/linechart.css">
 </head>
 <body class="rebound-page">
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -65,7 +66,10 @@
             <div><span>평소 변동폭 · ATR</span><strong id="rb-atr"></strong></div>
           </div>
           <p class="rb-caption">진입 후보는 조건 관측 결과입니다. 보유 상태·다음 시가 조건에 따라 모의 체결 여부가 달라집니다.</p>
-          <div class="rb-chart-head"><h3>가격과 두 기준선</h3><div class="rb-legend"><span class="legend-price">― 종가</span><span class="legend-fast">┄ 25일선</span><span class="legend-slow">··· 200일선</span></div></div>
+          <div class="rb-chart-head"><h3>가격과 두 기준선</h3>
+            <div class="ch-range" id="rb-range" role="group" aria-label="차트 기간"><button type="button" data-days="90" aria-pressed="true">3개월</button><button type="button" data-days="365" aria-pressed="false">1년</button></div></div>
+          <p class="ch-say" id="rb-price-say"></p>
+          <div class="lc-legend" id="rb-price-legend"></div>
           <svg id="rb-price-chart" class="rb-chart" viewBox="0 0 960 300" role="img" aria-labelledby="rb-chart-title rb-chart-desc"><title id="rb-chart-title">최근 일봉 종가와 이동평균선</title><desc id="rb-chart-desc">종목을 선택하면 저장된 데이터로 차트를 표시합니다.</desc></svg>
           <p id="rb-chart-range" class="rb-caption"></p>
           <details class="rb-values"><summary>차트의 최근 10개 값 보기</summary><div class="rb-table-scroll" tabindex="0" role="region" aria-label="최근 가격 데이터"><table><thead><tr><th>날짜</th><th>종가</th><th>25일선</th><th>200일선</th></tr></thead><tbody id="rb-values"></tbody></table></div></details>
@@ -86,8 +90,10 @@
           <p id="rb-position" class="rb-position"></p>
           <div id="rb-comparison"><h3>200일선이 도움이 됐을까?</h3><p class="rb-small">같은 기간·비용·자금으로 비교합니다. 비교군은 200일선 진입 필터와 추세 이탈 청산을 함께 제거했습니다.</p>
             <div class="rb-table-scroll" tabindex="0" role="region" aria-label="전략 비교"><table><thead><tr><th>전략</th><th>수익률</th><th>최대 낙폭</th><th>청산 거래</th></tr></thead><tbody id="rb-compare-body"></tbody></table></div>
-            <svg id="rb-equity-chart" class="rb-chart rb-equity" viewBox="0 0 960 230" role="img" aria-label="필터 적용과 미적용 계좌 수익률 추이"></svg>
-            <p class="rb-small">실선: 200일선 적용 · 점선: 200일선 미적용. 미청산 포지션 평가손익을 포함하며 미래 청산 비용은 포함하지 않습니다.</p>
+            <p class="ch-say ch-say-light" id="rb-equity-say"></p>
+            <div class="lc-legend lc-legend-light" id="rb-equity-legend"></div>
+            <svg id="rb-equity-chart" class="rb-chart rb-equity" viewBox="0 0 960 250" role="img" aria-label="필터 적용과 미적용 계좌 수익률 추이"></svg>
+            <p class="rb-small">진한 실선: 200일선 적용 · 분홍 점선: 미적용. 차트를 짚으면 그날 값이 나옵니다. 미청산 포지션 평가손익을 포함하며 미래 청산 비용은 포함하지 않습니다.</p>
           </div>
           <div class="rb-table-scroll" tabindex="0" role="region" aria-label="매매 방향별 성적"><table><thead><tr><th>방향</th><th>청산 거래</th><th>승률</th><th>확정 순손익</th></tr></thead><tbody id="rb-sides"></tbody></table></div>
           <h3>최근 청산 기록</h3><p class="rb-small">최근 20건을 표시합니다. 손익은 수수료와 반영 가능한 보유 비용을 차감한 값입니다.</p>
@@ -154,7 +160,7 @@
       <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
     </div>
   </footer>
-  <script src="../assets/script.js"></script><script src="../data/rebound-data.js"></script><script src="../assets/rebound.js"></script>
+  <script src="../assets/script.js"></script><script src="../data/rebound-data.js"></script><script src="../assets/linechart.js"></script><script src="../assets/rebound.js"></script>
   <script src="../assets/quiz.js"></script>
 </body>
 </html>

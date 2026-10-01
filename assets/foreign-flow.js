@@ -55,6 +55,18 @@
       const p = q.periods[key];
       const part = el("div", "ff-period");
       part.append(el("h4", "", label));
+      // 한눈에: 신호 뒤 오른 비율 vs 평소 오른 비율 (50% 눈금 포함)
+      const bars = el("div", "ff-bars");
+      [["신호 뒤", p.signal.up_share, "is-signal"], ["평소", p.base.up_share, "is-base"]].forEach(([name, v, cls]) => {
+        const row = el("div", "ff-bar");
+        const track = el("span", "ff-track");
+        const fill = el("span", `ff-fill ${cls}`);
+        fill.style.width = `${(v || 0) * 100}%`;
+        track.append(fill, el("span", "ff-half"));
+        row.append(el("span", "ff-bar-name", name), track, el("span", "ff-bar-val", pct(v)));
+        bars.append(row);
+      });
+      part.append(bars);
       const dl = el("dl");
       row(dl, "신호 건수", `${p.signal.n.toLocaleString("ko-KR")}건`);
       row(dl, "오른 비율", pct(p.signal.up_share));

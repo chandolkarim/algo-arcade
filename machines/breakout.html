@@ -12,7 +12,7 @@
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/quiz.css"><link rel="stylesheet" href="../assets/breakout.css">
+  <link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/quiz.css"><link rel="stylesheet" href="../assets/breakout.css"><link rel="stylesheet" href="../assets/linechart.css">
 </head>
 <body class="breakout-page">
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -48,7 +48,10 @@
         <div class="bo-signal-line"><span id="bo-signal" class="bo-signal"></span><p id="bo-reason"></p></div>
         <div class="bo-meter-grid"><div><span>확정 종가</span><strong id="bo-price"></strong></div><div><span>직전 20일 최고가</span><strong id="bo-upper"></strong></div><div><span>직전 20일 최저가</span><strong id="bo-lower"></strong></div><div><span>평소 변동폭 · ATR14</span><strong id="bo-atr"></strong></div></div>
         <p id="bo-live-position" class="bo-caption"></p>
-        <div class="bo-chart-head"><h3>가격은 벽을 넘었을까?</h3><div class="bo-legend"><span class="legend-price">― 종가</span><span class="legend-fast">┄ 상단</span><span class="legend-slow">··· 하단</span><span class="bo-legend-stop">┄ 손절선</span></div></div>
+        <div class="bo-chart-head"><h3>가격은 벽을 넘었을까?</h3>
+          <div class="ch-range" id="bo-range" role="group" aria-label="차트 기간"><button type="button" data-days="90" aria-pressed="true">3개월</button><button type="button" data-days="365" aria-pressed="false">1년</button></div></div>
+        <p class="ch-say" id="bo-price-say"></p>
+        <div class="lc-legend" id="bo-price-legend"></div>
         <svg id="bo-price-chart" class="bo-chart" viewBox="0 0 960 320" role="img" aria-label="가격과 20일 범위, 모의 거래와 추적 손절선"></svg>
         <p id="bo-chart-range" class="bo-caption"></p>
         <p class="bo-caption">△ 롱 진입 · ▽ 숏 진입 · ◇ 청산. 손절선은 해당 봉에 실제 적용한 값입니다. 거래 표시는 아래에서 선택한 기록 구간을 따릅니다.</p>
@@ -65,7 +68,10 @@
           <div class="bo-stats"><div><span>계좌 수익률</span><strong id="bo-return"></strong></div><div><span>최대 낙폭 · 종가 기준</span><strong id="bo-dd"></strong></div><div><span>청산한 거래</span><strong id="bo-count"></strong></div><div><span>비용 차감 후 승률</span><strong id="bo-win"></strong></div></div>
           <div class="bo-average-grid"><div><span>수익 거래의 평균 순이익</span><strong id="bo-average-win"></strong></div><div><span>손실 거래의 평균 순손실</span><strong id="bo-average-loss"></strong></div><div><span>청산 거래의 평균 보유</span><strong id="bo-average-bars"></strong></div></div>
           <p id="bo-position" class="bo-position"></p>
-          <h3>계좌의 경로</h3><svg id="bo-equity-chart" class="bo-chart" viewBox="0 0 960 230" role="img" aria-label="계좌 누적 수익률"></svg>
+          <h3>계좌의 경로</h3>
+          <p class="ch-say ch-say-light" id="bo-equity-say"></p>
+          <div class="lc-legend lc-legend-light" id="bo-equity-legend"></div>
+          <svg id="bo-equity-chart" class="bo-chart" viewBox="0 0 960 250" role="img" aria-label="계좌 누적 수익률"></svg>
           <p class="bo-small">누적 수익률(%)에는 미청산 포지션의 종가 평가손익을 포함합니다. 미래 청산 비용은 포함하지 않습니다.</p>
           <div class="bo-table-scroll" tabindex="0" role="region" aria-label="방향별 성적"><table><thead><tr><th>방향</th><th>청산 거래</th><th>승률</th><th>확정 순손익</th></tr></thead><tbody id="bo-sides"></tbody></table></div>
           <h3>최근 청산 기록</h3><p class="bo-small">최근 20건. 전체 기록은 아래 JSON에서 확인할 수 있습니다.</p>
@@ -129,7 +135,7 @@
       <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
     </div>
   </footer>
-  <script src="../assets/script.js"></script><script src="../data/breakout-data.js"></script><script src="../assets/breakout.js"></script>
+  <script src="../assets/script.js"></script><script src="../data/breakout-data.js"></script><script src="../assets/linechart.js"></script><script src="../assets/breakout.js"></script>
   <script src="../assets/quiz.js"></script>
 </body>
 </html>

@@ -38,14 +38,73 @@
     const [x, y] = [p(a), p(b)];
     return `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * Math.max(0, Math.min(1, t)))).join(",")})`;
   };
+  // 출렁임은 연속 농도 대신 또렷한 5단계로 (휴대폰에서 칸이 작아도 구분되게)
+  const BINS = [
+    { max: 0.8, color: "#2a2358", label: "0.8배 미만" },
+    { max: 0.95, color: "#4b3f8a", label: "0.8~0.95배" },
+    { max: 1.05, color: "#8a7fc4", label: "평소(±5%)" },
+    { max: 1.25, color: "#d9a92b", label: "1.05~1.25배" },
+    { max: Infinity, color: "#ffd23f", label: "1.25배 이상" },
+  ];
+  const binOf = (r) => BINS.find((b) => r < b.max);
   const SCALE = {
-    swing: { val: (c) => c.all.swing / base.swing, color: (r) => mix("#1b1438", "#ffd23f", (r - 0.55) / 1.1),
-      legend: "어두울수록 조용, 밝은 노랑일수록 평소보다 많이 출렁임" },
+    swing: { val: (c) => c.all.swing / base.swing, color: (r) => binOf(r).color,
+      legend: "출렁임(평소 대비): 어두운 보라 = 조용 · 연보라 = 평소 · 노랑 = 많이 출렁임" },
     move: { val: (c) => c.all.move, color: (v, max) => (v >= 0 ? mix("#1b1438", "#ff4d6d", v / max) : mix("#1b1438", "#3ea1ff", -v / max)),
       legend: "빨강 ▲ = 평균적으로 오른 시간, 파랑 ▼ = 내린 시간 (진할수록 큼)" },
     up: { val: (c) => c.all.up - base.up, color: (v, max) => (v >= 0 ? mix("#1b1438", "#ff4d6d", v / max) : mix("#1b1438", "#3ea1ff", -v / max)),
       legend: "빨강 = 평소보다 오른 비율이 높은 시간, 파랑 = 낮은 시간" },
   };
+
+  // ── 요일별 24시간 막대그래프(휴대폰에서 먼저 보는 그림)
+  let barDay = nowW;
+  const dayBox = $("ct-days");
+  W.forEach((d, i) => {
+    const b = el("button", "", d);
+    b.type = "button";
+    b.dataset.w = i;
+    b.addEventListener("click", () => { barDay = i; drawBars(); });
+    dayBox.append(b);
+  });
+  function drawBars() {
+    [...dayBox.children].forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.w === barDay)));
+    const cs = Array.from({ length: 24 }, (_, h) => cell(barDay, h));
+    const rs = cs.map((c) => c.all.swing / base.swing);
+    const peak = rs.indexOf(Math.max(...rs)), low = rs.indexOf(Math.min(...rs));
+    const isToday = barDay === nowW;
+    $("ct-day-title").textContent = `${W[barDay]}요일${isToday ? "(오늘)" : ""} 24시간 출렁임`;
+    $("ct-day-say").textContent = `${W[barDay]}요일에 가장 출렁이는 때는 ${hh(peak)}(평소의 ${rs[peak].toFixed(2)}배), 가장 조용한 때는 ${hh(low)}(${rs[low].toFixed(2)}배).` +
+      (isToday ? ` 지금 ${hh(nowH)}은 ${rs[nowH].toFixed(2)}배.` : "");
+    const Wd = 360, H = 220, L = 40, R = 354, T = 26, B = 186;
+    const top = Math.max(1.75, Math.ceil(Math.max(...rs) * 4) / 4);
+    const y = (v) => B - (v / top) * (B - T);
+    const slot = (R - L) / 24, bw = slot * 0.74;
+    const tx = (x, yy, s, fill, size = 12, anchor = "middle", weight = 400) =>
+      `<text x="${x}" y="${yy}" fill="${fill}" font-size="${size}" font-weight="${weight}" text-anchor="${anchor}">${s}</text>`;
+    let s = "";
+    [0.5, 1, 1.5].filter((v) => v <= top).forEach((v) => {
+      s += `<line x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 1 ? "#f3eeff" : "#302449"}" stroke-width="${v === 1 ? 1.5 : 1}" ${v === 1 ? 'stroke-dasharray="4 3"' : ""}/>`;
+      s += tx(L - 6, y(v) + 4, `${v}배`, v === 1 ? "#f3eeff" : "#bfb5ea", 12, "end", v === 1 ? 700 : 400);
+    });
+    cs.forEach((c, h) => {
+      const x = L + h * slot + (slot - bw) / 2;
+      const now = isToday && h === nowH;
+      s += `<rect class="ct-bar" data-h="${h}" x="${x.toFixed(1)}" y="${y(rs[h]).toFixed(1)}" width="${bw.toFixed(1)}" height="${(B - y(rs[h])).toFixed(1)}" fill="${binOf(rs[h]).color}"${now ? ' stroke="#f3eeff" stroke-width="2"' : ""}><title>${hh(h)} · 평소의 ${rs[h].toFixed(2)}배</title></rect>`;
+      if (h % 3 === 0) s += tx(L + h * slot + slot / 2, B + 16, String(h), "#bfb5ea", 12);
+      if (now) s += tx(L + h * slot + slot / 2, y(rs[h]) - 18, "지금", "#f3eeff", 12, "middle", 700);
+    });
+    const px = L + peak * slot + slot / 2;
+    s += tx(Math.min(R - 22, Math.max(L + 22, px)), y(rs[peak]) - 6, `${rs[peak].toFixed(2)}배`, "#ffd23f", 12, "middle", 700);
+    s += tx(R, H - 4, "시(한국)", "#bfb5ea", 11, "end");
+    const fig = $("ct-bars");
+    fig.innerHTML = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="${W[barDay]}요일 시간별 출렁임 막대그래프. ${$("ct-day-say").textContent}">${s}</svg>`;
+    fig.querySelectorAll(".ct-bar").forEach((r) => r.addEventListener("click", () => {
+      daySel.value = barDay; hourSel.value = r.dataset.h; followNow = false; showDetail();
+    }));
+    let cap = fig.querySelector("figcaption");
+    if (!cap) { cap = el("figcaption"); fig.append(cap); }
+    cap.textContent = "막대 높이 = 평소(점선 1배) 대비 출렁임 · 막대를 누르면 아래에 자세한 값";
+  }
 
   const grid = $("ct-grid");
   let metric = "swing";
@@ -68,7 +127,13 @@
         grid.append(b);
       }
     }
-    $("ct-legend").textContent = s.legend;
+    const lg = $("ct-legend");
+    lg.textContent = s.legend;
+    if (metric === "swing") {
+      const row = el("span", "ct-bins");
+      BINS.forEach((b) => { const k = el("span", "ct-bin", b.label); const sw = el("i"); sw.style.background = b.color; k.prepend(sw); row.append(k); });
+      lg.append(row);
+    }
   }
 
   grid.addEventListener("click", (e) => {
@@ -139,9 +204,13 @@
   head.textContent = `가장 많이 출렁이는 시간은 ${label(top)}, 평소의 ${(top.all.swing / base.swing).toFixed(1)}배. 가장 조용한 시간은 ${label(bySwing[bySwing.length - 1])}.`;
   $("ct-range-tag").textContent = `${D.range.first.slice(0, 4)}–${D.range.last.slice(0, 4)} · ${D.range.hours.toLocaleString("ko-KR")}시간`;
   showDetail();
+  drawBars();
 
   setInterval(() => {
+    const prevDay = nowW;
     if (!readNow()) return;
+    if (barDay === prevDay) barDay = nowW;
+    drawBars();
     if (followNow) { daySel.value = nowW; hourSel.value = nowH; }
     showDetail();
   }, 60000);

@@ -1,0 +1,29 @@
+/* 공용 차트 꾸밈: 한 줄 해석, 기간 버튼, 최신 값 범례 */
+.ch-say {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-left: var(--px) solid var(--coin);
+  background: rgba(255, 210, 63, .08);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--on-carpet);
+}
+.ch-say-light { background: #fff6cc; border-left-color: #e09a1a; color: var(--ink); }
+.ch-range { display: flex; gap: 6px; }
+.ch-range button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 2px solid var(--on-carpet-soft);
+  background: transparent;
+  color: var(--on-carpet);
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  cursor: pointer;
+}
+.ch-range button[aria-pressed="true"] { background: var(--coin); border-color: var(--coin); color: var(--ink); }
+.lc-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 6px; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--on-carpet); }
+.lc-legend-light { color: var(--ink); }
+.lc-chip { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.lc-chip i { display: inline-block; width: 22px; height: 4px; }
+svg[tabindex]:focus-visible { outline: var(--px) solid var(--coin); outline-offset: 2px; }

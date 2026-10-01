@@ -51,33 +51,66 @@
   };
   const classify = (r, band) => (r > band ? "up" : r < -band ? "down" : "flat");
 
-  // ── 차트: 세로 눈금은 보이는 60일로만 정한다(미래 캔들로 정하면 정답이 새어 나간다)
-  function drawChart(fig, cs, shown, reveal) {
-    const W = 360, PH = 150, VH = 36, H = PH + VH + 6, n = shown + (reveal ? R.horizon : 0);
-    const slot = W / (shown + R.horizon);
+  // ── 차트: 왼쪽은 60일(+공개 뒤 5일), 오른쪽은 '5일 뒤 구역 확대' 칸.
+  //    세로 눈금은 보이는 60일로만 정한다(미래 캔들로 정하면 정답이 새어 나간다).
+  function drawChart(fig, cs, shown, reveal, band) {
+    const W = 360, H = 250, PW = 252, top = 14, VH = 30, bottom = H - VH - 22;
+    const n = shown + (reveal ? R.horizon : 0);
+    const slot = PW / (shown + R.horizon);
     const scaleSet = cs.slice(0, reveal ? n : shown);
     const hi = Math.max(...scaleSet.map((x) => x.h)), lo = Math.min(...scaleSet.map((x) => x.l));
-    const y = (p) => 4 + (hi - p) / (hi - lo || 1) * (PH - 8);
+    const y = (p) => top + (hi - p) / (hi - lo || 1) * (bottom - top);
     const vmax = Math.max(...cs.slice(0, shown).map((x) => x.v));
+    const t = (x, yy, s, fill, size = 12, anchor = "middle", weight = 400) =>
+      `<text x="${x}" y="${yy}" fill="${fill}" font-size="${size}" font-weight="${weight}" text-anchor="${anchor}" font-family="Galmuri11, monospace">${s}</text>`;
     let s = `<rect width="${W}" height="${H}" fill="#0f0b24"/>`;
-    s += `<rect x="${shown * slot}" y="0" width="${R.horizon * slot}" height="${H}" fill="#1b1438"/>`;
-    s += `<rect x="${shown * slot - 1}" y="0" width="1" height="${H}" fill="#ffd23f" opacity=".8"/>`;
+    // 가려진(또는 공개된) 5일 자리
+    s += `<rect x="${shown * slot}" y="0" width="${R.horizon * slot}" height="${H - 18}" fill="#1b1438"/>`;
+    if (!reveal) s += t(shown * slot + (R.horizon * slot) / 2, (top + bottom) / 2, "?", "#ffd23f", 18, "middle", 700);
     for (let i = 0; i < n; i++) {
-      const x = cs[i], up = x.c >= x.o, col = up ? "#ff4d6d" : "#3ea1ff";
-      const cx = i * slot + slot / 2, bw = Math.max(1.5, slot * 0.6);
-      const top = y(Math.max(x.o, x.c)), bot = y(Math.min(x.o, x.c));
-      const fade = i >= shown ? ' opacity=".85"' : "";
-      s += `<rect x="${cx - 0.5}" y="${y(x.h)}" width="1" height="${Math.max(1, y(x.l) - y(x.h))}" fill="${col}"${fade}/>`;
-      s += `<rect x="${cx - bw / 2}" y="${top}" width="${bw}" height="${Math.max(1, bot - top)}" fill="${col}"${fade}/>`;
+      const x = cs[i], col = x.c >= x.o ? "#ff4d6d" : "#3ea1ff";
+      const cx = i * slot + slot / 2, bw = Math.max(1.5, slot * 0.64);
+      const a = y(Math.max(x.o, x.c)), b = y(Math.min(x.o, x.c));
+      s += `<rect x="${(cx - 0.5).toFixed(2)}" y="${y(x.h).toFixed(1)}" width="1" height="${Math.max(1, y(x.l) - y(x.h)).toFixed(1)}" fill="${col}"/>`;
+      s += `<rect x="${(cx - bw / 2).toFixed(2)}" y="${a.toFixed(1)}" width="${bw.toFixed(2)}" height="${Math.max(1, b - a).toFixed(1)}" fill="${col}"/>`;
       const vh = Math.max(1, Math.min(VH, (x.v / vmax) * VH));
-      s += `<rect x="${cx - bw / 2}" y="${H - vh}" width="${bw}" height="${vh}" fill="#bfb5ea" opacity="${i >= shown ? ".35" : ".55"}"/>`;
+      s += `<rect x="${(cx - bw / 2).toFixed(2)}" y="${H - 18 - vh}" width="${bw.toFixed(2)}" height="${vh}" fill="#bfb5ea" opacity="${i >= shown ? ".35" : ".5"}"/>`;
     }
-    const first = cs[0].c, last = cs[shown - 1].c;
+    const c0 = cs[shown - 1].c, yc = y(c0);
+    s += `<rect x="0" y="${yc.toFixed(1)}" width="${PW}" height="1" fill="#ffd23f" opacity=".7"/>`;
+    s += `<rect x="${shown * slot - 1}" y="0" width="2" height="${H - 18}" fill="#ffd23f"/>`;
+    s += t(4, yc < top + 18 ? yc + 15 : yc - 5, "마지막 종가", "#ffd23f", 11, "start", 700);
+    s += t(shown * slot / 2, H - 4, `${shown}일 · 아래 막대는 거래량`, "#bfb5ea", 11);
+    s += t(shown * slot + (R.horizon * slot) / 2, H - 4, "5일", "#bfb5ea", 11);
+
+    // 확대 칸: ±3배 기준 폭을 같은 높이 세 칸으로
+    if (band) {
+      const zx = PW + 14, zw = W - zx - 2, zt = top + 14, zb = bottom, zh = zb - zt, third = zh / 3, zc = zt + zh / 2;
+      s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${third}" fill="#ff4d6d" opacity=".28"/>`;
+      s += `<rect x="${zx}" y="${zt + third}" width="${zw}" height="${third}" fill="#bfb5ea" opacity=".18"/>`;
+      s += `<rect x="${zx}" y="${zt + 2 * third}" width="${zw}" height="${third}" fill="#3ea1ff" opacity=".28"/>`;
+      s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${zh}" fill="none" stroke="#ffd23f" stroke-width="2"/>`;
+      s += `<path d="M${PW} ${yc.toFixed(1)} L${zx} ${zc.toFixed(1)}" stroke="#ffd23f" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>`;
+      const upP = ((Math.exp(band) - 1) * 100).toFixed(1), dnP = ((1 - Math.exp(-band)) * 100).toFixed(1), mid = zx + zw / 2;
+      s += t(mid, zt - 4, "5일 뒤", "#ffd23f", 11, "middle", 700);
+      s += t(mid, zt + third / 2 + 1, "▲ 크게", "#ff8fa3", 12, "middle", 700) + t(mid, zt + third / 2 + 15, `+${upP}%↑`, "#f3eeff", 10);
+      s += t(mid, zc + 4, "━ 횡보", "#f3eeff", 12, "middle", 700);
+      s += t(mid, zt + 2.5 * third + 1, "▼ 크게", "#8cc6ff", 12, "middle", 700) + t(mid, zt + 2.5 * third + 15, `−${dnP}%↓`, "#f3eeff", 10);
+      if (reveal) {
+        // 실제로 끝난 곳: 확대 칸 범위(±3배)를 넘으면 끝에 붙이고 화살표
+        const r = Math.log(cs[shown - 1 + R.horizon].c / c0);
+        const k = Math.max(-1, Math.min(1, r / (3 * band)));
+        const ym = zc - k * (zh / 2);
+        s += `<rect x="${zx - 6}" y="${(ym - 2).toFixed(1)}" width="18" height="4" fill="#f3eeff"/>`;
+        s += `<polygon points="${zx + 12},${ym - 6} ${zx + 20},${ym} ${zx + 12},${ym + 6}" fill="#f3eeff"/>`;
+        if (Math.abs(r) > 3 * band) s += t(zx + 4, r > 0 ? ym + 16 : ym - 8, r > 0 ? "↑ 더" : "↓ 더", "#f3eeff", 10, "start", 700);
+      }
+    }
+    const first = cs[0].c, last = c0;
     const summary = `최근 ${shown}일 일봉 차트. 처음 대비 마지막 종가 ${((last / first - 1) * 100).toFixed(1)}%, 마지막 5일 ${((last / cs[shown - 6].c - 1) * 100).toFixed(1)}%.` +
-      (reveal ? ` 노란 선 오른쪽은 공개된 5일.` : " 노란 선 오른쪽 5일은 가려져 있음.");
+      (reveal ? " 노란 선 오른쪽은 공개된 5일, 확대 칸 왼쪽의 흰 화살표가 실제로 끝난 위치." : " 오른쪽 확대 칸은 5일 뒤 결과 구역.");
     fig.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${summary}">${s}</svg>`;
-    const cap = el("figcaption", "", reveal ? "노란 선 오른쪽 = 공개된 5일" : "노란 선 오른쪽 5일이 문제입니다 · 아래 막대는 거래량");
-    fig.append(cap);
+    fig.append(el("figcaption", "", reveal ? "흰 화살표 = 5일 뒤 실제로 끝난 곳 · 노란 선 오른쪽 = 공개된 5일" : "노란 선 = 마지막 종가 · 오른쪽 칸 = 5일 뒤 종가가 떨어질 구역"));
   }
 
   // ── 상황 힌트
@@ -178,7 +211,7 @@
     const solved = score.n + 1;
     roundEl.textContent = `${solved}번째 문제 · 어떤 코인인지, 언제인지는 정답 뒤에 공개`;
     renderTags($("bc-tags"), sit, () => { if (current) current.hint = true; });
-    drawChart($("bc-chart"), cs, R.window, false);
+    drawChart($("bc-chart"), cs, R.window, false, band);
     const b = ((Math.exp(band) - 1) * 100).toFixed(1);
     $("bc-question").textContent = `5일 뒤 종가는? 이 차트의 평소 변동 폭으로 정한 기준 ±${b}% — 넘게 오르면 크게 오름, 넘게 내리면 크게 내림, 그 사이는 횡보`;
     choices.forEach((btn) => { btn.disabled = false; });
@@ -203,7 +236,7 @@
     store.set("bc-seen", seen.slice(-5000));
     renderScore();
 
-    drawChart($("bc-chart"), q.cs, R.window, true);
+    drawChart($("bc-chart"), q.cs, R.window, true, q.band);
     const box = $("bc-result");
     box.textContent = "";
     box.append(el("p", ok ? "bc-ok" : "bc-miss", ok ? "맞았어요!" : `아쉬워요. 정답은 ${LABEL[q.answer]}`));
@@ -248,8 +281,8 @@
     }
     if (cs.length < R.window || cs[R.window - 1].t !== t.day * DAY) { status.textContent = "오늘 차트 자료가 아직 준비되지 않았습니다."; return; }
     renderTags(tags, t.situations, () => {});
-    drawChart(fig, cs, R.window, false);
     const band = bandAt(cs, R.window - 1);
+    drawChart(fig, cs, R.window, false, band);
     q.textContent = `${dateOf(t.day + R.horizon)} 종가는? 기준 ±${((Math.exp(band) - 1) * 100).toFixed(1)}%`;
     const mine = store.get("bc-today", []);
     const already = mine.find((g) => g.day === t.day);

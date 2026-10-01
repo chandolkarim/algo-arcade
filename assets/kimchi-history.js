@@ -26,20 +26,38 @@
   const start = end - SPAN * HOUR;
   const week = points.filter((p) => new Date(p.t).getTime() >= start);
   const shown = week.length ? week : points.slice(-1);
-  const W = 336, H = 96, mid = H / 2, slot = W / SPAN;
+  const W = 360, H = 170, L = 46, R = 354, T = 12, B = 140, mid = (T + B) / 2, slot = (R - L) / SPAN;
   const max = Math.max(0.5, ...shown.map((p) => Math.abs(p.kp)));
-  let bars = `<rect x="0" y="${mid}" width="${W}" height="1" fill="currentColor" opacity=".35"/>`;
-  for (let d = 1; d < 7; d++) bars += `<rect x="${(d * 24 * slot).toFixed(2)}" y="0" width="1" height="${H}" fill="currentColor" opacity=".12"/>`;
-  shown.forEach((p) => {
-    const x = Math.max(0, Math.min(W - slot, ((new Date(p.t).getTime() - start) / HOUR) * slot));
-    const h = Math.max(1, Math.round((Math.abs(p.kp) / max) * (mid - 4)));
-    const y = p.kp >= 0 ? mid - h : mid + 1;
-    bars += `<rect x="${x.toFixed(2)}" y="${y}" width="${Math.max(1, slot).toFixed(2)}" height="${h}" fill="${p.kp >= 0 ? "#c8163f" : "#1360c4"}"/>`;
+  const yv = (v) => mid - (v / max) * (mid - T);
+  const txt = (x, y, s, anchor = "end", fill = "currentColor", weight = 400) =>
+    `<text x="${x}" y="${y}" font-size="12" fill="${fill}" text-anchor="${anchor}" font-weight="${weight}">${s}</text>`;
+  let bars = "";
+  // 세로 눈금: +max · 0 · −max
+  [[max, `+${max.toFixed(1)}%`], [0, "0%"], [-max, `−${max.toFixed(1)}%`]].forEach(([v, s]) => {
+    bars += `<rect x="${L}" y="${yv(v)}" width="${R - L}" height="1" fill="currentColor" opacity="${v === 0 ? 0.6 : 0.18}"/>`;
+    bars += txt(L - 6, yv(v) + 4, s);
   });
+  // 하루 경계와 날짜
+  for (let d = 0; d <= 7; d++) {
+    const x = L + d * 24 * slot;
+    if (d > 0 && d < 7) bars += `<rect x="${x.toFixed(2)}" y="${T}" width="1" height="${B - T}" fill="currentColor" opacity=".12"/>`;
+    if (d < 7) {
+      const day = new Date(start + (d * 24 + 12) * HOUR).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "numeric", day: "numeric" });
+      bars += txt(x + 12 * slot, B + 18, day.replace(/\.\s?/g, "/").replace(/\/$/, ""), "middle");
+    }
+  }
+  shown.forEach((p) => {
+    const x = Math.max(L, Math.min(R - slot, L + ((new Date(p.t).getTime() - start) / HOUR) * slot));
+    const top = Math.min(yv(p.kp), mid), h = Math.max(1.5, Math.abs(yv(p.kp) - mid));
+    bars += `<rect x="${x.toFixed(2)}" y="${top.toFixed(1)}" width="${Math.max(2.5, slot).toFixed(2)}" height="${h.toFixed(1)}" fill="${p.kp >= 0 ? "#c8163f" : "#1360c4"}"/>`;
+  });
+  const lastP = shown[shown.length - 1];
+  const lx = Math.max(L, Math.min(R - slot, L + ((new Date(lastP.t).getTime() - start) / HOUR) * slot));
+  bars += txt(Math.min(R, lx + 4), yv(lastP.kp) + (lastP.kp >= 0 ? -6 : 16), `${lastP.kp >= 0 ? "▲ +" : "▼ −"}${Math.abs(lastP.kp).toFixed(2)}%`, "end", lastP.kp >= 0 ? "#c8163f" : "#1360c4", 700);
   const hours = shown.length;
   const fig = el("figure", "kh-chart");
-  fig.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="최근 7일 김치 프리미엄 막대 그래프. 168시간 중 ${hours}시간에 기록이 있습니다." preserveAspectRatio="none">${bars}</svg>`;
-  fig.append(el("figcaption", "", `최근 7일(가로 = 시각, 세로 점선 = 하루) · 168시간 중 ${hours}시간 기록 · 빈 곳은 예약 실행이 빠진 시간 · 위(빨강 ▲) 김프, 아래(파랑 ▼) 역프 · 세로 끝 ±${max.toFixed(2)}%`));
+  fig.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="최근 7일 김치 프리미엄 막대 그래프. 168시간 중 ${hours}시간에 기록이 있습니다. 마지막 기록 ${lastP.kp.toFixed(2)}%.">${bars}</svg>`;
+  fig.append(el("figcaption", "", `최근 7일(가로 = 시각, 세로 점선 = 하루) · 168시간 중 ${hours}시간 기록 · 빈 곳은 예약 실행이 빠진 시간 · 위(빨강 ▲) 김프, 아래(파랑 ▼) 역프`));
   box.append(fig);
 
   const kps = points.map((p) => p.kp);
