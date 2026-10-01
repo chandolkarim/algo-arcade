@@ -14,6 +14,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/arena.css">
 </head>
 <body>
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -26,6 +27,7 @@
       </a>
       <nav class="site-nav" aria-label="주요 메뉴">
         <ul>
+          <li><a href="#play">한 판</a></li>
           <li><a href="#machines">기계들</a></li>
           <li><a href="#rules">이용 수칙</a></li>
           <li><a href="#about">소개</a></li>
@@ -37,6 +39,7 @@
 
   <div class="led-strip" aria-hidden="true">
     <div class="led-track">
+      <span><span class="on">●</span> 오늘의 한 판 진행 중 · 기계를 이겨 보세요</span>
       <span><span class="on">●</span> TRADING FLOOR 판정 기록 공개</span>
       <span><span class="build">◆</span> REBOUND 25/200 · 일봉 되돌림 연구</span>
       <span><span class="on">●</span> KIMCHI GAUGE 실시간 관측 중</span>
@@ -59,6 +62,60 @@
       </p>
       <p class="hero-verdict">7대를 돌려 본 결론: <strong>방향을 미리 맞히는 규칙은 거의 찾지 못했습니다.</strong>
         대신 언제 크게 움직이는지, 어떻게 하면 덜 잃는지는 보였습니다. <a href="#results">결과 한눈에 ↓</a></p>
+      <div class="coin-slot hero-cta">
+        <a class="btn" href="#play">▶ 오늘의 한 판: 기계랑 붙어 보기</a>
+      </div>
+    </section>
+
+
+    <section class="section wrap ar" id="play" aria-labelledby="play-title">
+      <div class="ar-screen">
+        <p class="ar-eyebrow"><span class="ar-coin" aria-hidden="true">●</span> 오늘의 한 판 <span id="ar-round"></span></p>
+        <h2 class="ar-title" id="play-title">비트코인, 내일 이 시간엔?</h2>
+        <p class="ar-question" id="ar-question">판을 준비하는 중…</p>
+        <figure class="ar-chart" id="ar-chart"></figure>
+        <div class="ar-name">
+          <label for="ar-nick">순위표에 올릴 닉네임 <span>(선택 · 12자 · 개인정보 쓰지 마세요)</span></label>
+          <input id="ar-nick" type="text" maxlength="12" autocomplete="off" spellcheck="false" placeholder="비우면 익명">
+        </div>
+        <div class="ar-choices" role="group" aria-label="내일 오전 9시 종가 예측">
+          <button type="button" class="ar-choice is-up" data-choice="up" disabled>▲ 크게 오름</button>
+          <button type="button" class="ar-choice" data-choice="flat" disabled>━ 횡보</button>
+          <button type="button" class="ar-choice is-down" data-choice="down" disabled>▼ 크게 내림</button>
+        </div>
+        <p class="ar-status" id="ar-status" role="status" aria-live="polite"></p>
+        <div class="ar-after" id="ar-after" hidden>
+          <h3>다른 선수들은 이렇게 골랐어요</h3>
+          <ul class="ar-picks" id="ar-picks"></ul>
+          <p class="ar-crowd" id="ar-crowd"></p>
+        </div>
+      </div>
+
+      <div class="panel px-box ar-board">
+        <h3 class="ar-sub">지난 회차</h3>
+        <div id="ar-last"><p class="empty-note">불러오는 중…</p></div>
+        <h3 class="ar-sub">순위 — 사람 vs 기계</h3>
+        <p class="ar-note" id="ar-board-note"></p>
+        <div class="ar-table-wrap" tabindex="0" role="region" aria-label="순위표">
+          <table class="ar-table">
+            <thead><tr><th>선수</th><th>맞힘</th><th>적중률</th></tr></thead>
+            <tbody id="ar-table"></tbody>
+          </table>
+        </div>
+        <h3 class="ar-sub">연습 경기 — 2017년부터 매일 붙였다면</h3>
+        <ul class="ar-long" id="ar-long"></ul>
+        <details class="ar-rules">
+          <summary>규칙 자세히</summary>
+          <ul>
+            <li>회차는 매일 한국 시간 오전 9시(바이낸스 일봉 마감)에 열리고, 다음 날 오전 9시에 닫히며 바로 결과가 납니다.</li>
+            <li>‘크게’의 기준은 최근 20일 하루 변동 폭의 0.5배입니다. 조용한 날엔 좁고, 요동치는 날엔 넓어집니다.</li>
+            <li>기계의 선택은 내가 고른 뒤에 보여 줍니다. 기계는 모두 그날 마감까지의 자료만 씁니다.</li>
+            <li>한 사람(브라우저)당 회차마다 처음 한 표만 셉니다. 투표 집계와 순위는 사이트가 다시 만들어질 때(몇 시간마다) 바뀝니다.</li>
+            <li>닉네임 순위는 결과가 나온 회차를 <span id="ar-min">3</span>번 이상 맞혀 본 사람만 올라갑니다. 부적절한 이름은 숨깁니다.</li>
+            <li>재미로 하는 예측 게임입니다. 투자 조언이 아닙니다.</li>
+          </ul>
+        </details>
+      </div>
     </section>
 
     <section class="floor wrap" id="machines" aria-labelledby="machines-title">
@@ -198,7 +255,8 @@
           <li>모든 성적은 모의투자 기록입니다. 실제 주문은 나가지 않습니다.</li>
           <li>투자 조언이 아닙니다. 매매 신호를 제공하지 않습니다.</li>
           <li>잘 된 기록만 고르지 않습니다. 틀린 판정도 그대로 남깁니다.</li>
-          <li>실제 기계는 주인만 돌립니다. 방문자는 AI도 주문도 없는 데모 재생과 차트 맞히기 게임만 할 수 있습니다.</li>
+          <li>실제 기계는 주인만 돌립니다. 방문자는 AI도 주문도 없는 데모 재생과 차트 맞히기 게임, 오늘의 한 판만 할 수 있습니다.</li>
+          <li>오늘의 한 판에 낸 예측과 닉네임은 공개 순위에 쓰입니다. 닉네임에 개인정보를 쓰지 마세요. 부적절한 이름은 숨깁니다.</li>
         </ul>
       </div>
     </section>
@@ -261,5 +319,7 @@
   </footer>
 
   <script src="assets/script.js"></script>
+  <script src="data/arena-data.js"></script>
+  <script src="assets/arena.js"></script>
 </body>
 </html>
