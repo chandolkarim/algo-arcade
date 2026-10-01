@@ -1,0 +1,128 @@
+/* CLOCK TOWER — 공통 토큰(style.css)을 그대로 쓴다. */
+
+.machine-title-pink {
+  text-shadow:
+    var(--px) var(--px) 0 var(--pink),
+    calc(var(--px) * 2) calc(var(--px) * 2) 0 var(--ink);
+}
+.ct-headline {
+  max-width: 40em;
+  margin: 20px 0 0;
+  padding: 12px 16px;
+  border: 2px solid var(--coin);
+  font-weight: 600;
+  color: var(--on-carpet);
+}
+.ct-on-carpet { margin-bottom: 12px; }
+
+.ct-screen {
+  padding: clamp(14px, 4vw, 28px);
+  background: var(--screen);
+  color: var(--on-carpet);
+  border: calc(var(--px) * 2) solid var(--ink);
+  box-shadow: 0 0 0 var(--px) var(--pink), calc(var(--px) * 3) calc(var(--px) * 4) 0 var(--px) rgba(0,0,0,.4);
+}
+.ct-metrics { display: flex; flex-wrap: wrap; gap: 8px; }
+.ct-metrics button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 2px solid var(--on-carpet-soft);
+  background: transparent;
+  color: var(--on-carpet);
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  cursor: pointer;
+}
+.ct-metrics button[aria-pressed="true"] { background: var(--coin); color: var(--ink); border-color: var(--coin); }
+.ct-screen :focus-visible { outline-color: var(--coin); }
+.ct-legend, .ct-key { margin: 10px 0 0; font-size: 13px; color: var(--on-carpet-soft); }
+
+.ct-grid-wrap { margin-top: 12px; }
+.ct-grid {
+  display: grid;
+  grid-template-columns: 22px repeat(24, minmax(0, 1fr));
+  gap: 1px;
+}
+.ct-hlabel, .ct-wlabel {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--on-carpet-soft);
+}
+/* 칸이 좁아 두 자리 숫자가 줄바꿈되지 않게 옆 빈 칸으로 넘친다 */
+.ct-hlabel { text-align: left; white-space: nowrap; overflow: visible; }
+.ct-wlabel { display: grid; place-items: center; }
+.ct-cell {
+  position: relative;
+  aspect-ratio: 1 / 1.6;
+  min-height: 16px;
+  cursor: pointer;
+}
+.ct-cell.is-verified::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 4px; height: 4px;
+  transform: translate(-50%, -50%);
+  background: var(--on-carpet);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+.ct-cell.is-now { outline: 2px solid var(--coin); outline-offset: 0; z-index: 1; }
+.ct-cell.is-picked { box-shadow: inset 0 0 0 2px var(--on-carpet); }
+
+.ct-pick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 20px;
+}
+.ct-pick label { font-family: var(--font-pixel); font-size: 14px; }
+.ct-pick select {
+  min-height: 44px;
+  padding: 0 10px;
+  border: 2px solid var(--on-carpet-soft);
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+}
+.ct-detail { margin-top: 14px; }
+.ct-detail-title { margin: 0 0 8px; font-family: var(--font-pixel); color: var(--coin); }
+.ct-detail dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  margin: 0;
+  font-size: 15px;
+}
+.ct-detail dt { color: var(--on-carpet-soft); }
+.ct-detail dd { margin: 0; overflow-wrap: anywhere; }
+.ct-detail .up { color: var(--up); font-weight: 600; }
+.ct-detail .down { color: var(--down); font-weight: 600; }
+.ct-split { margin: 10px 0 0; font-size: 13px; color: var(--on-carpet-soft); }
+
+/* 판정 표시는 시세색을 쓰지 않는다 */
+.ct-chip {
+  display: inline-block;
+  padding: 0 8px;
+  border: 2px solid var(--ink);
+  font-size: 12px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.ct-chip.is-verified { background: var(--mint); }
+.ct-chip.is-maybe_luck { background: var(--coin); }
+.ct-chip.is-none { background: #fff; }
+
+.ct-ranks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 16px 32px;
+  margin-top: 16px;
+}
+.ct-ranks h3, .ct-sub { margin: 0 0 8px; font-family: var(--font-pixel); font-size: 17px; }
+.ct-sub { margin-top: 28px; }
+.ct-ranks ol { margin: 0; padding-left: 22px; font-size: 15px; }
+.ct-ranks li + li { margin-top: 6px; }
+.ct-limits { margin: 0; padding-left: 20px; font-size: 15px; }
+.ct-limits li + li { margin-top: 6px; }

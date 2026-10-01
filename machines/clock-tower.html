@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLOCK TOWER · 알고리즘 오락실</title>
+  <meta name="description" content="비트코인은 한국 시간 몇 시, 무슨 요일에 가장 많이 움직일까? 9년치 1시간봉으로 그린 시간대 지도.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/clock-tower.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="../index.html">
+        <span class="logo-coin" data-scene="coin"></span>
+        알고리즘 오락실
+      </a>
+      <nav class="site-nav" aria-label="이 기계 안내">
+        <ul>
+          <li><a href="#map">지도</a></li>
+          <li><a href="#rank">순위</a></li>
+          <li><a href="#method">방법</a></li>
+          <li><a href="#contact">문의</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="machine-hero wrap" aria-labelledby="machine-title">
+      <a class="back-link" href="../index.html#machines">◀ 기계들로 돌아가기</a>
+      <h1 class="machine-title machine-title-pink" id="machine-title">CLOCK TOWER</h1>
+      <p class="machine-lead">
+        비트코인은 <strong>한국 시간 몇 시, 무슨 요일에</strong> 가장 많이 움직일까?
+        2017년부터의 1시간봉 약 8만 개를 요일 7 × 시각 24 = 168칸으로 나눠 셌습니다.
+      </p>
+      <ul class="tags" aria-label="기계 상태">
+        <li class="on">● 검증 완료</li>
+        <li>BTC · 1시간봉 · 한국 시간</li>
+        <li id="ct-range-tag">하루 한 번 다시 계산</li>
+      </ul>
+      <p class="ct-headline" id="ct-headline">결과를 불러오는 중…</p>
+    </section>
+
+    <section class="section wrap" id="map" aria-labelledby="map-title">
+      <h2 class="section-title ct-on-carpet" id="map-title">시간대 지도</h2>
+      <div class="ct-screen">
+        <div class="ct-metrics" id="ct-metrics" role="group" aria-label="지도에 보일 값">
+          <button type="button" data-m="swing" aria-pressed="true">출렁임</button>
+          <button type="button" data-m="move" aria-pressed="false">평균 등락</button>
+          <button type="button" data-m="up" aria-pressed="false">오른 비율</button>
+        </div>
+        <p class="ct-legend" id="ct-legend"></p>
+        <div class="ct-grid-wrap">
+          <div class="ct-grid" id="ct-grid" role="img" aria-label="요일×시각 지도. 아래 선택 상자로 칸마다 값을 읽을 수 있습니다."></div>
+        </div>
+        <p class="ct-key">노란 테두리 = 지금(한국 시간) · 가운데 점 = 두 구간 모두 같은 쪽으로 다른 칸(검증됨)</p>
+
+        <div class="ct-pick">
+          <label for="ct-day">요일</label>
+          <select id="ct-day"></select>
+          <label for="ct-hour">시각</label>
+          <select id="ct-hour"></select>
+        </div>
+        <div class="ct-detail" id="ct-detail" role="status" aria-live="polite"></div>
+      </div>
+      <noscript><p class="empty-note">지도는 JavaScript가 필요합니다. <a href="../data/clock.json">계산 결과 JSON 보기</a></p></noscript>
+    </section>
+
+    <section class="section wrap" id="rank" aria-labelledby="rank-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="rank-title">순위</h2>
+        <div class="ct-ranks">
+          <div>
+            <h3>가장 출렁이는 시간</h3>
+            <ol id="ct-top"></ol>
+          </div>
+          <div>
+            <h3>가장 조용한 시간</h3>
+            <ol id="ct-bottom"></ol>
+          </div>
+        </div>
+        <h3 class="ct-sub">그럼 방향은?</h3>
+        <p id="ct-direction"></p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="method" aria-labelledby="method-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="method-title">방법</h2>
+        <p>기준은 <strong>결과를 계산하기 전(2026-10-01)</strong>에 파일로 고정했습니다.</p>
+        <div class="facts">
+          <div class="fact">
+            <h3>세 가지 값</h3>
+            <p>칸마다 그 시간 1시간봉의 출렁임(|등락| 평균), 평균 등락, 오른 비율을 셉니다. 바이낸스 BTCUSDT 1시간봉 시가·종가로 계산합니다.</p>
+          </div>
+          <div class="fact">
+            <h3>평소와 비교</h3>
+            <p>“평소”는 같은 구간의 모든 시간 평균입니다. 칸 값이 평소와 다른지 정규 근사 검정으로 봅니다(p &lt; 0.05).</p>
+          </div>
+          <div class="fact">
+            <h3>두 구간으로 확인</h3>
+            <p>2022년까지(설계)와 2023년 이후(검증)를 따로 셉니다. 두 구간 모두 같은 쪽으로 달라야 “검증됨”입니다.</p>
+          </div>
+          <div class="fact">
+            <h3>한국 시간 기준</h3>
+            <p>봉 시작 시각을 한국 시간으로 바꿔 요일과 시각을 정합니다. 미국 주식시장 정규장 개장은 한국 시간 22:30(미국 서머타임) 또는 23:30입니다.</p>
+          </div>
+        </div>
+        <h3 class="ct-sub">한계</h3>
+        <ul class="ct-limits">
+          <li>168칸 × 3가지 값을 세면 몇 개는 우연히 뚜렷해 보입니다. 두 구간 확인으로 줄였지만, 방향(등락·오른 비율)의 “검증됨”은 특히 조심해서 봐야 합니다.</li>
+          <li>미국 서머타임 때문에 같은 사건이 1시간씩 다른 칸에 나뉘어 들어갑니다.</li>
+          <li>바이낸스 한 거래소의 가격입니다. 출렁임이 크다는 건 위험도 크다는 뜻이며, 매매 신호가 아닙니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="contact-title">이 기계에 대해 묻기</h2>
+        <p>계산 방법이 궁금하면 메일 주세요.</p>
+        <div class="coin-slot">
+          <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=CLOCK%20TOWER%20문의">메일 보내기</a>
+          <a class="btn btn-ghost" href="../index.html#machines">다른 기계 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>시세 출처: 바이낸스 공개 1시간봉. 과거 기록을 센 결과이며 투자 조언이 아닙니다.</p>
+      <p>픽셀 글꼴: 갈무리(Galmuri, SIL Open Font License 1.1)</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+  <script src="../data/clock-data.js"></script>
+  <script src="../assets/clock-tower.js"></script>
+</body>
+</html>
