@@ -13,7 +13,7 @@
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/quiz.css">
   <link rel="stylesheet" href="../assets/clock-tower.css">
 </head>
 <body>
@@ -50,6 +50,14 @@
         <li id="ct-range-tag">하루 한 번 다시 계산</li>
       </ul>
       <p class="ct-headline" id="ct-headline">결과를 불러오는 중…</p>
+    </section>
+
+    <section class="section wrap qz" data-quiz="clock" aria-labelledby="quiz-title">
+      <div class="qz-box panel px-box">
+        <p class="qz-eyebrow">먼저 맞혀 보기 · 결과를 보기 전에 직감부터</p>
+        <h2 class="qz-title" id="quiz-title">지금 이 시간, 출렁일까?</h2>
+        <div class="qz-body"><p>이 문제는 JavaScript가 필요합니다. 아래 결과는 그대로 볼 수 있어요.</p></div>
+      </div>
     </section>
 
     <section class="section wrap" id="map" aria-labelledby="map-title">
@@ -149,5 +157,6 @@
   <script src="../assets/script.js"></script>
   <script src="../data/clock-data.js"></script>
   <script src="../assets/clock-tower.js"></script>
+  <script src="../assets/quiz.js"></script>
 </body>
 </html>

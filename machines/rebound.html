@@ -13,7 +13,7 @@
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/quiz.css">
   <link rel="stylesheet" href="../assets/rebound.css">
 </head>
 <body class="rebound-page">
@@ -34,6 +34,14 @@
       <p class="rb-intro">200일선은 방향을, 25일선은 진입 위치를 정합니다.<br>코인과 주식의 일봉을 같은 규칙으로 관찰하는 모의투자 실험입니다.</p>
       <ul class="tags" aria-label="기계 상태"><li>실제 일봉으로 계산</li><li>백테스트 + 모의 기록</li><li>실제 주문 없음</li></ul>
       <p class="rb-credit">아이디어 출처 · 일본 개인투자자 <a href="#origin">BNF의 25일선 괴리율 매매</a>에서 착안</p>
+    </section>
+
+    <section class="section wrap qz" data-quiz="rebound" aria-labelledby="quiz-title">
+      <div class="qz-box panel px-box">
+        <p class="qz-eyebrow">먼저 맞혀 보기 · 결과를 보기 전에 직감부터</p>
+        <h2 class="qz-title" id="quiz-title">이 거래, 벌었을까?</h2>
+        <div class="qz-body"><p>이 문제는 JavaScript가 필요합니다. 아래 결과는 그대로 볼 수 있어요.</p></div>
+      </div>
     </section>
 
     <section class="section wrap" id="monitor" aria-labelledby="monitor-title">
@@ -147,5 +155,6 @@
     </div>
   </footer>
   <script src="../assets/script.js"></script><script src="../data/rebound-data.js"></script><script src="../assets/rebound.js"></script>
+  <script src="../assets/quiz.js"></script>
 </body>
 </html>

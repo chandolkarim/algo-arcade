@@ -82,6 +82,9 @@
       el.tether.dataset.dir = t.dir;
 
       lastOk = new Date();
+      // 같은 페이지의 '맞혀 보기'가 실시간 값을 쓸 수 있게 알린다
+      window.KIMCHI_LIVE = { premium, at: lastOk };
+      document.dispatchEvent(new CustomEvent("kimchi:update", { detail: window.KIMCHI_LIVE }));
       const fxDate = fx.updated.toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" });
       setStatus(`마지막 갱신 ${kst(lastOk)} (한국 시각) · 30초마다 갱신 · 환율 기준일 ${fxDate}`);
     } catch (err) {
