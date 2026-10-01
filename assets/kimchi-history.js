@@ -19,21 +19,27 @@
     return;
   }
 
-  // 최근 7일 막대 그래프: 0% 기준선 위는 김프, 아래는 역프
-  const week = points.filter((p) => new Date(p.t) >= new Date(Date.now() - 7 * 86400000));
+  // 최근 7일 막대 그래프: 가로축은 실제 시각(1칸 = 1시간). 기록이 빠진 시간은 비워 둔다.
+  // 0% 기준선 위는 김프, 아래는 역프
+  const HOUR = 3600000, SPAN = 7 * 24;
+  const end = Math.max(Date.now(), new Date(points[points.length - 1].t).getTime());
+  const start = end - SPAN * HOUR;
+  const week = points.filter((p) => new Date(p.t).getTime() >= start);
   const shown = week.length ? week : points.slice(-1);
-  const W = 336, H = 96, mid = H / 2;
+  const W = 336, H = 96, mid = H / 2, slot = W / SPAN;
   const max = Math.max(0.5, ...shown.map((p) => Math.abs(p.kp)));
-  const bw = Math.max(1, Math.floor(W / Math.max(shown.length, 24)));
   let bars = `<rect x="0" y="${mid}" width="${W}" height="1" fill="currentColor" opacity=".35"/>`;
-  shown.forEach((p, i) => {
+  for (let d = 1; d < 7; d++) bars += `<rect x="${(d * 24 * slot).toFixed(2)}" y="0" width="1" height="${H}" fill="currentColor" opacity=".12"/>`;
+  shown.forEach((p) => {
+    const x = Math.max(0, Math.min(W - slot, ((new Date(p.t).getTime() - start) / HOUR) * slot));
     const h = Math.max(1, Math.round((Math.abs(p.kp) / max) * (mid - 4)));
     const y = p.kp >= 0 ? mid - h : mid + 1;
-    bars += `<rect x="${i * bw}" y="${y}" width="${Math.max(1, bw - 1)}" height="${h}" fill="${p.kp >= 0 ? "#c8163f" : "#1360c4"}"/>`;
+    bars += `<rect x="${x.toFixed(2)}" y="${y}" width="${Math.max(1, slot).toFixed(2)}" height="${h}" fill="${p.kp >= 0 ? "#c8163f" : "#1360c4"}"/>`;
   });
+  const hours = shown.length;
   const fig = el("figure", "kh-chart");
-  fig.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="최근 7일 1시간 간격 김치 프리미엄 막대 그래프, ${shown.length}개 기록" preserveAspectRatio="none">${bars}</svg>`;
-  fig.append(el("figcaption", "", `최근 7일 · ${shown.length}개 기록 · 위(빨강 ▲)는 김프, 아래(파랑 ▼)는 역프 · 세로 끝 ±${max.toFixed(2)}%`));
+  fig.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="최근 7일 김치 프리미엄 막대 그래프. 168시간 중 ${hours}시간에 기록이 있습니다." preserveAspectRatio="none">${bars}</svg>`;
+  fig.append(el("figcaption", "", `최근 7일(가로 = 시각, 세로 점선 = 하루) · 168시간 중 ${hours}시간 기록 · 빈 곳은 예약 실행이 빠진 시간 · 위(빨강 ▲) 김프, 아래(파랑 ▼) 역프 · 세로 끝 ±${max.toFixed(2)}%`));
   box.append(fig);
 
   const kps = points.map((p) => p.kp);

@@ -223,10 +223,10 @@
     if (side === "BULL") {
       return turn === 1
         ? {
-          bubble: `${crossLabel(tone.cross)} + MACD ${tone.hist > 0 ? "양수" : "개선"} — 추세는 아직 살아 있다`,
+          bubble: tone.hist > 0 ? `${crossLabel(tone.cross)} + MACD 양수 — 추세는 아직 살아 있다` : `${crossLabel(tone.cross)} — MACD는 음수지만 반등 여지를 본다`,
           argument:
             "애널리스트 리포트에서 상승 근거를 뽑으면 세 가지입니다. " +
-            `첫째 ${crossLabel(tone.cross)} 구조가 유지되고 있고, 둘째 MACD 히스토그램이 ${num(tone.hist, 4)}이며, ` +
+            `첫째 ${crossLabel(tone.cross)} 구조이고, 둘째 MACD 히스토그램이 ${num(tone.hist, 4)}${tone.hist > 0 ? "로 위를 향하며" : "로 아직 아래지만 음수 폭이 줄면 반전 신호가 되고"}, ` +
             `셋째 현재가가 최근 20봉 저점 ${money(t.low20)}에서 충분히 이격돼 있습니다. ` +
             "추세를 부정할 근거가 나오기 전까지 방향은 위쪽으로 봅니다.",
         }
@@ -257,41 +257,53 @@
       };
   }
 
+  // 판정 방향에 맞춰 손절·목표·트리거를 고른다. 매도면 위가 손절, 아래가 목표.
+  function levels(t, action) {
+    const short = action === "SELL";
+    return {
+      short,
+      stop: short ? t.high20 : t.low20,
+      trigger: short ? t.low20 : t.high20,
+      target2: short ? t.rangeLow : t.rangeHigh,
+      triggerText: short ? "저점 이탈" : "고점 돌파",
+    };
+  }
+
   function aceScript(d, tone) {
-    const t = d.tech;
+    const t = d.tech, L = levels(t, tone.action);
     return {
       bubble: `${tone.action} — ${tone.action === "HOLD" ? "트리거 확인 전 관망" : "추세 방향으로 분할 접근"}`,
       action: tone.action,
       confidence: tone.action === "HOLD" ? 56 : 62,
       entry: tone.action === "HOLD"
         ? `최근 20봉 고점 ${money(t.high20)} 돌파 확인 후 (확인 전 진입 금지)`
-        : `현재가 ${money(t.price)} 부근 절반, 나머지는 되돌림 시`,
-      stop: `무효화 ${money(t.low20)} — ATR ${pct(t.atrPercent)} 기준 한 배 밖`,
-      target: `1차 ${money(t.high20)} / 2차 ${money(t.rangeHigh)}`,
+        : `현재가 ${money(t.price)} 부근 절반, 나머지는 ${L.short ? "반등" : "되돌림"} 시`,
+      stop: `무효화 ${money(L.stop)} — ATR ${pct(t.atrPercent)} 기준 한 배 밖`,
+      target: `1차 ${money(L.trigger)} / 2차 ${money(L.target2)}`,
       briefing:
         "애널리스트 4명과 토론 4턴을 종합하면 방향 근거와 되돌림 근거가 팽팽합니다. " +
         `BULL의 ${crossLabel(tone.cross)} 논거는 유효하지만, BEAR가 지적한 MA20 이격 ${pct(t.ma20Distance)}와 무효화 폭 문제가 더 구체적입니다. ` +
-        `특히 손절을 ${money(t.low20)}에 두면 ATR ${pct(t.atrPercent)} 자산에서 정상 변동에도 닿을 수 있다는 지적은 실행 관점에서 무시하기 어렵습니다. ` +
-        "그래서 방향은 유지하되 진입을 트리거 확인 뒤로 미룹니다. " +
-        `${tone.action === "HOLD" ? "지금은 관망이 정직한 답이고, 고점 돌파가 확인되면 그때 방향을 잡습니다." : "분할로 접근하되 첫 진입은 절반만 싣습니다."}`,
+        `특히 손절을 ${money(L.stop)}에 두면 ATR ${pct(t.atrPercent)} 자산에서 정상 변동에도 닿을 수 있다는 지적은 실행 관점에서 무시하기 어렵습니다. ` +
+        `${tone.action === "HOLD" ? "그래서 진입을 트리거 확인 뒤로 미룹니다. 지금은 관망이 정직한 답이고, 고점 돌파가 확인되면 그때 방향을 잡습니다."
+          : `그래서 ${L.short ? "매도" : "매수"} 방향은 유지하되 분할로 접근하고, 첫 진입은 절반만 싣습니다.`}`,
     };
   }
 
   function riskScript(id, d, tone, ace) {
-    const t = d.tech;
+    const t = d.tech, L = levels(t, ace.action);
     return {
       RISKY: {
         bubble: "기회비용도 리스크 — 손절만 지키면 비중을 더 실을 근거는 충분",
         briefing:
           `ACE의 ${ace.action} 판정은 지나치게 방어적입니다. ${crossLabel(tone.cross)} 구조가 유지되는 동안 방향을 포기할 이유가 없습니다. ` +
-          `손절 ${money(t.low20)}이 지켜진다는 전제에서는 계좌 리스크 2% 안에서 비중을 더 실을 수 있습니다. ` +
+          `손절 ${money(L.stop)}이 지켜진다는 전제에서는 계좌 리스크 2% 안에서 비중을 더 실을 수 있습니다. ` +
           "놓친 추세도 손실이라는 점을 계산에 넣어야 합니다. " +
           "다만 무모함을 옹호하는 건 아니고, 지정가 손절이 실제로 걸려 있어야 한다는 조건은 동일합니다.",
       },
       SAFE: {
         bubble: "최악의 시나리오가 계산 안 된 계획 — 비중 축소가 먼저",
         briefing:
-          `ATR가 ${pct(t.atrPercent)}인 자산에서 손절 ${money(t.low20)}까지의 거리는 ${pct(Math.abs((t.low20 - t.price) / t.price) * 100)}입니다. ` +
+          `ATR가 ${pct(t.atrPercent)}인 자산에서 손절 ${money(L.stop)}까지의 거리는 ${pct(Math.abs((L.stop - t.price) / t.price) * 100)}입니다. ` +
           "정상 변동 한 번에 닿을 수 있는 폭이라는 뜻입니다. " +
           `20일 변동성 ${pct(t.volatility20)}를 감안하면 하루에 이 폭이 두 번 왕복해도 이상하지 않습니다. ` +
           "꼬리위험까지 넣으면 계좌 리스크 2% 룰에서 명목 비중은 절반으로 줄여야 계산이 맞습니다. " +
@@ -304,25 +316,25 @@
           "SAFE가 지적한 손절 거리 문제는 사실이고 반드시 반영해야 합니다. " +
           "동시에 RISKY 말대로 트리거를 무한정 기다리는 것도 비용입니다. " +
           "절충안은 이렇습니다. 손절을 무효화 레벨보다 한 단계 밖으로 옮겨 정상 변동을 흡수하고, " +
-          `비중은 산출값의 절반으로 시작하며, 트리거 ${money(t.high20)} 확인 시 나머지를 채웁니다. ` +
+          `비중은 산출값의 절반으로 시작하며, 트리거 ${money(L.trigger)} ${L.triggerText} 확인 시 나머지를 채웁니다. ` +
           "이 조건이 지켜지면 조건부 승인, 하나라도 어기면 기각 의견입니다.",
       },
     }[id];
   }
 
   function pmScript(d, ace) {
-    const t = d.tech;
+    const t = d.tech, L = levels(t, ace.action);
     return {
       bubble: "수정 승인 — 방향은 유지하되 비중과 손절을 조여서 통과",
       decision: "AMEND", action: ace.action, confidence: ace.confidence + 6,
-      entry: `${money(t.high20)} 트리거 확인 후에만 진입 (확인 전 진입 금지)`,
-      stop: `${money(t.low20)}보다 한 단계 밖 — ATR ${pct(t.atrPercent)} 기준 1.5배`,
-      target: `1차 ${money(t.high20)} 유지, 절반 도달 시 분할 익절`,
+      entry: `${money(L.trigger)} ${L.triggerText} 확인 후에만 진입 (확인 전 진입 금지)`,
+      stop: `${money(L.stop)}보다 한 단계 ${L.short ? "위" : "아래"} — ATR ${pct(t.atrPercent)} 기준 1.5배`,
+      target: `1차 ${money(L.trigger)} 유지, 절반 도달 시 분할 익절`,
       briefing:
         "트레이더 계획과 리스크 위원회 3인의 의견을 종합해 수정 승인(AMEND)합니다. " +
         "방향과 논거는 데이터에 부합하므로 기각할 이유가 없습니다. " +
         "다만 원안대로 실행하기에는 보수적 심사자가 지적한 두 가지가 실재합니다. " +
-        `첫째, 손절 ${money(t.low20)}은 ATR ${pct(t.atrPercent)} 대비 여유가 없어 정상 변동에 걸립니다. ` +
+        `첫째, 손절 ${money(L.stop)}은 ATR ${pct(t.atrPercent)} 대비 여유가 없어 정상 변동에 걸립니다. ` +
         "둘째, 진입이 트리거 확인 전이었습니다. " +
         "그래서 세 가지를 수정합니다 — 손절을 한 단계 밖으로 옮기고, 진입을 트리거 확인 이후로 미루고, 비중을 절반으로 시작합니다. " +
         "공격적 심사자의 선진입 주장은 손절 문제가 해소되지 않은 상태에서는 받지 않습니다. " +

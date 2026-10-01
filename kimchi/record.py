@@ -3,6 +3,7 @@
 기록은 저장소에 커밋하지 않는다. 이미 배포된 사이트의 기록 파일을 읽어 와 한 건을 붙이고,
 새 사이트와 함께 다시 배포한다. 그래서 매시간 봇 커밋이 쌓이지 않는다.
 시세를 받지 못하면 기존 기록을 그대로 두고 실패 사실만 남긴다(사이트 배포는 막지 않는다).
+배포된 기록을 읽지 못하면(404 = 아직 배포 전 제외) 멈춘다. 빈 기록으로 배포하면 쌓인 기록이 지워지기 때문이다.
 
 실행: python3 kimchi/record.py [--previous 배포된_기록_URL]
 """
@@ -11,6 +12,8 @@ from pathlib import Path
 import argparse
 import json
 import sys
+import time
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 SITE = Path(__file__).resolve().parent.parent
@@ -50,14 +53,33 @@ def add_point(points, point, now):
 
 # ---------- 읽기·쓰기 ----------
 
-def load_previous(url):
+class PreviousUnavailable(Exception):
+    pass
+
+
+def load_previous(url, fetch=get_json, tries=3, wait=5):
+    """배포된 기록을 이어 받는다. 404(아직 배포 전)일 때만 로컬 파일로 시작한다.
+    그 밖의 실패는 PreviousUnavailable — 빈 기록으로 덮어쓰지 않도록 호출한 쪽이 멈춘다."""
     if url:
-        try:
-            data = get_json(url)
-            print(f"배포된 기록 {len(data.get('points', []))}건을 이어 받음")
-            return data.get("points", [])
-        except Exception as err:
-            print(f"경고: 배포된 기록을 읽지 못함({err}). 로컬 파일을 확인합니다.", file=sys.stderr)
+        # 배포 서버 캐시(최대 10분)를 피하려고 주소 뒤에 시각을 붙인다
+        busted = f"{url}{'&' if '?' in url else '?'}t={int(time.time())}"
+        for attempt in range(tries):
+            try:
+                data = fetch(busted)
+                points = data["points"]
+                print(f"배포된 기록 {len(points)}건을 이어 받음")
+                return points
+            except HTTPError as err:
+                if err.code == 404:
+                    print("배포된 기록이 아직 없음(404). 로컬 파일로 시작합니다.")
+                    break
+                last = err
+            except Exception as err:  # 네트워크 끊김·시간 초과·깨진 파일
+                last = err
+            if attempt < tries - 1:
+                time.sleep(wait * (attempt + 1))
+        else:
+            raise PreviousUnavailable(f"배포된 기록을 {tries}번 모두 읽지 못함({last})")
     if OUT.exists():
         return json.loads(OUT.read_text(encoding="utf-8")).get("points", [])
     return []
@@ -69,7 +91,11 @@ def main():
     args = ap.parse_args()
 
     now = datetime.now(KST)
-    points = load_previous(args.previous)
+    try:
+        points = load_previous(args.previous)
+    except PreviousUnavailable as err:
+        print(f"멈춤: {err}. 이번에는 배포하지 않아 지금 공개된 기록을 그대로 둡니다.", file=sys.stderr)
+        sys.exit(1)
     error = None
     try:
         upbit = {t["market"]: t["trade_price"] for t in get_json(URLS["upbit"])}

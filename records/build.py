@@ -2,6 +2,8 @@
 
 - 데이터 입구: 환경 변수 SHEET_CSV_URL(구글 시트 '웹에 게시' CSV 주소). 없으면 records/records.csv.
 - 잘못된 행이 하나라도 있으면 이유와 행 번호를 출력하고 멈춘다(배포하지 않는다).
+- 시트에 잠깐 접속하지 못한 것은 데이터 잘못이 아니므로 멈추지 않는다. 이미 배포된 기록(--previous)을
+  그대로 다시 쓰고, 그것도 못 읽으면 저장소 CSV로 만든다. 그래야 다른 기계의 갱신까지 막히지 않는다.
 - 코인 기록은 판정 24시간 뒤 바이낸스 현물 가격으로 등락을 계산해 원본 기계와 같은 규칙으로 판정한다.
   주식 기록은 자동 대조하지 않는다.
 - 공개=Y인 행만 내보낸다. 비공개 행은 개수만 남긴다.
@@ -37,6 +39,18 @@ class DataError(Exception):
 
 
 # ---------- 읽기 ----------
+
+def get_json(url, timeout=20):
+    with urlopen(Request(url, headers={"User-Agent": "Mozilla/5.0 AlgoArcade/1.0"}), timeout=timeout) as res:
+        return json.load(res)
+
+
+def write_out(out):
+    text = json.dumps(out, ensure_ascii=False, indent=2, allow_nan=False)
+    (SITE / "data").mkdir(exist_ok=True)
+    (SITE / "data" / "records.json").write_text(text + "\n", encoding="utf-8")
+    (SITE / "data" / "records-data.js").write_text(f"window.RECORDS_DATA = {text};\n", encoding="utf-8")
+
 
 def read_source(csv_arg):
     url = os.environ.get("SHEET_CSV_URL", "").strip()
@@ -125,9 +139,7 @@ def judge(direction, change):
 
 def price_after(symbol, at):
     ms = int((at + HORIZON).timestamp() * 1000)
-    req = Request(BINANCE.format(pair=f"{symbol}USDT", ms=ms), headers={"User-Agent": "Mozilla/5.0 AlgoArcade/1.0"})
-    with urlopen(req, timeout=20) as res:
-        rows = json.load(res)
+    rows = get_json(BINANCE.format(pair=f"{symbol}USDT", ms=ms))
     if not rows:
         raise ValueError("캔들 없음")
     return float(rows[0][1])  # 24시간 뒤 1분봉 시가
@@ -154,9 +166,26 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", help="시트 대신 읽을 CSV 파일")
     ap.add_argument("--offline", action="store_true", help="24시간 뒤 가격을 조회하지 않음")
+    ap.add_argument("--previous", help="배포된 records.json 주소. 시트 접속이 안 될 때 그대로 다시 쓴다")
     args = ap.parse_args()
     try:
-        text, source = read_source(args.csv)
+        try:
+            text, source = read_source(args.csv)
+        except DataError:
+            raise
+        except Exception as err:  # 접속 실패·시간 초과: 데이터 잘못이 아니다
+            print(f"경고: 시트에 접속하지 못함({err}).", file=sys.stderr)
+            if args.previous:
+                try:
+                    prev = get_json(args.previous)
+                    if prev.get("schema") == 1 and prev.get("records"):
+                        write_out(prev)
+                        print(f"배포된 기록({prev.get('generated_at')})을 그대로 씁니다.")
+                        return
+                except Exception as err2:
+                    print(f"경고: 배포된 기록도 읽지 못함({err2}).", file=sys.stderr)
+            text = (ROOT / "records.csv").read_text(encoding="utf-8-sig")
+            source = "저장소 CSV(records/records.csv · 시트 접속 실패로 대신 사용)"
         rows = parse(text)
     except DataError as err:
         print(f"멈춤: {err}", file=sys.stderr)
@@ -182,10 +211,7 @@ def main():
         "summary": summary,
         "records": records,
     }
-    text = json.dumps(out, ensure_ascii=False, indent=2, allow_nan=False)
-    (SITE / "data").mkdir(exist_ok=True)
-    (SITE / "data" / "records.json").write_text(text + "\n", encoding="utf-8")
-    (SITE / "data" / "records-data.js").write_text(f"window.RECORDS_DATA = {text};\n", encoding="utf-8")
+    write_out(out)
     print(f"데이터: {source} · 공개 {len(public)}개 · 비공개 {len(rows) - len(public)}개 · 결과 {summary}")
 
 

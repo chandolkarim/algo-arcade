@@ -100,5 +100,15 @@ class VerdictTest(unittest.TestCase):
         self.assertEqual(build.lean_and_verdict(st, self.base, CFG)[1], "too_few")
 
 
+class ThinTest(unittest.TestCase):
+    def test_same_day_other_coins_count_once(self):
+        ev = [(100, 2, "d", "up"), (100, 0, "d", "up"), (100, 1, "d", "up")]
+        self.assertEqual(build.thin(ev, 5), [(100, 0, "d", "up")])
+
+    def test_overlapping_windows_skipped(self):
+        ev = [(100, 0), (102, 1), (104, 0), (105, 3), (111, 0)]
+        self.assertEqual([e[0] for e in build.thin(ev, 5)], [100, 105, 111])
+
+
 if __name__ == "__main__":
     unittest.main()

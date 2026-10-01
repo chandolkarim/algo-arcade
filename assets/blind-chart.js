@@ -85,7 +85,7 @@
     const all = { n: s.design.n + s.validation.n };
     ["up", "flat", "down"].forEach((k) => { all[k] = s.design[k] + s.validation[k]; });
     const p = el("p", "bc-stat");
-    p.append(`과거 ${all.n}번: `, el("span", "up", `▲ ${pct(all.up / all.n)}`), " · ", `━ ${pct(all.flat / all.n)}`, " · ",
+    p.append(`과거 ${all.n}번(겹치지 않게 셈): `, el("span", "up", `▲ ${pct(all.up / all.n)}`), " · ", `━ ${pct(all.flat / all.n)}`, " · ",
       el("span", "down", `▼ ${pct(all.down / all.n)}`), " ");
     p.append(el("span", `bc-chip is-${s.verdict}`, VERDICT[s.verdict]));
     return p;
@@ -273,10 +273,13 @@
       : "하나를 고르면 저장됩니다. 5일 뒤 다시 들러 주세요.";
   }
 
+  // 결과를 받아 오는 동안 다시 불리면 앞선 호출은 그리기를 멈춘다(같은 날짜가 두 번 붙지 않게)
+  let historyRun = 0;
   async function renderHistory() {
+    const run = ++historyRun;
     const list = $("bc-history");
-    list.textContent = "";
     const mine = store.get("bc-today", []).sort((a, b) => b.day - a.day);
+    const items = [];
     for (const g of mine) {
       const li = el("li", "");
       li.append(el("span", "bc-date", dateOf(g.day)), ` ${COIN_NAME[R.coins[g.coin]]} · 내 답 ${LABEL[g.choice]} · `);
@@ -293,8 +296,10 @@
           li.append(el("span", "bc-chip is-maybe_luck", "결과 확인 실패"));
         }
       }
-      list.append(li);
+      if (run !== historyRun) return;
+      items.push(li);
     }
+    if (run === historyRun) list.replaceChildren(...items);
   }
   renderToday();
   renderHistory();
@@ -303,7 +308,7 @@
   const vc = D.verdict_counts;
   const baseN = D.situations.filter((s) => s.parts.length === 1).length;
   $("bc-table-summary").textContent =
-    `상황 ${baseN}개와 조합 ${D.situations.length - baseN}개(과거 ${R.min_samples}번 이상 나온 것) 중 ` +
+    `상황 ${baseN}개와 조합 ${D.situations.length - baseN}개(겹치지 않게 세어 ${R.min_samples}번 이상 나온 것) 중` +
     `검증됨 ${vc.verified || 0} · 우연일 수 있음 ${vc.maybe_luck || 0} · 치우침 없음 ${vc.no_lean || 0} · 표본 부족 ${vc.too_few || 0}. ` +
     `문제 ${D.pool.length.toLocaleString("ko-KR")}개.`;
   const table = $("bc-table");

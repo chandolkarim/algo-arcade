@@ -138,3 +138,4 @@
 @media (max-width: 400px) {
   .bc-choice { font-size: 13px; }
 }
+.bc-change { margin: 16px 0 0; padding: 10px 12px; border: 2px dashed var(--ink); font-size: 15px; }

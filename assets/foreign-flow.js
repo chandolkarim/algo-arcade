@@ -97,7 +97,9 @@
   const z = data.rules.z_threshold;
   const active = t.z !== null && Math.abs(t.z) >= z ? (t.z > 0 ? "대량 순매수" : "대량 순매도")
     : t.streak === data.rules.streak_days ? `${data.rules.streak_days}일 연속 순매수` : null;
+  const ago = Math.floor((Date.now() - new Date(`${t.date}T15:30:00+09:00`).getTime()) / 86400000);
+  const when = ago <= 1 ? "이날은" : `${ago}일 전인 이날은`;
   today.append(el("p", "ff-reason", active
-    ? `오늘은 “${active}” 신호가 난 날입니다. 다만 위 결과처럼 과거에는 다음 날을 맞히는 힘이 확인되지 않았습니다.`
-    : `오늘은 신호(표준화 값 ±${z} 이상, ${data.rules.streak_days}일 연속 순매수)가 없는 날입니다.`));
+    ? `${when} “${active}” 신호가 난 날입니다. 다만 위 결과처럼 과거에는 다음 날을 맞히는 힘이 확인되지 않았습니다.`
+    : `${when} 신호(표준화 값 ±${z} 이상, ${data.rules.streak_days}일 연속 순매수)가 없는 날입니다.`));
 })();

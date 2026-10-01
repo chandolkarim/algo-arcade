@@ -1,5 +1,6 @@
 """김프 기록 검사. 실행: python3 -m unittest discover -s kimchi -p 'test_*.py' -v"""
 from datetime import datetime, timedelta
+from urllib.error import HTTPError
 import unittest
 
 import record
@@ -38,6 +39,44 @@ class AddPointTest(unittest.TestCase):
         old = [self.pt(self.now - timedelta(hours=1)), self.pt(self.now - timedelta(hours=3))]
         out = record.add_point(old, self.pt(self.now), self.now)
         self.assertEqual(out, sorted(out, key=lambda p: p["t"]))
+
+
+class LoadPreviousTest(unittest.TestCase):
+    """배포된 기록을 못 읽으면 빈 기록으로 덮어쓰지 않아야 한다."""
+
+    def test_reads_deployed_points(self):
+        pts = record.load_previous("https://x/h.json", fetch=lambda u: {"points": [{"t": "a"}]}, wait=0)
+        self.assertEqual(pts, [{"t": "a"}])
+
+    def test_network_error_stops(self):
+        def fail(u):
+            raise OSError("timeout")
+        with self.assertRaises(record.PreviousUnavailable):
+            record.load_previous("https://x/h.json", fetch=fail, wait=0)
+
+    def test_broken_file_stops(self):
+        with self.assertRaises(record.PreviousUnavailable):
+            record.load_previous("https://x/h.json", fetch=lambda u: {"oops": 1}, wait=0)
+
+    def test_retry_then_success(self):
+        calls = []
+        def flaky(u):
+            calls.append(u)
+            if len(calls) < 2:
+                raise OSError("blip")
+            return {"points": []}
+        self.assertEqual(record.load_previous("https://x/h.json", fetch=flaky, wait=0), [])
+        self.assertEqual(len(calls), 2)
+
+    def test_404_starts_fresh(self):
+        def missing(u):
+            raise HTTPError(u, 404, "Not Found", {}, None)
+        self.assertIsInstance(record.load_previous("https://x/h.json", fetch=missing, wait=0), list)
+
+    def test_cache_busting(self):
+        seen = []
+        record.load_previous("https://x/h.json", fetch=lambda u: seen.append(u) or {"points": []}, wait=0)
+        self.assertRegex(seen[0], r"\?t=\d+$")
 
 
 if __name__ == "__main__":

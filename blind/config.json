@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "fixed_at": "2026-10-01",
   "note": "결과를 계산하기 전에 고정한 기준. 바꾸면 version을 올리고 페이지에 바꾼 이유를 적는다.",
   "coins": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT"],
@@ -10,5 +10,9 @@
   "validation_start": "2023-01-01",
   "alpha": 0.05,
   "min_samples": 30,
-  "combo_max": 2
+  "combo_max": 2,
+  "count_rule": "같은 상황은 앞서 센 날로부터 horizon일이 지난 뒤에만 다시 센다(코인이 달라도). 같은 날 여러 코인이면 하나만.",
+  "changes": [
+    {"version": "1.1.0", "date": "2026-10-01", "why": "1.0.0은 같은 날 4개 코인과 겹치는 5일 창을 따로 세어 표본이 부풀고 p값이 작게 나왔다. 기준 숫자는 그대로 두고 세는 방법만 고쳤다."}
+  ]
 }

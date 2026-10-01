@@ -6,6 +6,8 @@
 - 결과: 5일 뒤 로그수익률을 '크게 오름 / 횡보 / 크게 내림'으로 나눈다.
   '크게'의 기준 = band_k × 최근 20일 일간 변동성 × √5 (config.json에 고정).
 - 판정: 2023년 전(설계)과 후(검증)를 따로 세어, 두 구간 모두 같은 쪽으로 치우쳐야 '검증됨'.
+- 통계는 겹치지 않게 센다(1.1.0). 코인들은 같이 움직이고 5일 창이 겹치면 사실상 같은 사건이라,
+  같은 상황은 앞서 센 날로부터 horizon일이 지난 뒤에만 다시 센다(코인이 달라도). 문제 목록은 전부 쓴다.
 
 실행: python3 blind/build.py
 """
@@ -360,6 +362,17 @@ def binom_two_sided(k, n, p):
     return min(1.0, sum(math.exp(x) for x in logs if x <= cut))
 
 
+def thin(events, gap):
+    """(날짜 번호, 코인 번호, …) 목록에서 앞서 고른 날로부터 gap일 이상 지난 것만 남긴다.
+    같은 날 여러 코인이면 코인 번호가 작은 것 하나만 남는다."""
+    kept, last = [], None
+    for e in sorted(events, key=lambda e: (e[0], e[1])):
+        if last is None or e[0] >= last + gap:
+            kept.append(e)
+            last = e[0]
+    return kept
+
+
 def empty():
     return {"n": 0, "up": 0, "flat": 0, "down": 0}
 
@@ -388,7 +401,7 @@ def main():
     ids = [s[0] for s in SITUATIONS]
 
     base = {"design": empty(), "validation": empty()}
-    stats = {}                      # 상황 키 → 구간별 결과 수
+    events = {}                     # 상황 키 → [(날짜 번호, 코인 번호, 구간, 결과)]
     instances = []                  # (코인 번호, 날짜 번호, [상황 id])
     today = []
     first_day = {}
@@ -420,9 +433,15 @@ def main():
             instances.append((ci, S["t"][i] // DAY, hit))
             keys = list(hit) + ["+".join(p) for p in combinations(hit, 2)]
             for key in keys:
-                s = stats.setdefault(key, {"design": empty(), "validation": empty()})
-                s[period]["n"] += 1
-                s[period][res] += 1
+                events.setdefault(key, []).append((S["t"][i] // DAY, ci, period, res))
+
+    stats, raw = {}, {}
+    for key, evs in events.items():
+        s = stats[key] = {"design": empty(), "validation": empty()}
+        raw[key] = len(evs)
+        for _day, _ci, period, res in thin(evs, cfg["horizon"]):
+            s[period]["n"] += 1
+            s[period][res] += 1
 
     meta = {sid: (g, name, desc) for sid, g, name, desc, _f in SITUATIONS}
     kept = []
@@ -438,7 +457,7 @@ def main():
             "group": meta[parts[0]][0] if len(parts) == 1 else "조합",
             "name": " + ".join(meta[p][1] for p in parts),
             "desc": meta[parts[0]][2] if len(parts) == 1 else "두 상황이 같은 날 함께 생겼다.",
-            "design": st["design"], "validation": st["validation"],
+            "design": st["design"], "validation": st["validation"], "n_raw": raw[key],
             "lean": lean, "verdict": verdict,
             "p_design": round(pd, 4) if pd is not None else None,
             "p_validation": round(pv, 4) if pv is not None else None,

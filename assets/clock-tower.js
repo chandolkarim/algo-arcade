@@ -20,9 +20,17 @@
     return v > 0 ? el("span", "up", `▲ +${t}%`) : el("span", "down", `▼ −${t}%`);
   };
 
-  // 지금(한국 시간) 칸
-  const now = new Date(Date.now() + 9 * 3600000);
-  const nowW = (now.getUTCDay() + 6) % 7, nowH = now.getUTCHours();
+  // 지금(한국 시간) 칸. 페이지를 열어 둔 채 정시를 넘기면 1분 안에 옮겨 간다.
+  let nowW, nowH;
+  const readNow = () => {
+    const now = new Date(Date.now() + 9 * 3600000);
+    const w = (now.getUTCDay() + 6) % 7, h = now.getUTCHours();
+    const changed = w !== nowW || h !== nowH;
+    nowW = w; nowH = h;
+    return changed;
+  };
+  readNow();
+  let followNow = true;  // 방문자가 직접 칸을 고르기 전까지는 상세도 '지금'을 따라간다
 
   // 색: 출렁임은 노랑 농도(시세색 아님), 등락·오른 비율은 오름 빨강 / 내림 파랑
   const mix = (a, b, t) => {
@@ -67,6 +75,7 @@
     const t = e.target.closest(".ct-cell");
     if (!t) return;
     daySel.value = t.dataset.w; hourSel.value = t.dataset.h;
+    followNow = false;
     showDetail();
   });
 
@@ -75,7 +84,7 @@
   W.forEach((d, i) => daySel.append(new Option(`${d}요일`, i)));
   for (let h = 0; h < 24; h++) hourSel.append(new Option(`${hh(h)} (${hh(h)}~${hh((h + 1) % 24)})`, h));
   daySel.value = nowW; hourSel.value = nowH;
-  [daySel, hourSel].forEach((s) => s.addEventListener("change", showDetail));
+  [daySel, hourSel].forEach((s) => s.addEventListener("change", () => { followNow = false; showDetail(); }));
 
   function showDetail() {
     const c = cell(+daySel.value, +hourSel.value);
@@ -130,4 +139,10 @@
   head.textContent = `가장 많이 출렁이는 시간은 ${label(top)}, 평소의 ${(top.all.swing / base.swing).toFixed(1)}배. 가장 조용한 시간은 ${label(bySwing[bySwing.length - 1])}.`;
   $("ct-range-tag").textContent = `${D.range.first.slice(0, 4)}–${D.range.last.slice(0, 4)} · ${D.range.hours.toLocaleString("ko-KR")}시간`;
   showDetail();
+
+  setInterval(() => {
+    if (!readNow()) return;
+    if (followNow) { daySel.value = nowW; hourSel.value = nowH; }
+    showDetail();
+  }, 60000);
 })();
