@@ -49,9 +49,10 @@
         <li>코스피 · 외국인 순매수</li>
         <li id="ff-range-tag">2012–2026 거래일</li>
       </ul>
+      <a class="btn hero-play" href="#quiz">▶ 먼저 맞혀 보기</a>
     </section>
 
-    <section class="section wrap qz" data-quiz="foreign" aria-labelledby="quiz-title">
+    <section class="section wrap qz" id="quiz" data-quiz="foreign" aria-labelledby="quiz-title">
       <div class="qz-box panel px-box">
         <p class="qz-eyebrow">먼저 맞혀 보기 · 결과를 보기 전에 직감부터</p>
         <h2 class="qz-title" id="quiz-title">속설 퀴즈: 외국인이 사면 오를까?</h2>
@@ -81,6 +82,8 @@
       <div class="panel px-box">
         <h2 class="section-title" id="method-title">방법</h2>
         <p>기준은 <strong>결과를 보기 전(2026-09-30)</strong>에 정해 파일로 고정했습니다. 결과를 보고 기준을 고치면 우연을 효과로 착각하기 쉽기 때문입니다.</p>
+        <details class="fold">
+          <summary>계산 방법 자세히 (표준화 값 · 두 구간 · 판정 규칙 · 한계)</summary>
 
         <div class="facts">
           <div class="fact">
@@ -107,12 +110,15 @@
           <li>질문이 네 개라 하나쯤은 우연히 유의하게 나올 수 있습니다. 그래서 두 구간 모두 확인하도록 했습니다.</li>
           <li>기관·개인은 보지 않았습니다. 2026년 8월 이후 기타법인이 매일 비슷한 금액을 사는 흐름이 보이는데, 원인은 확인하지 못했습니다.</li>
         </ul>
+        </details>
       </div>
     </section>
 
     <section class="section wrap" aria-labelledby="source-title">
       <div class="panel px-box">
         <h2 class="section-title" id="source-title">데이터 출처</h2>
+        <details class="fold">
+          <summary>데이터 출처 보기 (KRX 외국인 순매수 · Yahoo 코스피 종가)</summary>
         <div class="facts">
           <div class="fact">
             <h3>외국인 순매수</h3>
@@ -124,6 +130,7 @@
           </div>
         </div>
         <p><a class="ff-link" href="../data/foreign-flow.json">계산 결과 JSON 보기</a></p>
+        </details>
       </div>
     </section>
 

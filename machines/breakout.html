@@ -27,9 +27,10 @@
       <p class="machine-lead">어제까지의 벽을 넘으면,<br>새로 시작된 흐름을 따라갑니다.</p>
       <p class="bo-intro">최근 20일의 최고·최저가를 종가로 돌파하면 다음 시가에 진입합니다.<br>추세가 이어지면 손절선도 따라 움직입니다. 코인·주식 일봉으로 검증하는 5번 기계입니다.</p>
       <ul class="tags" aria-label="기계 상태"><li>20일 범위 돌파</li><li>2 ATR 추적 손절</li><li>백테스트 · 모의 기록</li></ul>
+      <a class="btn hero-play" href="#quiz">▶ 먼저 맞혀 보기</a>
     </section>
 
-    <section class="section wrap qz" data-quiz="breakout" aria-labelledby="quiz-title">
+    <section class="section wrap qz" id="quiz" data-quiz="breakout" aria-labelledby="quiz-title">
       <div class="qz-box panel px-box">
         <p class="qz-eyebrow">먼저 맞혀 보기 · 결과를 보기 전에 직감부터</p>
         <h2 class="qz-title" id="quiz-title">이 거래, 벌었을까?</h2>
@@ -93,7 +94,7 @@
       <div class="panel px-box bo-method"><h3>오늘의 기록은, 어제의 기록과 비교합니다</h3>
         <div class="bo-lesson"><article><p>어제까지 20일 최고가</p><strong>100</strong><p>오늘 고가 105 · 오늘 종가 103</p></article><article><p>오늘의 돌파 판정</p><strong>103 &gt; 100</strong><p>상단 돌파 → 다음 시가 진입 후보</p></article></div>
         <p class="bo-proof">오늘 고가 105를 기준에 넣지 않습니다. 이미 알고 있는 어제까지의 범위와 오늘 확정된 종가를 비교합니다.</p>
-        <ul>
+        <details class="fold"><summary>세부 가정 보기 (손절 적용 · 갭 · 한 포지션 · 자금 · 비용 · 배당·펀딩 · 갱신)</summary><ul>
           <li>당일 종가로 갱신한 손절선은 다음 봉부터 적용합니다. 장중 손절 판단에는 그날 시작 전에 정해진 손절선만 사용합니다.</li>
           <li>손절가를 건너뛰는 갭이 발생하면 시가로 청산하고 불리한 슬리피지를 반영합니다. 고정 익절가와 최대 보유일 제한은 없습니다.</li>
           <li>종목당 한 포지션. 물타기·추가 진입 없이, 청산 당일에는 재진입하지 않습니다. 손절이 발생한 뒤 다음 날부터 새로운 조건을 확인합니다.</li>
@@ -102,19 +103,22 @@
           <li>주식 배당과 선물 펀딩 이력을 반영합니다. 과거 펀딩 기준 가격이 없으면 일봉 시가로 추정하고, 손절일에는 시각을 알 수 없어 펀딩 지출만 반영합니다.</li>
           <li>GitHub Actions가 하루 한 번 다시 계산합니다. 바이낸스 선물 시세는 GitHub 서버(미국)에서 막힐 수 있어, 그때 코인은 마지막으로 내 컴퓨터에서 계산한 결과를 그대로 보여 주고 종목 위에 그 사실을 표시합니다.</li>
           <li>모의 장부는 등록 다음 현지 날짜부터 진입합니다. 갱신 때마다 새 확정 봉을 처리하며, 등록 전 거래를 소급해 성과로 넣지 않습니다. 실제 주문은 없습니다.</li>
-        </ul>
+        </ul></details>
       </div>
     </section>
     <section class="section wrap" id="sources" aria-labelledby="sources-title"><div class="panel px-box bo-origin">
       <p class="bo-eyebrow">04 / 배경과 출처</p><h2 class="section-title" id="sources-title">배경과 데이터 출처</h2>
       <p>가격 범위를 돌파하는 움직임을 따라가는 추세 추종 아이디어를 일봉 규칙으로 구현했습니다. 20일 범위, 2 ATR 손절, 비용·자금 설정은 이 프로젝트의 실험 조건입니다.</p>
+        <details class="fold">
+          <summary>참고 자료와 데이터 출처 보기</summary>
       <ul class="bo-sources">
         <li><a href="https://www.aqr.com/insights/research/journal-article/time-series-momentum">추세 추종 관련 연구 — Time Series Momentum</a><span>전략 계열의 연구 배경입니다. 해당 논문과 이 기계의 구체적인 규칙·성과는 다릅니다.</span></li>
         <li><a href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/atr">ATR 지표 — Fidelity</a></li>
         <li><a href="https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Kline-Candlestick-Data">선물 일봉</a> · <a href="https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Get-Funding-Rate-History">펀딩 이력 — Binance</a><span>UTC 일봉. 종료된 봉만 사용합니다.</span></li>
         <li><a href="https://finance.yahoo.com/">주식 일봉·배당 — Yahoo Finance</a> · <a href="https://finance.naver.com/">한국 주식 오류 일봉 보완 — NAVER 금융</a><span>주식은 거래소 현지 날짜보다 앞선 봉만 사용합니다. 누락·오류 보완 날짜는 종목별 설명에 남깁니다.</span></li>
       </ul>
-    </div></section>
+        </details>
+      </div></section>
 
     <section class="section wrap" id="contact" aria-labelledby="contact-title">
       <div class="panel px-box">

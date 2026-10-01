@@ -50,10 +50,11 @@
         <li>BTC · 1시간봉 · 한국 시간</li>
         <li id="ct-range-tag">하루 한 번 다시 계산</li>
       </ul>
+      <a class="btn hero-play" href="#quiz">▶ 먼저 맞혀 보기</a>
       <p class="ct-headline" id="ct-headline">결과를 불러오는 중…</p>
     </section>
 
-    <section class="section wrap qz" data-quiz="clock" aria-labelledby="quiz-title">
+    <section class="section wrap qz" id="quiz" data-quiz="clock" aria-labelledby="quiz-title">
       <div class="qz-box panel px-box">
         <p class="qz-eyebrow">먼저 맞혀 보기 · 결과를 보기 전에 직감부터</p>
         <h2 class="qz-title" id="quiz-title">지금 이 시간, 출렁일까?</h2>
@@ -114,6 +115,8 @@
       <div class="panel px-box">
         <h2 class="section-title" id="method-title">방법</h2>
         <p>기준은 <strong>결과를 계산하기 전(2026-10-01)</strong>에 파일로 고정했습니다.</p>
+        <details class="fold">
+          <summary>계산 방법 자세히 (세 가지 값 · 평소와 비교 · 두 구간 · 한국 시간 · 한계)</summary>
         <div class="facts">
           <div class="fact">
             <h3>세 가지 값</h3>
@@ -138,6 +141,7 @@
           <li>미국 서머타임 때문에 같은 사건이 1시간씩 다른 칸에 나뉘어 들어갑니다.</li>
           <li>바이낸스 한 거래소의 가격입니다. 출렁임이 크다는 건 위험도 크다는 뜻이며, 매매 신호가 아닙니다.</li>
         </ul>
+        </details>
       </div>
     </section>
 

@@ -911,3 +911,32 @@ a.cabinet:focus-visible .cabinet-body { outline: var(--px) solid var(--coin); ou
   font-size: 11px;
   color: var(--ink);
 }
+
+/* ---------- 긴 설명 접기 ---------- */
+.fold { margin-top: 16px; padding-top: 4px; border-top: 2px dashed #c9bfe8; }
+.fold > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  cursor: pointer;
+  list-style: none;
+}
+.fold > summary::-webkit-details-marker { display: none; }
+.fold > summary::before {
+  content: "+";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px; height: 24px;
+  border: 2px solid currentColor;
+  font-weight: 700;
+}
+.fold[open] > summary::before { content: "−"; }
+.fold > summary:hover { text-decoration: underline; }
+.fold[open] > summary { margin-bottom: 8px; }
+
+/* 기계 페이지 첫 화면의 할 일 하나 */
+.hero-play { margin-top: 20px; }

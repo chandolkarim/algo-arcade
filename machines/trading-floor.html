@@ -50,10 +50,11 @@
         <li>코인 · 미국 주식 · SK하이닉스 · 삼성전자</li>
         <li>관람만 가능</li>
       </ul>
+      <a class="btn hero-play" href="#quiz">▶ 먼저 맞혀 보기</a>
       <div class="big-screen" data-scene="big-floor"></div>
     </section>
 
-    <section class="section wrap qz" data-quiz="floor" aria-labelledby="quiz-title">
+    <section class="section wrap qz" id="quiz" data-quiz="floor" aria-labelledby="quiz-title">
       <div class="qz-box panel px-box">
         <p class="qz-eyebrow">먼저 맞혀 보기 · 결과를 보기 전에 직감부터</p>
         <h2 class="qz-title" id="quiz-title">AI 판정 맞히기: 24시간 뒤 맞았을까?</h2>
@@ -128,6 +129,8 @@
     <section class="section wrap" id="modes" aria-labelledby="modes-title">
       <div class="panel px-box">
         <h2 class="section-title" id="modes-title">세 가지 모드</h2>
+        <details class="fold">
+          <summary>세 가지 모드 보기 (알고리즘 · 스캘핑 · 공격)</summary>
         <div class="modes">
           <div class="mode">
             <h3>알고리즘</h3>
@@ -154,12 +157,15 @@
             </dl>
           </div>
         </div>
+        </details>
       </div>
     </section>
 
     <section class="section wrap" aria-labelledby="checks-title">
       <div class="panel px-box">
         <h2 class="section-title" id="checks-title">AI 숫자를 그대로 믿지 않는 장치</h2>
+        <details class="fold">
+          <summary>AI 숫자를 검증하는 장치 보기</summary>
         <div class="facts">
           <div class="fact">
             <h3>청산 거리는 코드가 계산</h3>
@@ -178,6 +184,7 @@
             <p>자동 스캐너가 시세만 보고 먼저 거른 뒤, 결정 지점에 가까운 종목만 AI에게 물어봅니다.</p>
           </div>
         </div>
+        </details>
       </div>
     </section>
 
