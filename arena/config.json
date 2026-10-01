@@ -20,8 +20,8 @@
     {"key": "monkey", "short": "날짜로 정한 무작위", "name": "동전 원숭이", "href": null, "rule": "회차 날짜로 정한 무작위 선택. 운만으로 얼마나 맞히는지 보여 주는 기준선"}
   ],
   "form": {
-    "action": "",
-    "entries": {"round": "", "choice": "", "nickname": "", "visitor": ""},
+    "action": "https://docs.google.com/forms/d/e/1FAIpQLSd2Vt-SZypCMa7wGC4ylmPGQReFRV1GAae2S67UtvyMQEKUfw/formResponse",
+    "entries": {"round": "entry.1737724301", "choice": "entry.177568129", "nickname": "entry.692231107", "visitor": "entry.198246247"},
     "note": "구글 폼을 만든 뒤 formResponse 주소와 각 질문의 entry 번호를 넣는다. 비어 있으면 투표는 방문자 브라우저에만 저장된다."
   },
   "nickname": {"max_length": 12, "pattern": "^[가-힣A-Za-z0-9 _.\\-]+$"}
