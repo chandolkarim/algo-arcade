@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>알고리즘 오락실 · 정찬민</title>
-  <meta name="description" content="내가 만든 투자 알고리즘 7개를 실제 데이터로 시험한 기록. 맞힌 것도 틀린 것도 그대로 공개합니다. 오늘의 한 판에서 기계와 직접 붙어 보세요.">
+  <meta name="description" content="구현해 보고 싶은 매매 전략을 메일로 보내 주세요. 코드로 만들고 실제 과거 데이터로 백테스트해 결과 페이지로 공개합니다. 무료 · 연구·교육 목적.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="알고리즘 오락실 · 정찬민">
-  <meta property="og:description" content="투자 알고리즘 7개를 실제 데이터로 시험한 기록. 틀린 결과도 그대로 공개합니다.">
+  <meta property="og:description" content="원하는 매매 전략을 코드로 만들어 백테스트하고 결과를 공개합니다. 잘 안 된 결과도 그대로.">
   <meta property="og:url" content="https://chandolkarim.github.io/algo-arcade/">
   <meta property="og:image" content="https://chandolkarim.github.io/algo-arcade/assets/og.png">
   <meta property="og:locale" content="ko_KR">
@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/home.css">
-  <link rel="stylesheet" href="assets/arena.css">
 </head>
 <body class="home">
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -29,9 +28,9 @@
       </a>
       <nav class="site-nav" aria-label="주요 메뉴">
         <ul>
-          <li><a href="#play">오늘의 한 판</a></li>
-          <li><a href="#machines">알고리즘</a></li>
-          <li><a href="#about">만든 사람</a></li>
+          <li><a href="#request">의뢰하기</a></li>
+          <li><a href="#works">결과물</a></li>
+          <li><a href="games.html">게임</a></li>
         </ul>
       </nav>
     </div>
@@ -39,74 +38,37 @@
 
   <main id="main">
     <section class="home-hero wrap" aria-labelledby="hero-title">
-      <p class="home-eyebrow">정찬민의 투자 알고리즘 실험실</p>
-      <h1 id="hero-title">내가 만든 투자 알고리즘 7개,<br>실제 데이터로 시험해 봤습니다.</h1>
-      <p class="home-lead">맞힌 것도, 틀린 것도 그대로 공개해요. 모든 기록은 실제 주문 없는 모의투자·과거 데이터 결과입니다.</p>
+      <p class="home-eyebrow">알고리즘 오락실 · 정찬민의 전략 의뢰소</p>
+      <h1 id="hero-title">원하는 매매 전략,<br>코드로 만들어 백테스트해 드려요.</h1>
+      <p class="home-lead">아이디어를 메일로 보내 주시면 규칙을 함께 숫자로 정리하고, 실제 과거 데이터로 시험해 결과 페이지로 공개합니다. 잘 안 된 결과도 그대로 보여 드려요.</p>
       <div class="home-cta">
-        <a class="btn" href="#play">오늘의 한 판 하기</a>
-        <a class="btn btn-ghost" href="#machines">결과부터 보기</a>
+        <a class="btn" href="#request">전략 의뢰하기</a>
+        <a class="btn btn-ghost" href="#works">만든 결과 보기</a>
       </div>
       <ul class="home-stats" aria-label="한눈에">
-        <li><b>7개</b><span>직접 만든 알고리즘</span></li>
-        <li><b>9년</b><span>비트코인 데이터로 검증</span></li>
-        <li><b>49%</b><span>9년간 1등 선수는 ‘늘 횡보’</span></li>
+        <li><b>6개</b><span>지금까지 만든 전략·검증</span></li>
+        <li><b>9년</b><span>가장 긴 검증 데이터</span></li>
+        <li><b>무료</b><span>연구·교육 목적</span></li>
       </ul>
     </section>
 
-    <section class="section wrap ar" id="play" aria-labelledby="play-title">
-      <div class="ar-screen">
-        <p class="ar-eyebrow"><span class="ar-coin" aria-hidden="true">●</span> 오늘의 한 판 <span id="ar-round"></span></p>
-        <h2 class="ar-title" id="play-title">비트코인, 내일 이 시간엔?</h2>
-        <p class="ar-question" id="ar-question">판을 준비하는 중…</p>
-        <figure class="ar-chart" id="ar-chart"></figure>
-        <div class="ar-name">
-          <label for="ar-nick">순위표에 올릴 닉네임 <span>(선택 · 12자 · 개인정보 쓰지 마세요)</span></label>
-          <input id="ar-nick" type="text" maxlength="12" autocomplete="off" spellcheck="false" placeholder="비우면 익명">
-        </div>
-        <div class="ar-choices" role="group" aria-label="내일 오전 9시 종가 예측">
-          <button type="button" class="ar-choice is-up" data-choice="up" disabled>▲ 크게 오름</button>
-          <button type="button" class="ar-choice" data-choice="flat" disabled>━ 횡보</button>
-          <button type="button" class="ar-choice is-down" data-choice="down" disabled>▼ 크게 내림</button>
-        </div>
-        <p class="ar-status" id="ar-status" role="status" aria-live="polite"></p>
-        <div class="ar-after" id="ar-after" hidden>
-          <h3>다른 선수들은 이렇게 골랐어요</h3>
-          <ul class="ar-picks" id="ar-picks"></ul>
-          <p class="ar-crowd" id="ar-crowd"></p>
-        </div>
+    <section class="section wrap" id="how" aria-labelledby="how-title">
+      <div class="home-head">
+        <h2 class="section-title" id="how-title">이렇게 진행해요</h2>
+        <p>분량에 따라 며칠에서 2주쯤 걸려요. 진행 상황은 아래 의뢰 현황에 올라가요.</p>
       </div>
-
-      <div class="panel px-box ar-board">
-        <h3 class="ar-sub">지난 회차</h3>
-        <div id="ar-last"><p class="empty-note">불러오는 중…</p></div>
-        <h3 class="ar-sub">순위 — 사람 vs 기계</h3>
-        <p class="ar-note" id="ar-board-note"></p>
-        <div class="ar-table-wrap" tabindex="0" role="region" aria-label="순위표">
-          <table class="ar-table">
-            <thead><tr><th>선수</th><th>맞힘</th><th>적중률</th></tr></thead>
-            <tbody id="ar-table"></tbody>
-          </table>
-        </div>
-        <h3 class="ar-sub">연습 경기 — 2017년부터 매일 붙였다면</h3>
-        <ul class="ar-long" id="ar-long"></ul>
-        <details class="ar-rules">
-          <summary>규칙 자세히</summary>
-          <ul>
-            <li>회차는 매일 한국 시간 오전 9시(바이낸스 일봉 마감)에 열리고, 다음 날 오전 9시에 닫히며 바로 결과가 납니다.</li>
-            <li>‘크게’의 기준은 최근 20일 하루 변동 폭의 0.5배입니다. 조용한 날엔 좁고, 요동치는 날엔 넓어집니다.</li>
-            <li>기계의 선택은 내가 고른 뒤에 보여 줍니다. 기계는 모두 그날 마감까지의 자료만 씁니다.</li>
-            <li>한 사람(브라우저)당 회차마다 처음 한 표만 셉니다. 투표 집계와 순위는 사이트가 다시 만들어질 때(몇 시간마다) 바뀝니다.</li>
-            <li>닉네임 순위는 결과가 나온 회차를 <span id="ar-min">3</span>번 이상 맞혀 본 사람만 올라갑니다. 부적절한 이름은 숨깁니다.</li>
-            <li>재미로 하는 예측 게임입니다. 투자 조언이 아닙니다.</li>
-          </ul>
-        </details>
-      </div>
+      <ol class="steps">
+        <li><b>1. 아이디어 보내기</b><span>“RSI가 30 밑이면 사고 싶다”처럼 한두 줄이어도 괜찮아요. 아래 양식으로 메일을 보내 주세요.</span></li>
+        <li><b>2. 규칙을 숫자로 정하기</b><span>애매한 부분은 메일로 되물어요. 예: “많이 오르면” → “어제까지 20일 최고가를 종가로 넘으면”.</span></li>
+        <li><b>3. 구현·백테스트</b><span>결과를 보기 전에 기준을 고정하고, 수수료·슬리피지를 넣고, 앞 구간으로 만든 규칙을 뒤 구간에서 다시 확인해요.</span></li>
+        <li><b>4. 결과 페이지 공개</b><span>수익률·최대 낙폭·거래 기록·한계를 한 페이지로. 테스트 코드와 함께 저장소에 올려요.</span></li>
+      </ol>
     </section>
 
-    <section class="section wrap" id="machines" aria-labelledby="machines-title">
+    <section class="section wrap" id="works" aria-labelledby="works-title">
       <div class="home-head">
-        <h2 class="section-title" id="machines-title">알고리즘 7개</h2>
-        <p>카드마다 질문 하나와 가장 중요한 결과 하나. 누르면 자세히 볼 수 있어요. <span class="home-date">2026-10-01 계산 기준</span></p>
+        <h2 class="section-title" id="works-title">지금까지 만든 결과물</h2>
+        <p>의뢰하면 이런 페이지로 받아요. 카드를 누르면 규칙·결과·한계를 볼 수 있어요. <span class="home-date">2026-10-01 계산 기준</span></p>
       </div>
       <ul class="mc-list">
         <li><a class="mc" href="machines/trading-floor.html">
@@ -144,13 +106,6 @@
           <span class="mc-result"><b>평일 밤 11시</b><span>평소의 1.6배 출렁임. 방향은 시간으로 못 맞힘</span></span>
           <span class="mc-more">자세히 보기 →</span>
         </a></li>
-        <li><a class="mc" href="machines/blind-chart.html">
-          <span class="mc-top"><span class="mc-kind k-game">게임</span><span class="mc-en">BLIND CHART</span></span>
-          <strong class="mc-name">가린 차트 맞히기</strong>
-          <span class="mc-q">이름·날짜를 가린 차트, 5일 뒤를 맞힐 수 있을까?</span>
-          <span class="mc-result"><b>195개 중 2개</b><span>지표 상황 중 두 구간 모두 맞은 것</span></span>
-          <span class="mc-more">자세히 보기 →</span>
-        </a></li>
         <li><a class="mc" href="machines/kimchi-gauge.html">
           <span class="mc-top"><span class="mc-kind k-watch">관측</span><span class="mc-en">KIMCHI GAUGE</span></span>
           <strong class="mc-name">김치 프리미엄</strong>
@@ -161,29 +116,65 @@
       </ul>
     </section>
 
+    <section class="section wrap" id="requests" aria-labelledby="requests-title">
+      <div class="home-head">
+        <h2 class="section-title" id="requests-title">의뢰 현황</h2>
+        <p id="rq-summary">불러오는 중…</p>
+      </div>
+      <ul class="rq-list" id="rq-list"></ul>
+    </section>
+
+    <section class="section wrap" id="request" aria-labelledby="request-title">
+      <div class="panel request-card">
+        <div>
+          <p class="home-eyebrow">전략 의뢰하기</p>
+          <h2 class="section-title" id="request-title">메일 한 통이면 돼요</h2>
+          <p>아래 버튼을 누르면 양식이 채워진 메일이 열려요. 메일 앱이 안 열리면 양식을 복사해 <b>wjdcksals24@hufs.ac.kr</b>로 보내 주세요.</p>
+          <div class="home-cta">
+            <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=%5B%EC%A0%84%EB%9E%B5%20%EC%9D%98%EB%A2%B0%5D%20&body=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94%2C%20%EC%95%84%EB%9E%98%20%EC%96%91%EC%8B%9D%EC%9C%BC%EB%A1%9C%20%EC%A0%84%EB%9E%B5%EC%9D%84%20%EC%9D%98%EB%A2%B0%ED%95%A9%EB%8B%88%EB%8B%A4.%0A%0A1.%20%EC%A0%84%EB%9E%B5%20%EC%9D%B4%EB%A6%84%3A%0A2.%20%ED%95%9C%20%EC%A4%84%20%EC%95%84%EC%9D%B4%EB%94%94%EC%96%B4%3A%0A3.%20%EC%96%B8%EC%A0%9C%20%EC%82%AC%EB%82%98%EC%9A%94%28%EC%A7%84%EC%9E%85%20%EA%B7%9C%EC%B9%99%29%3A%0A4.%20%EC%96%B8%EC%A0%9C%20%ED%8C%8C%EB%82%98%EC%9A%94%28%EC%B2%AD%EC%82%B0%C2%B7%EC%86%90%EC%A0%88%20%EA%B7%9C%EC%B9%99%29%3A%0A5.%20%EC%A2%85%EB%AA%A9%C2%B7%EC%8B%9C%EC%9E%A5%20%28%EC%98%88%3A%20%EB%B9%84%ED%8A%B8%EC%BD%94%EC%9D%B8%2C%20%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90%2C%20S%26P500%29%3A%0A6.%20%EA%B8%B0%EA%B0%84%C2%B7%EB%B4%89%20%28%EC%98%88%3A%202018%EB%85%84%EB%B6%80%ED%84%B0%2C%20%EC%9D%BC%EB%B4%89%29%3A%0A7.%20%EC%B0%B8%EA%B3%A0%20%EC%9E%90%EB%A3%8C%28%EC%9E%88%EC%9C%BC%EB%A9%B4%20%EB%A7%81%ED%81%AC%29%3A%0A8.%20%EA%B2%B0%EA%B3%BC%20%ED%8E%98%EC%9D%B4%EC%A7%80%C2%B7%EC%9D%98%EB%A2%B0%20%ED%98%84%ED%99%A9%EC%97%90%20%ED%91%9C%EC%8B%9C%ED%95%A0%20%EB%8B%89%EB%84%A4%EC%9E%84%28%EC%84%A0%ED%83%9D%29%3A%0A9.%20%EC%9D%98%EB%A2%B0%20%ED%98%84%ED%99%A9%EC%97%90%20%EA%B3%B5%EA%B0%9C%ED%95%B4%EB%8F%84%20%EB%90%98%EB%82%98%EC%9A%94%3F%20%28%EC%98%88/%EC%95%84%EB%8B%88%EC%98%A4%29%0A">메일로 의뢰하기</a>
+            <button class="btn btn-ghost" type="button" id="rq-copy">양식 복사</button>
+          </div>
+          <p class="rq-copied" id="rq-copied" role="status"></p>
+        </div>
+        <pre class="rq-template" id="rq-template">안녕하세요, 아래 양식으로 전략을 의뢰합니다.
+
+1. 전략 이름:
+2. 한 줄 아이디어:
+3. 언제 사나요(진입 규칙):
+4. 언제 파나요(청산·손절 규칙):
+5. 종목·시장 (예: 비트코인, 삼성전자, S&P500):
+6. 기간·봉 (예: 2018년부터, 일봉):
+7. 참고 자료(있으면 링크):
+8. 결과 페이지·의뢰 현황에 표시할 닉네임(선택):
+9. 의뢰 현황에 공개해도 되나요? (예/아니오)</pre>
+        <div class="rq-scope">
+          <div><h3>해 드려요</h3><ul><li>규칙 정리와 코드 구현(파이썬)</li><li>과거 데이터 백테스트(비용 포함)</li><li>두 구간 검증, 결과·한계 정리</li><li>결과 페이지와 테스트 코드 공개</li></ul></div>
+          <div><h3>안 해요</h3><ul><li>돈을 받는 일</li><li>특정 종목 추천·매매 신호 보내기</li><li>실제 계좌·거래소 자동매매 연결</li><li>수익 보장</li></ul></div>
+        </div>
+      </div>
+    </section>
+
     <section class="section wrap" id="about" aria-labelledby="about-title">
       <div class="about-card panel">
         <div class="about-main">
           <p class="home-eyebrow">만든 사람</p>
           <h2 class="section-title" id="about-title">정찬민</h2>
-          <p>한국외국어대학교 아랍어과 · Business AI. 재미로 자동매매 알고리즘을 만들고, AI가 내놓는 숫자를 코드로 한 번 더 검증하는 걸 좋아합니다.</p>
+          <p>한국외국어대학교 아랍어과 · Business AI. 자동매매 알고리즘을 만들고, AI가 내놓는 숫자를 코드로 한 번 더 검증하는 걸 좋아합니다.</p>
           <ul class="about-tags">
             <li>알고리즘 트레이딩</li><li>멀티 에이전트 AI</li><li>AI 결과 검증</li>
           </ul>
           <div class="home-cta">
-            <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr">메일 보내기</a>
             <a class="btn btn-ghost" href="https://github.com/chandolkarim">GitHub</a>
+            <a class="btn btn-ghost" href="games.html">게임 하러 가기</a>
           </div>
-          <p class="about-mail" id="contact">wjdcksals24@hufs.ac.kr</p>
         </div>
         <div class="about-rules" id="rules">
           <h3>이용 안내</h3>
           <ul>
-            <li>모든 성적은 모의투자·과거 데이터 기록입니다. 실제 주문은 나가지 않습니다.</li>
-            <li>투자 조언이 아니며 매매 신호를 제공하지 않습니다.</li>
-            <li>잘 된 기록만 고르지 않습니다. 틀린 판정도 그대로 남깁니다.</li>
-            <li>실제 기계는 주인만 돌립니다. 방문자는 데모·게임·오늘의 한 판만 할 수 있습니다.</li>
-            <li>오늘의 한 판 닉네임은 공개 순위에 쓰입니다. 개인정보를 쓰지 마세요.</li>
+            <li>모든 결과는 과거 데이터 백테스트·모의 기록입니다. 실제 주문은 나가지 않습니다.</li>
+            <li>투자 조언이 아니며 매매 신호를 제공하지 않습니다. 의뢰는 무료이고 연구·교육 목적입니다.</li>
+            <li>잘 된 결과만 고르지 않습니다. 안 된 결과도 그대로 공개합니다.</li>
+            <li>의뢰 메일의 연락처는 공개하지 않습니다. 의뢰 현황에는 동의한 경우 전략 이름과 닉네임만 올립니다.</li>
           </ul>
         </div>
       </div>
@@ -192,13 +183,13 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <p>알고리즘 오락실의 모든 기록은 모의투자·과거 데이터 결과이며 투자 조언이 아닙니다.</p>
-      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+      <p>알고리즘 오락실의 모든 기록은 과거 데이터·모의 결과이며 투자 조언이 아닙니다.</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a> · <a href="mailto:wjdcksals24@hufs.ac.kr">wjdcksals24@hufs.ac.kr</a></p>
     </div>
   </footer>
 
   <script src="assets/script.js"></script>
-  <script src="data/arena-data.js"></script>
-  <script src="assets/arena.js"></script>
+  <script src="data/requests-data.js"></script>
+  <script src="assets/requests.js"></script>
 </body>
 </html>

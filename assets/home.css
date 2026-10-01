@@ -91,3 +91,41 @@
 .mh-result b { display: block; font-size: clamp(26px, 5vw, 34px); font-weight: 800; letter-spacing: -0.03em; }
 .mh-result span { display: block; margin-top: 4px; font-size: 15px; color: var(--ink-soft); }
 .mh-meta { margin: 12px 0 0; font-size: 13px; color: var(--on-carpet-soft); }
+.game-list { margin-top: 28px; }
+
+/* 진행 방식 */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
+.steps li { padding: 20px; border-radius: 18px; background: #fff; box-shadow: var(--shadow); }
+.steps b { display: block; font-size: 17px; font-weight: 800; }
+.steps span { display: block; margin-top: 6px; font-size: 15px; color: var(--ink-soft); }
+
+/* 의뢰 현황 */
+.rq-list { display: grid; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; }
+.rq-item { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 16px; background: #fff; box-shadow: var(--shadow); }
+.rq-main { flex: 1; min-width: 0; }
+.rq-main strong { display: block; font-weight: 800; overflow-wrap: anywhere; }
+.rq-meta { font-size: 13px; color: var(--on-carpet-soft); }
+.rq-status { flex: none; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; background: var(--soft); color: var(--ink-soft); }
+.s-new { background: #fff9db; color: #8f6200; }
+.s-doing { background: var(--accent-soft); color: #5f3dc4; }
+.s-done { background: #e6fcf5; color: #087f5b; }
+.rq-link { flex: none; font-size: 14px; font-weight: 700; color: var(--accent); text-decoration: none; }
+.rq-empty .rq-main { color: var(--on-carpet-soft); }
+
+/* 의뢰 양식 */
+.request-card { display: grid; gap: 20px; }
+@media (min-width: 860px) { .request-card { grid-template-columns: 1fr 1fr; } .rq-scope { grid-column: 1 / -1; } }
+.rq-template {
+  margin: 0;
+  padding: 18px;
+  border-radius: 14px;
+  background: var(--soft);
+  font: 14px/1.7 var(--font-body);
+  white-space: pre-wrap;
+  color: var(--ink);
+}
+.rq-copied { min-height: 1.4em; margin: 8px 0 0; font-size: 14px; color: var(--accent); }
+.rq-scope { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+.rq-scope > div { padding: 18px; border-radius: 14px; background: var(--soft); }
+.rq-scope h3 { margin: 0 0 6px; font-size: 16px; font-weight: 800; }
+.rq-scope ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-soft); }

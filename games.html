@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>게임 · 알고리즘 오락실</title>
+  <meta name="description" content="비트코인 내일 이 시간, 사람과 알고리즘 중 누가 더 잘 맞힐까? 오늘의 한 판과 가린 차트 맞히기 게임.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="게임 · 알고리즘 오락실">
+  <meta property="og:description" content="투자 알고리즘 7개를 실제 데이터로 시험한 기록. 틀린 결과도 그대로 공개합니다.">
+  <meta property="og:url" content="https://chandolkarim.github.io/algo-arcade/games.html">
+  <meta property="og:image" content="https://chandolkarim.github.io/algo-arcade/assets/og.png">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/home.css">
+  <link rel="stylesheet" href="assets/arena.css">
+</head>
+<body class="home">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="index.html">
+        <span class="logo-coin" data-scene="coin"></span>
+        알고리즘 오락실
+      </a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <ul>
+          <li><a href="index.html#request">의뢰하기</a></li>
+          <li><a href="index.html#works">결과물</a></li>
+          <li><a href="games.html" aria-current="page">게임</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="home-hero wrap" aria-labelledby="hero-title">
+      <p class="home-eyebrow">게임</p>
+      <h1 id="hero-title">알고리즘이랑 붙어 보세요.</h1>
+      <p class="home-lead">같은 문제를 사람과 알고리즘이 함께 풉니다. 재미로 하는 예측 게임이며 투자 조언이 아닙니다.</p>
+      <ul class="mc-list game-list">
+        <li><a class="mc" href="#play">
+          <span class="mc-top"><span class="mc-kind k-game">매일</span><span class="mc-en">TODAY'S ROUND</span></span>
+          <strong class="mc-name">오늘의 한 판</strong>
+          <span class="mc-q">비트코인, 내일 오전 9시엔 크게 오를까, 내릴까, 그대로일까?</span>
+          <span class="mc-result"><b>사람 vs 기계</b><span>방문자 군중·알고리즘 5개와 매일 순위 경쟁</span></span>
+          <span class="mc-more">바로 아래에서 하기 ↓</span>
+        </a></li>
+        <li><a class="mc" href="machines/blind-chart.html">
+          <span class="mc-top"><span class="mc-kind k-game">무제한</span><span class="mc-en">BLIND CHART</span></span>
+          <strong class="mc-name">가린 차트 맞히기</strong>
+          <span class="mc-q">코인 이름과 날짜를 가린 차트, 5일 뒤를 맞힐 수 있을까?</span>
+          <span class="mc-result"><b>7,600여 문제</b><span>지표 힌트를 열어 볼 수 있어요. 195개 상황 중 두 구간 모두 맞은 건 2개뿐</span></span>
+          <span class="mc-more">하러 가기 →</span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="section wrap ar" id="play" aria-labelledby="play-title">
+      <div class="ar-screen">
+        <p class="ar-eyebrow"><span class="ar-coin" aria-hidden="true">●</span> 오늘의 한 판 <span id="ar-round"></span></p>
+        <h2 class="ar-title" id="play-title">비트코인, 내일 이 시간엔?</h2>
+        <p class="ar-question" id="ar-question">판을 준비하는 중…</p>
+        <figure class="ar-chart" id="ar-chart"></figure>
+        <div class="ar-name">
+          <label for="ar-nick">순위표에 올릴 닉네임 <span>(선택 · 12자 · 개인정보 쓰지 마세요)</span></label>
+          <input id="ar-nick" type="text" maxlength="12" autocomplete="off" spellcheck="false" placeholder="비우면 익명">
+        </div>
+        <div class="ar-choices" role="group" aria-label="내일 오전 9시 종가 예측">
+          <button type="button" class="ar-choice is-up" data-choice="up" disabled>▲ 크게 오름</button>
+          <button type="button" class="ar-choice" data-choice="flat" disabled>━ 횡보</button>
+          <button type="button" class="ar-choice is-down" data-choice="down" disabled>▼ 크게 내림</button>
+        </div>
+        <p class="ar-status" id="ar-status" role="status" aria-live="polite"></p>
+        <div class="ar-after" id="ar-after" hidden>
+          <h3>다른 선수들은 이렇게 골랐어요</h3>
+          <ul class="ar-picks" id="ar-picks"></ul>
+          <p class="ar-crowd" id="ar-crowd"></p>
+        </div>
+      </div>
+
+      <div class="panel px-box ar-board">
+        <h3 class="ar-sub">지난 회차</h3>
+        <div id="ar-last"><p class="empty-note">불러오는 중…</p></div>
+        <h3 class="ar-sub">순위 — 사람 vs 기계</h3>
+        <p class="ar-note" id="ar-board-note"></p>
+        <div class="ar-table-wrap" tabindex="0" role="region" aria-label="순위표">
+          <table class="ar-table">
+            <thead><tr><th>선수</th><th>맞힘</th><th>적중률</th></tr></thead>
+            <tbody id="ar-table"></tbody>
+          </table>
+        </div>
+        <h3 class="ar-sub">연습 경기 — 2017년부터 매일 붙였다면</h3>
+        <ul class="ar-long" id="ar-long"></ul>
+        <details class="ar-rules">
+          <summary>규칙 자세히</summary>
+          <ul>
+            <li>회차는 매일 한국 시간 오전 9시(바이낸스 일봉 마감)에 열리고, 다음 날 오전 9시에 닫히며 바로 결과가 납니다.</li>
+            <li>‘크게’의 기준은 최근 20일 하루 변동 폭의 0.5배입니다. 조용한 날엔 좁고, 요동치는 날엔 넓어집니다.</li>
+            <li>기계의 선택은 내가 고른 뒤에 보여 줍니다. 기계는 모두 그날 마감까지의 자료만 씁니다.</li>
+            <li>한 사람(브라우저)당 회차마다 처음 한 표만 셉니다. 투표 집계와 순위는 사이트가 다시 만들어질 때(몇 시간마다) 바뀝니다.</li>
+            <li>닉네임 순위는 결과가 나온 회차를 <span id="ar-min">3</span>번 이상 맞혀 본 사람만 올라갑니다. 부적절한 이름은 숨깁니다.</li>
+            <li>재미로 하는 예측 게임입니다. 투자 조언이 아닙니다.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>재미로 하는 예측 게임입니다. 모든 기록은 과거 데이터·모의 결과이며 투자 조언이 아닙니다.</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="assets/script.js"></script>
+  <script src="data/arena-data.js"></script>
+  <script src="assets/arena.js"></script>
+</body>
+</html>

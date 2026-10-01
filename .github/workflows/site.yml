@@ -53,6 +53,8 @@ jobs:
         run: python -m unittest discover -s clock -p 'test_*.py' -v
       - name: 오늘의 한 판 계산 테스트 (미래 데이터 누수·투표 검사 포함)
         run: python -m unittest discover -s arena -p 'test_*.py' -v
+      - name: 의뢰 현황 검사 테스트 (연락처가 공개되지 않는지 포함)
+        run: python -m unittest discover -s requests -p 'test_*.py' -v
       - name: 화면 스크립트 문법 검사
         run: for f in assets/*.js; do node --check "$f"; done
 
@@ -68,6 +70,8 @@ jobs:
         env:
           SHEET_CSV_URL: ${{ vars.SHEET_CSV_URL }}
         run: python records/build.py --previous "https://chandolkarim.github.io/algo-arcade/data/records.json"
+      - name: 의뢰 현황 (requests/requests.csv → 공개=Y만)
+        run: python requests/build.py
       - name: 3번 김프 기록 1건 추가 (배포된 기록을 이어 받음)
         run: python kimchi/record.py --previous "https://chandolkarim.github.io/algo-arcade/data/kimchi-history.json"
       - name: 6번 BLIND CHART 상황 통계·문제 목록 갱신 (실패하면 저장소에 있는 이전 결과 사용)
@@ -85,7 +89,7 @@ jobs:
       - name: 공개할 파일만 모으기
         run: |
           mkdir _site
-          cp -r index.html 404.html machines assets data _site/
+          cp -r index.html games.html 404.html machines assets data _site/
           echo "배포 커밋 ${GITHUB_SHA::7} · $(date -u +%FT%TZ)" > _site/build.txt
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
