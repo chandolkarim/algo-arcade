@@ -869,3 +869,44 @@ a.cabinet:focus-visible .cabinet-body { outline: var(--px) solid var(--coin); ou
   .btn:hover { transform: none; }
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* ---------- 첫 화면 결론 · 기계 종류 · 결과 한눈에 ---------- */
+.hero-verdict {
+  max-width: 40em;
+  margin: 20px 0 0;
+  padding: 12px 16px;
+  border: 2px solid var(--coin);
+  font-size: 16px;
+  color: var(--on-carpet);
+}
+.hero-verdict a { color: var(--coin); white-space: nowrap; }
+.cabinet-kind {
+  margin-left: auto;
+  padding: 0 6px;
+  border: 2px solid var(--ink);
+  background: var(--panel);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.board-date { color: var(--ink-soft); font-size: 14px; white-space: nowrap; }
+.board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px 32px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.board li { padding-top: 12px; border-top: 2px dashed #c9bfe8; }
+.board a { font-family: var(--font-pixel); font-weight: 700; color: var(--ink); }
+.board p { margin: 6px 0 0; font-size: 15px; color: var(--ink-soft); }
+.board-kind {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 0 6px;
+  border: 2px solid var(--ink);
+  background: var(--mint);
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--ink);
+}

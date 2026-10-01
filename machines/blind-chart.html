@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BLIND CHART · 알고리즘 오락실</title>
   <meta name="description" content="이름과 날짜를 가린 코인 차트를 보고 5일 뒤를 맞히는 게임. 다른 기계의 규칙이 힌트를 줍니다.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BLIND CHART · 알고리즘 오락실">
+  <meta property="og:description" content="이름과 날짜를 가린 코인 차트를 보고 5일 뒤를 맞히는 게임. 다른 기계의 규칙이 힌트를 줍니다.">
+  <meta property="og:url" content="https://chandolkarim.github.io/algo-arcade/machines/blind-chart.html">
+  <meta property="og:image" content="https://chandolkarim.github.io/algo-arcade/assets/og.png">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="stylesheet" href="../assets/blind-chart.css">
 </head>
@@ -112,14 +120,19 @@
             <p>2022년까지(설계)와 2023년 이후(검증)를 따로 셉니다. 두 구간 모두에서 같은 결과로 뚜렷하게 치우쳐야(이항검정 p &lt; 0.05) “검증됨”입니다.</p>
           </div>
           <div class="fact">
+            <h3>겹치지 않게 세기</h3>
+            <p>네 코인은 같이 움직이고 5일 창이 겹치면 사실상 같은 사건입니다. 그래서 통계는 같은 상황을 한 번 센 뒤 5일이 지나야 다시 셉니다(코인이 달라도). 같은 날 여러 코인이면 하나만 셉니다. 문제로는 모두 냅니다.</p>
+          </div>
+          <div class="fact">
             <h3>표본 30번 이상</h3>
-            <p>과거에 30번 넘게 나온 상황만 힌트로 씁니다. 두 상황이 같은 날 겹친 조합도 같은 기준으로 셉니다.</p>
+            <p>이렇게 센 횟수가 30번 이상인 상황만 힌트로 씁니다. 두 상황이 같은 날 겹친 조합도 같은 기준으로 셉니다.</p>
           </div>
         </div>
+        <p class="bc-change"><strong>바꾼 기록 1.0.0 → 1.1.0 (2026-10-01)</strong> — 처음에는 같은 날 네 코인과 겹치는 5일 창을 따로 세어 표본이 부풀었고, “검증됨”이 5개였습니다. 기준 숫자는 그대로 두고 세는 방법만 고쳤더니 2개로 줄었습니다.</p>
         <h3 class="bc-sub">한계</h3>
         <ul class="bc-limits">
           <li>상황과 조합을 수백 개 세면 그중 몇 개는 우연히 뚜렷해 보입니다. 두 구간 확인으로 줄였지만 “검증됨”도 앞으로 맞는다는 보장은 없습니다.</li>
-          <li>네 코인은 함께 움직이는 날이 많아, 같은 날의 표본이 서로 독립적이지 않습니다. p값은 실제보다 낙관적일 수 있습니다.</li>
+          <li>겹치지 않게 세도 코인끼리, 가까운 시기끼리는 여전히 비슷하게 움직입니다. p값은 완전히 독립인 경우보다 조금 낙관적일 수 있습니다.</li>
           <li>거래 비용은 없고, 맞힌 비율은 수익률과 다릅니다. 게임이며 투자 조언이 아닙니다.</li>
         </ul>
       </div>

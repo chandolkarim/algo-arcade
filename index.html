@@ -4,7 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>알고리즘 오락실 · 정찬민</title>
-  <meta name="description" content="직접 만든 자동매매 알고리즘을 한 대씩 들여놓는 오락실. 구경은 자유, 실행은 주인만.">
+  <meta name="description" content="직접 만든 매매 알고리즘과 시장 속설 검증기를 한 대씩 들여놓은 픽셀 오락실. 틀린 결과도 그대로 남깁니다. 구경은 자유, 실행은 주인만.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="알고리즘 오락실 · 정찬민">
+  <meta property="og:description" content="매매 알고리즘 3대, 검증기 3대, 차트 게임 1대. 틀린 결과도 그대로 남기는 픽셀 오락실.">
+  <meta property="og:url" content="https://chandolkarim.github.io/algo-arcade/">
+  <meta property="og:image" content="https://chandolkarim.github.io/algo-arcade/assets/og.png">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -29,13 +37,13 @@
 
   <div class="led-strip" aria-hidden="true">
     <div class="led-track">
-      <span><span class="on">●</span> TRADING FLOOR 모의투자 가동 중</span>
+      <span><span class="on">●</span> TRADING FLOOR 판정 기록 공개</span>
       <span><span class="build">◆</span> REBOUND 25/200 · 일봉 되돌림 연구</span>
       <span><span class="on">●</span> KIMCHI GAUGE 실시간 관측 중</span>
-      <span><span class="on">●</span> FOREIGN FLOW 검증 완료</span>
+      <span><span class="on">●</span> FOREIGN FLOW 검증 끝 · 효과 없음</span>
       <span><span class="build">◆</span> BREAKOUT 20 · 일봉 돌파 연구</span>
       <span><span class="on">●</span> BLIND CHART 플레이 가능</span>
-      <span><span class="on">●</span> CLOCK TOWER 검증 완료</span>
+      <span><span class="on">●</span> CLOCK TOWER 검증 끝 · 출렁임 시간대만 뚜렷</span>
       <span>실제 주문은 나가지 않습니다</span>
       <span>구경은 자유, 실행은 주인만</span>
     </div>
@@ -45,10 +53,12 @@
     <section class="hero wrap" aria-labelledby="hero-title">
       <h1 id="hero-title">알고리즘<br>오락실</h1>
       <p class="hero-lead">
-        직접 만든 자동매매 알고리즘을 한 대씩 들여놓는 곳입니다.
-        <strong>기계마다 어떻게 판단하고, 모의투자에서 실제로 어땠는지</strong> 구경할 수 있어요.
+        직접 만든 매매 알고리즘과, 시장 속설을 데이터로 따져 보는 검증기를 한 대씩 들여놓는 곳입니다.
+        <strong>기계마다 어떻게 판단하고, 기록으로 보면 실제로 어땠는지</strong> 구경할 수 있어요.
         돌리는 건 주인만 합니다.
       </p>
+      <p class="hero-verdict">7대를 돌려 본 결론: <strong>방향을 미리 맞히는 규칙은 거의 찾지 못했습니다.</strong>
+        대신 언제 크게 움직이는지, 어떻게 하면 덜 잃는지는 보였습니다. <a href="#results">결과 한눈에 ↓</a></p>
     </section>
 
     <section class="floor wrap" id="machines" aria-labelledby="machines-title">
@@ -66,7 +76,7 @@
                 <span>AI 트레이더 13명</span>
               </div>
               <p class="cabinet-desc">AI 에이전트 13명이 분석하고, 편을 갈라 토론하고, 심사를 거쳐 매매 판정을 냅니다.</p>
-              <div class="cabinet-status"><span class="lamp on"></span>모의투자 가동 중</div>
+              <div class="cabinet-status"><span class="lamp on"></span>판정 기록 공개<span class="cabinet-kind">매매</span></div>
             </div>
           </a>
         </li>
@@ -79,7 +89,7 @@
                 <svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><path d="M4 12H60M4 24H60M4 36H60" stroke="#2e2560"/><path d="M4 36L14 34L24 32L34 30L44 28L60 26" fill="none" stroke="#ffd23f" stroke-width="2" stroke-dasharray="2 2"/><path d="M4 16L14 14L24 16L34 22L44 20L60 14" fill="none" stroke="#ff85c0" stroke-width="2"/><path d="M4 15L10 12L16 18L22 14L28 22L34 28L40 24L46 18L52 20L60 8" fill="none" stroke="#f3eeff" stroke-width="2"/><rect x="31" y="25" width="6" height="6" fill="#ffd23f"/></svg>
               </div>
               <p class="cabinet-desc">BNF의 아이디어에서 출발. 200일선으로 방향을 정하고, 25일선에서 멀어진 가격의 되돌림을 기다립니다.</p>
-              <div class="cabinet-status"><span class="lamp build"></span>백테스트 · 모의 기록</div>
+              <div class="cabinet-status"><span class="lamp build"></span>백테스트·모의<span class="cabinet-kind">매매</span></div>
             </div>
           </a>
         </li>
@@ -92,7 +102,7 @@
                 <span>김프 게이지</span>
               </div>
               <p class="cabinet-desc">업비트와 바이낸스의 비트코인 가격 차이(김치 프리미엄)를 실시간으로 잽니다.</p>
-              <div class="cabinet-status"><span class="lamp on"></span>실시간 관측 중</div>
+              <div class="cabinet-status"><span class="lamp on"></span>실시간 관측 중<span class="cabinet-kind">관측</span></div>
             </div>
           </a>
         </li>
@@ -105,7 +115,7 @@
                 <span>외국인 매매 검증</span>
               </div>
               <p class="cabinet-desc">외국인이 코스피를 많이 사면 다음 날 오를까? 14년치 거래일로 직접 셉니다.</p>
-              <div class="cabinet-status"><span class="lamp on"></span>검증 완료</div>
+              <div class="cabinet-status"><span class="lamp on"></span>효과 없음<span class="cabinet-kind">검증</span></div>
             </div>
           </a>
         </li>
@@ -116,7 +126,7 @@
             <div class="cabinet-body">
               <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><path d="M4 16H44M4 36H60" fill="none" stroke="#3ce0a8" stroke-width="2" stroke-dasharray="4 3"/><path d="M4 27L12 24L20 30L28 23L36 25L44 18L50 12L56 14L62 6" fill="none" stroke="#f3eeff" stroke-width="2"/><path d="M44 32H50V26H56V24H62" fill="none" stroke="#ff85c0" stroke-width="2"/><rect x="48" y="10" width="5" height="5" fill="#ffd23f"/></svg></div>
               <p class="cabinet-desc">어제까지의 20일 가격 범위를 넘으면 진입하고, 추세를 따라 손절선을 움직입니다.</p>
-              <div class="cabinet-status"><span class="lamp build"></span>백테스트 · 모의 기록</div>
+              <div class="cabinet-status"><span class="lamp build"></span>백테스트·모의<span class="cabinet-kind">매매</span></div>
             </div>
           </a>
         </li>
@@ -127,7 +137,7 @@
             <div class="cabinet-body">
               <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><rect x="6" y="28" width="3" height="8" fill="#3ea1ff"/><rect x="11" y="24" width="3" height="9" fill="#ff4d6d"/><rect x="16" y="20" width="3" height="7" fill="#ff4d6d"/><rect x="21" y="22" width="3" height="6" fill="#3ea1ff"/><rect x="26" y="16" width="3" height="9" fill="#ff4d6d"/><rect x="31" y="14" width="3" height="5" fill="#ff4d6d"/><rect x="36" y="17" width="3" height="6" fill="#3ea1ff"/><rect x="42" y="6" width="1" height="36" fill="#ffd23f"/><rect x="44" y="6" width="16" height="36" fill="#1b1438"/><rect x="48" y="14" width="8" height="2" fill="#ffd23f"/><rect x="54" y="16" width="2" height="6" fill="#ffd23f"/><rect x="50" y="22" width="4" height="2" fill="#ffd23f"/><rect x="50" y="24" width="2" height="4" fill="#ffd23f"/><rect x="50" y="32" width="2" height="2" fill="#ffd23f"/></svg></div>
               <p class="cabinet-desc">이름·날짜를 가린 차트로 5일 뒤를 맞혀 보세요. 다른 기계의 규칙이 힌트를 줍니다.</p>
-              <div class="cabinet-status"><span class="lamp on"></span>플레이 가능</div>
+              <div class="cabinet-status"><span class="lamp on"></span>플레이 가능<span class="cabinet-kind">놀이</span></div>
             </div>
           </a>
         </li>
@@ -138,7 +148,7 @@
             <div class="cabinet-body">
               <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><rect x="24" y="4" width="16" height="4" fill="#ff85c0"/><rect x="22" y="8" width="20" height="36" fill="#3a3170"/><rect x="25" y="11" width="14" height="14" fill="#f3eeff"/><rect x="31" y="13" width="2" height="6" fill="#1b1438"/><rect x="31" y="18" width="5" height="2" fill="#1b1438"/><rect x="27" y="29" width="4" height="5" fill="#ffd23f"/><rect x="33" y="29" width="4" height="5" fill="#1b1438"/><rect x="27" y="36" width="4" height="5" fill="#1b1438"/><rect x="33" y="36" width="4" height="5" fill="#ffd23f"/><rect x="6" y="40" width="3" height="4" fill="#ffd23f"/><rect x="10" y="34" width="3" height="10" fill="#ffd23f"/><rect x="14" y="38" width="3" height="6" fill="#ffd23f"/><rect x="47" y="36" width="3" height="8" fill="#ffd23f"/><rect x="51" y="30" width="3" height="14" fill="#ffd23f"/><rect x="55" y="38" width="3" height="6" fill="#ffd23f"/><rect x="0" y="44" width="64" height="4" fill="#1b1438"/></svg></div>
               <p class="cabinet-desc">비트코인은 한국 시간 몇 시, 무슨 요일에 가장 많이 움직일까? 9년치 1시간봉으로 그린 시간대 지도.</p>
-              <div class="cabinet-status"><span class="lamp on"></span>검증 완료</div>
+              <div class="cabinet-status"><span class="lamp on"></span>시간대만 뚜렷<span class="cabinet-kind">검증</span></div>
             </div>
           </a>
         </li>
@@ -154,6 +164,30 @@
           </div>
         </li>
       </ul>
+    </section>
+
+
+    <section class="section wrap" id="results" aria-labelledby="results-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="results-title">결과 한눈에</h2>
+        <p>기계마다 가장 중요한 결과 한 줄입니다. 2·5번 숫자는 매일 다시 계산되니, 자세한 값은 각 기계에서 보세요. <span class="board-date">2026-10-01 계산 기준</span></p>
+        <ol class="board">
+          <li><span class="board-kind">매매</span><a href="machines/trading-floor.html">TRADING FLOOR</a>
+            <p>AI 13명의 실제 판정 24건을 공개. 24시간 뒤 대조한 코인 19건은 맞음 2 · 빗나감 12 · 움직임 작음 5. 토론을 거쳐도 방향을 잘 맞힌다는 근거는 아직 없습니다.</p></li>
+          <li><span class="board-kind">매매</span><a href="machines/rebound.html">REBOUND 25/200</a>
+            <p>2022년부터 6종목. 200일선 방향 제한을 넣으면 빼는 것보다 손실이 크게 줄었지만, 남는 수익은 대부분 ±3% 안쪽으로 작습니다.</p></li>
+          <li><span class="board-kind">관측</span><a href="machines/kimchi-gauge.html">KIMCHI GAUGE</a>
+            <p>업비트와 바이낸스 비트코인 가격 차이를 실시간으로 재고 시간별로 쌓는 중. 매매 규칙은 기록이 쌓인 뒤 정합니다.</p></li>
+          <li><span class="board-kind">검증</span><a href="machines/foreign-flow.html">FOREIGN FLOW</a>
+            <p>“외국인이 많이 사면 다음 날 오른다” — 14년치로 세 가지 질문을 했고 셋 다 <strong>효과 없음</strong>. 같은 날 함께 움직일 뿐입니다.</p></li>
+          <li><span class="board-kind">매매</span><a href="machines/breakout.html">BREAKOUT 20</a>
+            <p>6종목 중 5종목이 비용을 빼고도 플러스였고, 2025년 이후 따로 떼어 본 구간에서도 방향이 같았습니다. 다만 폭이 작고 종목 수도 적습니다.</p></li>
+          <li><span class="board-kind">놀이</span><a href="machines/blind-chart.html">BLIND CHART</a>
+            <p>지표 상황 48개와 조합 147개 중 두 구간 모두에서 확인된 것은 2개뿐(둘 다 “하루 5% 급등 + 돌파” 뒤 크게 오름 쪽).</p></li>
+          <li><span class="board-kind">검증</span><a href="machines/clock-tower.html">CLOCK TOWER</a>
+            <p>비트코인은 평일 밤 11시(한국, 미국장 개장 무렵)에 평소의 1.6배 출렁입니다. 하지만 시간으로 오를지 내릴지는 알 수 없었습니다.</p></li>
+        </ol>
+      </div>
     </section>
 
     <section class="section wrap" id="rules" aria-labelledby="rules-title">
