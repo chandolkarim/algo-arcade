@@ -1,15 +1,13 @@
 /* CLOCK TOWER — 공통 토큰(style.css)을 그대로 쓴다. */
 
 .machine-title-pink {
-  text-shadow:
-    var(--px) var(--px) 0 var(--pink),
-    calc(var(--px) * 2) calc(var(--px) * 2) 0 var(--ink);
+  text-shadow: none;
 }
 .ct-headline {
   max-width: 40em;
   margin: 20px 0 0;
   padding: 12px 16px;
-  border: 2px solid var(--coin);
+  border: 2px solid var(--accent);
   font-weight: 600;
   color: var(--on-carpet);
 }
@@ -19,14 +17,14 @@
   padding: clamp(14px, 4vw, 28px);
   background: var(--screen);
   color: var(--on-carpet);
-  border: calc(var(--px) * 2) solid var(--ink);
-  box-shadow: 0 0 0 var(--px) var(--pink), calc(var(--px) * 3) calc(var(--px) * 4) 0 var(--px) rgba(0,0,0,.4);
+  border: 1px solid var(--line);
+  box-shadow: 0 0 0 2px var(--accent);
 }
 .ct-metrics { display: flex; flex-wrap: wrap; gap: 8px; }
 .ct-metrics button {
   min-height: 44px;
   padding: 0 14px;
-  border: 2px solid var(--on-carpet-soft);
+  border: 1px solid var(--line);
   background: transparent;
   color: var(--on-carpet);
   font-family: var(--font-pixel);
@@ -64,9 +62,9 @@
   width: 4px; height: 4px;
   transform: translate(-50%, -50%);
   background: var(--on-carpet);
-  box-shadow: 0 0 0 1px var(--ink);
+  box-shadow: 0 0 0 2px var(--accent);
 }
-.ct-cell.is-now { outline: 2px solid var(--coin); outline-offset: 0; z-index: 1; }
+.ct-cell.is-now { outline: 2px solid var(--accent); outline-offset: 0; z-index: 1; }
 .ct-cell.is-picked { box-shadow: inset 0 0 0 2px var(--on-carpet); }
 
 .ct-pick {
@@ -80,14 +78,14 @@
 .ct-pick select {
   min-height: 44px;
   padding: 0 10px;
-  border: 2px solid var(--on-carpet-soft);
+  border: 1px solid var(--line);
   background: var(--panel);
   color: var(--ink);
   font: inherit;
   font-size: 15px;
 }
 .ct-detail { margin-top: 14px; }
-.ct-detail-title { margin: 0 0 8px; font-family: var(--font-pixel); color: var(--coin); }
+.ct-detail-title { margin: 0 0 8px; font-family: var(--font-pixel); color: var(--accent); }
 .ct-detail dl {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -105,7 +103,7 @@
 .ct-chip {
   display: inline-block;
   padding: 0 8px;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--line);
   font-size: 12px;
   color: var(--ink);
   white-space: nowrap;
@@ -129,11 +127,11 @@
 
 /* 요일별 24시간 막대그래프 */
 .ct-day-title { margin: 0 0 10px; font-family: var(--font-pixel); font-size: 18px; color: var(--on-carpet); }
-.ct-week-title { margin-top: 32px; padding-top: 20px; border-top: 2px dashed #3a3170; }
+.ct-week-title { margin-top: 32px; padding-top: 20px; border-top: 1px dashed var(--line); }
 .ct-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
 .ct-days button {
   min-height: 40px;
-  border: 2px solid var(--on-carpet-soft);
+  border: 1px solid var(--line);
   background: transparent;
   color: var(--on-carpet);
   font-family: var(--font-pixel);
@@ -147,4 +145,4 @@
 .ct-bars figcaption { margin-top: 6px; font-size: 13px; color: var(--on-carpet-soft); }
 .ct-bins { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; }
 .ct-bin { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; color: var(--on-carpet); }
-.ct-bin i { display: inline-block; width: 14px; height: 14px; border: 1px solid #000; }
+.ct-bin i { display: inline-block; width: 14px; height: 14px; border: 1px solid var(--line); }

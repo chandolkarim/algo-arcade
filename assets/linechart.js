@@ -14,8 +14,8 @@
     return n;
   };
   const THEME = {
-    dark: { grid: "#302449", ink: "#bfb5ea", strong: "#f3eeff", tipBg: "#1b1438", tipInk: "#f3eeff", zero: "#8f86c0" },
-    light: { grid: "#d1c7e7", ink: "#4a4270", strong: "#1b1438", tipBg: "#1b1438", tipInk: "#f3eeff", zero: "#1b1438" },
+    dark: { grid: "#eef0f3", ink: "#8b95a1", strong: "#191f28", tipBg: "#191f28", tipInk: "#ffffff", zero: "#191f28" },
+    light: { grid: "#eef0f3", ink: "#8b95a1", strong: "#191f28", tipBg: "#191f28", tipInk: "#ffffff", zero: "#191f28" },
   };
   const lastOf = (rows, key) => { for (let i = rows.length - 1; i >= 0; i--) if (Number.isFinite(rows[i][key])) return rows[i][key]; return null; };
 
@@ -108,7 +108,7 @@
       const px = x(idx.get(m.date)), py = y(m.price), s = 7;
       const pts = m.kind === "exit" ? `${px},${py - s} ${px + s},${py} ${px},${py + s} ${px - s},${py}`
         : m.side === 1 ? `${px},${py - s - 1} ${px + s},${py + s - 1} ${px - s},${py + s - 1}` : `${px},${py + s + 1} ${px + s},${py - s + 1} ${px - s},${py - s + 1}`;
-      const p = mk("polygon", { points: pts, fill: m.kind === "exit" ? "#0f0b24" : "#ffd23f", stroke: "#ffd23f", "stroke-width": 2 });
+      const p = mk("polygon", { points: pts, fill: m.kind === "exit" ? "#ffffff" : "#6b4eff", stroke: "#6b4eff", "stroke-width": 2 });
       p.append(mk("title", {}, m.title || ""));
       svg.append(p);
     });
@@ -117,8 +117,8 @@
     const tip = mk("g", { "pointer-events": "none", visibility: "hidden" });
     const vline = mk("line", { y1: top, y2: bottom, stroke: T.strong, "stroke-width": 1, "stroke-dasharray": "3 3" });
     const dots = o.series.map((s) => mk("circle", { r: 4.5, fill: s.color, stroke: T.tipBg, "stroke-width": 2 }));
-    const box = mk("rect", { rx: 0, fill: T.tipBg, stroke: "#ffd23f", "stroke-width": 2 });
-    const lines = [mk("text", { "font-size": 13, "font-weight": 700, fill: "#ffd23f" })]
+    const box = mk("rect", { rx: 10, fill: T.tipBg });
+    const lines = [mk("text", { "font-size": 13, "font-weight": 700, fill: "#b197fc" })]
       .concat(o.series.map(() => mk("text", { "font-size": 13, fill: T.tipInk })));
     tip.append(vline, ...dots, box, ...lines);
     svg.append(tip);

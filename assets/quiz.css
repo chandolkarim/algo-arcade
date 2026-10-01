@@ -1,12 +1,12 @@
 /* 기계마다 '먼저 맞혀 보기' — 밝은 판넬. 빨강·파랑은 오름·내림 보기에만. */
 .qz { padding-bottom: 8px; }
-.qz-box { padding: clamp(18px, 4vw, 32px); border-color: var(--coin); box-shadow: 0 0 0 var(--px) var(--coin), calc(var(--px) * 3) calc(var(--px) * 4) 0 var(--px) rgba(0, 0, 0, .35); }
+.qz-box { padding: clamp(18px, 4vw, 32px); border-color: var(--coin); box-shadow: 0 0 0 2px var(--accent); }
 .qz-eyebrow { margin: 0; font-family: var(--font-pixel); font-size: 13px; color: var(--ink-soft); }
-.qz-eyebrow::before { content: "● "; color: #e09a1a; }
+.qz-eyebrow::before { content: "● "; color: var(--accent); }
 .qz-title { margin: 6px 0 0; font-family: var(--font-pixel); font-size: clamp(21px, 4.4vw, 28px); line-height: 1.3; }
 .qz-body { margin-top: 14px; }
 .qz-kicker { margin: 0; font-family: var(--font-pixel); font-size: 13px; color: var(--ink-soft); }
-.qz-card { padding: 12px 14px; border: 2px dashed var(--ink); background: #fff; }
+.qz-card { padding: 12px 14px; border: 1px dashed var(--line); background: #fff; }
 .qz-card p { margin: 0; }
 .qz-big { margin-top: 4px !important; font-weight: 700; font-size: 17px; }
 .qz-small { margin-top: 4px !important; font-size: 14px; color: var(--ink-soft); }
@@ -15,21 +15,21 @@
 .qz-option {
   min-height: 52px;
   padding: 8px 10px;
-  border: var(--px) solid var(--ink);
+  border: 1px solid var(--line);
   background: var(--panel);
   color: var(--ink);
   font-family: var(--font-pixel);
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: var(--px) var(--px) 0 0 var(--ink);
+  box-shadow: var(--shadow);
 }
 .qz-option.is-up { color: var(--up-ink); }
 .qz-option.is-down { color: var(--down-ink); }
-.qz-option:not(:disabled):hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 var(--ink); }
+.qz-option:not(:disabled):hover { transform: translate(-2px, -2px); box-shadow: var(--shadow); }
 .qz-option:disabled { cursor: default; opacity: .55; box-shadow: none; }
 .qz-option.is-answer { opacity: 1; background: var(--mint); }
-.qz-option.is-picked { opacity: 1; outline: var(--px) solid #e09a1a; outline-offset: 2px; }
+.qz-option.is-picked { opacity: 1; outline: 2px solid var(--accent); outline-offset: 2px; }
 .qz-result p { margin: 10px 0 0; }
 .qz-ok, .qz-miss { font-family: var(--font-pixel); font-size: 18px; }
 .qz-explain { font-size: 15px; }
@@ -50,7 +50,7 @@
   left: 50%; top: 36%;
   transform: translate(-50%, -50%);
   padding: 8px 14px;
-  border: var(--px) solid var(--ink);
+  border: 1px solid var(--line);
   background: var(--coin);
   color: var(--ink);
   font-family: var(--font-pixel);

@@ -23,7 +23,7 @@
 .fd-controls select {
   min-height: 48px;
   padding: 0 12px;
-  border: var(--px) solid var(--ink);
+  border: 1px solid var(--line);
   background: #fff;
   color: var(--ink);
   font: inherit;
@@ -46,7 +46,7 @@
 }
 .fd-stages li {
   padding: 6px 4px;
-  border: 2px solid #c9bfe8;
+  border: 1px solid var(--line);
   font-family: var(--font-pixel);
   font-size: 12px;
   text-align: center;
@@ -70,14 +70,14 @@
 }
 .fd-card {
   padding: 14px 16px;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--line);
   background: #fff;
 }
 .fd-market { background: var(--screen); color: var(--on-carpet); border-color: var(--ink); }
-.fd-market .fd-who { color: var(--coin); }
+.fd-market .fd-who { color: var(--accent); }
 .fd-market .up { color: var(--up); }
 .fd-market .down { color: var(--down); }
-.fd-verdict { box-shadow: 0 0 0 var(--px) var(--coin); }
+.fd-verdict { box-shadow: 0 0 0 2px var(--accent); }
 
 .fd-who {
   display: flex;
@@ -96,7 +96,7 @@
 /* 판정·태도 표시는 시세색을 쓰지 않는다 */
 .fd-chip {
   padding: 0 8px;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--line);
   background: var(--coin);
   font-family: var(--font-pixel);
   font-size: 12px;

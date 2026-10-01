@@ -63,47 +63,47 @@
     const vmax = Math.max(...cs.slice(0, shown).map((x) => x.v));
     const t = (x, yy, s, fill, size = 12, anchor = "middle", weight = 400) =>
       `<text x="${x}" y="${yy}" fill="${fill}" font-size="${size}" font-weight="${weight}" text-anchor="${anchor}" font-family="Galmuri11, monospace">${s}</text>`;
-    let s = `<rect width="${W}" height="${H}" fill="#0f0b24"/>`;
+    let s = `<rect width="${W}" height="${H}" fill="#ffffff"/>`;
     // 가려진(또는 공개된) 5일 자리
-    s += `<rect x="${shown * slot}" y="0" width="${R.horizon * slot}" height="${H - 18}" fill="#1b1438"/>`;
-    if (!reveal) s += t(shown * slot + (R.horizon * slot) / 2, (top + bottom) / 2, "?", "#ffd23f", 18, "middle", 700);
+    s += `<rect x="${shown * slot}" y="0" width="${R.horizon * slot}" height="${H - 18}" fill="#f2f4f6"/>`;
+    if (!reveal) s += t(shown * slot + (R.horizon * slot) / 2, (top + bottom) / 2, "?", "#6b4eff", 18, "middle", 700);
     for (let i = 0; i < n; i++) {
-      const x = cs[i], col = x.c >= x.o ? "#ff4d6d" : "#3ea1ff";
+      const x = cs[i], col = x.c >= x.o ? "#f04452" : "#3182f6";
       const cx = i * slot + slot / 2, bw = Math.max(1.5, slot * 0.64);
       const a = y(Math.max(x.o, x.c)), b = y(Math.min(x.o, x.c));
       s += `<rect x="${(cx - 0.5).toFixed(2)}" y="${y(x.h).toFixed(1)}" width="1" height="${Math.max(1, y(x.l) - y(x.h)).toFixed(1)}" fill="${col}"/>`;
       s += `<rect x="${(cx - bw / 2).toFixed(2)}" y="${a.toFixed(1)}" width="${bw.toFixed(2)}" height="${Math.max(1, b - a).toFixed(1)}" fill="${col}"/>`;
       const vh = Math.max(1, Math.min(VH, (x.v / vmax) * VH));
-      s += `<rect x="${(cx - bw / 2).toFixed(2)}" y="${H - 18 - vh}" width="${bw.toFixed(2)}" height="${vh}" fill="#bfb5ea" opacity="${i >= shown ? ".35" : ".5"}"/>`;
+      s += `<rect x="${(cx - bw / 2).toFixed(2)}" y="${H - 18 - vh}" width="${bw.toFixed(2)}" height="${vh}" fill="#8b95a1" opacity="${i >= shown ? ".35" : ".5"}"/>`;
     }
     const c0 = cs[shown - 1].c, yc = y(c0);
-    s += `<rect x="0" y="${yc.toFixed(1)}" width="${PW}" height="1" fill="#ffd23f" opacity=".7"/>`;
-    s += `<rect x="${shown * slot - 1}" y="0" width="2" height="${H - 18}" fill="#ffd23f"/>`;
-    s += t(4, yc < top + 18 ? yc + 15 : yc - 5, "마지막 종가", "#ffd23f", 11, "start", 700);
-    s += t(shown * slot / 2, H - 4, `${shown}일 · 아래 막대는 거래량`, "#bfb5ea", 11);
-    s += t(shown * slot + (R.horizon * slot) / 2, H - 4, "5일", "#bfb5ea", 11);
+    s += `<rect x="0" y="${yc.toFixed(1)}" width="${PW}" height="1" fill="#6b4eff" opacity=".7"/>`;
+    s += `<rect x="${shown * slot - 1}" y="0" width="2" height="${H - 18}" fill="#6b4eff"/>`;
+    s += t(4, yc < top + 18 ? yc + 15 : yc - 5, "마지막 종가", "#6b4eff", 11, "start", 700);
+    s += t(shown * slot / 2, H - 4, `${shown}일 · 아래 막대는 거래량`, "#8b95a1", 11);
+    s += t(shown * slot + (R.horizon * slot) / 2, H - 4, "5일", "#8b95a1", 11);
 
     // 확대 칸: ±3배 기준 폭을 같은 높이 세 칸으로
     if (band) {
       const zx = PW + 14, zw = W - zx - 2, zt = top + 14, zb = bottom, zh = zb - zt, third = zh / 3, zc = zt + zh / 2;
-      s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${third}" fill="#ff4d6d" opacity=".28"/>`;
-      s += `<rect x="${zx}" y="${zt + third}" width="${zw}" height="${third}" fill="#bfb5ea" opacity=".18"/>`;
-      s += `<rect x="${zx}" y="${zt + 2 * third}" width="${zw}" height="${third}" fill="#3ea1ff" opacity=".28"/>`;
-      s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${zh}" fill="none" stroke="#ffd23f" stroke-width="2"/>`;
-      s += `<path d="M${PW} ${yc.toFixed(1)} L${zx} ${zc.toFixed(1)}" stroke="#ffd23f" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>`;
+      s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${third}" fill="#f04452" opacity=".28"/>`;
+      s += `<rect x="${zx}" y="${zt + third}" width="${zw}" height="${third}" fill="#8b95a1" opacity=".18"/>`;
+      s += `<rect x="${zx}" y="${zt + 2 * third}" width="${zw}" height="${third}" fill="#3182f6" opacity=".28"/>`;
+      s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${zh}" fill="none" stroke="#6b4eff" stroke-width="2"/>`;
+      s += `<path d="M${PW} ${yc.toFixed(1)} L${zx} ${zc.toFixed(1)}" stroke="#6b4eff" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>`;
       const upP = ((Math.exp(band) - 1) * 100).toFixed(1), dnP = ((1 - Math.exp(-band)) * 100).toFixed(1), mid = zx + zw / 2;
-      s += t(mid, zt - 4, "5일 뒤", "#ffd23f", 11, "middle", 700);
-      s += t(mid, zt + third / 2 + 1, "▲ 크게", "#ff8fa3", 12, "middle", 700) + t(mid, zt + third / 2 + 15, `+${upP}%↑`, "#f3eeff", 10);
-      s += t(mid, zc + 4, "━ 횡보", "#f3eeff", 12, "middle", 700);
-      s += t(mid, zt + 2.5 * third + 1, "▼ 크게", "#8cc6ff", 12, "middle", 700) + t(mid, zt + 2.5 * third + 15, `−${dnP}%↓`, "#f3eeff", 10);
+      s += t(mid, zt - 4, "5일 뒤", "#6b4eff", 11, "middle", 700);
+      s += t(mid, zt + third / 2 + 1, "▲ 크게", "#e42939", 12, "middle", 700) + t(mid, zt + third / 2 + 15, `+${upP}%↑`, "#191f28", 10);
+      s += t(mid, zc + 4, "━ 횡보", "#191f28", 12, "middle", 700);
+      s += t(mid, zt + 2.5 * third + 1, "▼ 크게", "#1b64da", 12, "middle", 700) + t(mid, zt + 2.5 * third + 15, `−${dnP}%↓`, "#191f28", 10);
       if (reveal) {
         // 실제로 끝난 곳: 확대 칸 범위(±3배)를 넘으면 끝에 붙이고 화살표
         const r = Math.log(cs[shown - 1 + R.horizon].c / c0);
         const k = Math.max(-1, Math.min(1, r / (3 * band)));
         const ym = zc - k * (zh / 2);
-        s += `<rect x="${zx - 6}" y="${(ym - 2).toFixed(1)}" width="18" height="4" fill="#f3eeff"/>`;
-        s += `<polygon points="${zx + 12},${ym - 6} ${zx + 20},${ym} ${zx + 12},${ym + 6}" fill="#f3eeff"/>`;
-        if (Math.abs(r) > 3 * band) s += t(zx + 4, r > 0 ? ym + 16 : ym - 8, r > 0 ? "↑ 더" : "↓ 더", "#f3eeff", 10, "start", 700);
+        s += `<rect x="${zx - 6}" y="${(ym - 2).toFixed(1)}" width="18" height="4" fill="#191f28"/>`;
+        s += `<polygon points="${zx + 12},${ym - 6} ${zx + 20},${ym} ${zx + 12},${ym + 6}" fill="#191f28"/>`;
+        if (Math.abs(r) > 3 * band) s += t(zx + 4, r > 0 ? ym + 16 : ym - 8, r > 0 ? "↑ 더" : "↓ 더", "#191f28", 10, "start", 700);
       }
     }
     const first = cs[0].c, last = c0;

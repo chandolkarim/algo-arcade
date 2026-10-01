@@ -74,36 +74,36 @@
     const hi = Math.max(...candles.map((x) => x.high)), lo = Math.min(...candles.map((x) => x.low));
     const y = (p) => top + (hi - p) / (hi - lo || 1) * (bottom - top);
     const slot = PW / candles.length;
-    let s = `<rect width="${W}" height="${H}" fill="#0f0b24"/>`;
+    let s = `<rect width="${W}" height="${H}" fill="#ffffff"/>`;
     candles.forEach((x, i) => {
-      const col = x.close >= x.open ? "#ff4d6d" : "#3ea1ff";
+      const col = x.close >= x.open ? "#f04452" : "#3182f6";
       const cx = i * slot + slot / 2, bw = Math.max(1.5, slot * 0.62);
       const a = y(Math.max(x.open, x.close)), b = y(Math.min(x.open, x.close));
       s += `<rect x="${(cx - 0.5).toFixed(2)}" y="${y(x.high).toFixed(1)}" width="1" height="${Math.max(1, y(x.low) - y(x.high)).toFixed(1)}" fill="${col}"/>`;
       s += `<rect x="${(cx - bw / 2).toFixed(2)}" y="${a.toFixed(1)}" width="${bw.toFixed(2)}" height="${Math.max(1, b - a).toFixed(1)}" fill="${col}"/>`;
     });
     const yc = y(round.close);
-    s += `<rect x="0" y="${yc.toFixed(1)}" width="${PW}" height="1" fill="#ffd23f" opacity=".6"/>`;
-    s += t(4, yc < top + 20 ? yc + 16 : yc - 6, `오늘 ${usd(round.close)}`, "#ffd23f", 12, "start", "700");
+    s += `<rect x="0" y="${yc.toFixed(1)}" width="${PW}" height="1" fill="#6b4eff" opacity=".6"/>`;
+    s += t(4, yc < top + 20 ? yc + 16 : yc - 6, `오늘 ${usd(round.close)}`, "#6b4eff", 12, "start", "700");
 
     // 확대 칸: 위·가운데·아래가 같은 높이(±3배 기준 폭)
     const zx = PW + 22, zw = W - zx - 2, zt = top + 16, zb = bottom, zh = zb - zt;
     const third = zh / 3;
-    s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${third}" fill="#ff4d6d" opacity=".28"/>`;
-    s += `<rect x="${zx}" y="${zt + third}" width="${zw}" height="${third}" fill="#bfb5ea" opacity=".18"/>`;
-    s += `<rect x="${zx}" y="${zt + 2 * third}" width="${zw}" height="${third}" fill="#3ea1ff" opacity=".28"/>`;
-    s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${zh}" fill="none" stroke="#ffd23f" stroke-width="2"/>`;
+    s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${third}" fill="#f04452" opacity=".28"/>`;
+    s += `<rect x="${zx}" y="${zt + third}" width="${zw}" height="${third}" fill="#8b95a1" opacity=".18"/>`;
+    s += `<rect x="${zx}" y="${zt + 2 * third}" width="${zw}" height="${third}" fill="#3182f6" opacity=".28"/>`;
+    s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${zh}" fill="none" stroke="#6b4eff" stroke-width="2"/>`;
     const zc = zt + zh / 2;
     // 오늘 종가에서 확대 칸 가운데로 잇는 점선
-    s += `<path d="M${PW} ${yc.toFixed(1)} L${zx} ${zc.toFixed(1)}" stroke="#ffd23f" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>`;
-    s += `<rect x="${zx}" y="${zc}" width="${zw}" height="1" fill="#ffd23f"/>`;
+    s += `<path d="M${PW} ${yc.toFixed(1)} L${zx} ${zc.toFixed(1)}" stroke="#6b4eff" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>`;
+    s += `<rect x="${zx}" y="${zc}" width="${zw}" height="1" fill="#6b4eff"/>`;
     const upP = ((Math.exp(round.band) - 1) * 100).toFixed(1), dnP = ((1 - Math.exp(-round.band)) * 100).toFixed(1);
     const mid = zx + zw / 2;
-    s += t(mid, zt + third / 2 + 1, "▲ 크게", "#ff8fa3", 13, "middle", "700") + t(mid, zt + third / 2 + 16, `+${upP}% 넘게`, "#f3eeff", 10);
-    s += t(mid, zc - 6, "━ 횡보", "#f3eeff", 13, "middle", "700") + t(mid, zc + 15, "그 사이", "#bfb5ea", 10);
-    s += t(mid, zt + 2.5 * third + 1, "▼ 크게", "#8cc6ff", 13, "middle", "700") + t(mid, zt + 2.5 * third + 16, `−${dnP}% 넘게`, "#f3eeff", 10);
-    s += t(mid, zt - 5, "내일 9시", "#ffd23f", 11, "middle", "700");
-    s += t(PW / 2, H - 4, `최근 ${candles.length}일`, "#bfb5ea", 11);
+    s += t(mid, zt + third / 2 + 1, "▲ 크게", "#e42939", 13, "middle", "700") + t(mid, zt + third / 2 + 16, `+${upP}% 넘게`, "#191f28", 10);
+    s += t(mid, zc - 6, "━ 횡보", "#191f28", 13, "middle", "700") + t(mid, zc + 15, "그 사이", "#8b95a1", 10);
+    s += t(mid, zt + 2.5 * third + 1, "▼ 크게", "#1b64da", 13, "middle", "700") + t(mid, zt + 2.5 * third + 16, `−${dnP}% 넘게`, "#191f28", 10);
+    s += t(mid, zt - 5, "내일 9시", "#6b4eff", 11, "middle", "700");
+    s += t(PW / 2, H - 4, `최근 ${candles.length}일`, "#8b95a1", 11);
 
     const first = candles[0].close, chg = ((round.close / first - 1) * 100).toFixed(1);
     const label = `비트코인 최근 ${candles.length}일 일봉, 60일 전보다 ${chg}%. 오늘 오전 9시 종가 ${usd(round.close)}. ` +

@@ -1,0 +1,93 @@
+/* 첫 화면 — 모던 핀테크 구성: 한 문장 소개 → 오늘의 한 판 → 알고리즘 카드 → 만든 사람 */
+.home-hero { padding: clamp(40px, 8vw, 88px) 0 8px; }
+.home-eyebrow { margin: 0 0 10px; font-size: 15px; font-weight: 700; color: var(--accent); }
+.home-hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 6vw, 52px);
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+.home-lead { max-width: 34em; margin: 16px 0 0; font-size: clamp(16px, 2.2vw, 19px); color: var(--ink-soft); }
+.home-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.home-stats li { padding: 16px; border-radius: 18px; background: #fff; box-shadow: var(--shadow); }
+.home-stats b { display: block; font-size: clamp(24px, 5vw, 34px); font-weight: 800; letter-spacing: -0.03em; }
+.home-stats span { display: block; margin-top: 2px; font-size: 13px; line-height: 1.45; color: var(--ink-soft); }
+
+.home-head p { margin: 6px 0 0; color: var(--ink-soft); }
+.home-date { margin-left: 4px; font-size: 13px; color: var(--on-carpet-soft); white-space: nowrap; }
+
+/* 알고리즘 카드 */
+.mc-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 14px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.mc {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  padding: 22px;
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.mc:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0, 0, 0, .05), 0 12px 28px rgba(0, 0, 0, .08); }
+.mc:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .mc { transition: none; } .mc:hover { transform: none; } }
+.mc-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mc-kind { padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+.k-trade { background: #fff0f6; color: #a61e4d; }
+.k-test { background: var(--accent-soft); color: #5f3dc4; }
+.k-game { background: #fff9db; color: #8f6200; }
+.k-watch { background: #e6fcf5; color: #087f5b; }
+.mc-en { font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--on-carpet-soft); }
+.mc-name { margin-top: 6px; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.mc-q { color: var(--ink-soft); font-size: 15px; }
+.mc-result { margin-top: 10px; padding: 14px 16px; border-radius: 14px; background: var(--soft); }
+.mc-result b { display: block; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
+.mc-result span { display: block; margin-top: 2px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+.mc-more { margin-top: auto; padding-top: 10px; font-size: 14px; font-weight: 700; color: var(--accent); }
+
+/* 만든 사람 */
+.about-card { display: grid; gap: 28px; grid-template-columns: 1fr; }
+@media (min-width: 820px) { .about-card { grid-template-columns: 1.2fr 1fr; } }
+.about-card .section-title { margin-bottom: 8px; }
+.about-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+.about-tags li { padding: 4px 12px; border-radius: 999px; background: var(--soft); font-size: 14px; font-weight: 600; color: var(--ink-soft); }
+.about-mail { margin: 10px 0 0; font-size: 14px; color: var(--on-carpet-soft); overflow-wrap: anywhere; }
+.about-rules { padding: 20px; border-radius: 16px; background: var(--soft); }
+.about-rules h3 { margin: 0 0 8px; font-size: 17px; font-weight: 800; }
+.about-rules ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-soft); }
+.about-rules li + li { margin-top: 6px; }
+
+@media (max-width: 420px) {
+  .home-stats li { padding: 12px; }
+  .site-nav a { font-size: 14px; padding: 6px 6px; }
+}
+
+/* 기계 페이지 머리 — 첫 화면 카드와 같은 틀 */
+.machine-hero { padding: clamp(24px, 6vw, 56px) 0 8px; }
+.mh-top { display: flex; align-items: center; gap: 10px; margin: 18px 0 0; }
+.mh-title { margin: 10px 0 0; font-size: clamp(28px, 6vw, 44px); line-height: 1.25; font-weight: 800; letter-spacing: -0.035em; }
+.mh-q { max-width: 34em; margin: 10px 0 0; font-size: clamp(17px, 2.4vw, 20px); color: var(--ink-soft); }
+.mh-result { max-width: 34em; margin: 20px 0 0; padding: 18px 20px; border-radius: 18px; background: #fff; box-shadow: var(--shadow); }
+.mh-result b { display: block; font-size: clamp(26px, 5vw, 34px); font-weight: 800; letter-spacing: -0.03em; }
+.mh-result span { display: block; margin-top: 4px; font-size: 15px; color: var(--ink-soft); }
+.mh-meta { margin: 12px 0 0; font-size: 13px; color: var(--on-carpet-soft); }

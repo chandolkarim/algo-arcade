@@ -7,11 +7,11 @@
   padding: clamp(16px, 4vw, 32px);
   background: var(--screen);
   color: var(--on-carpet);
-  border: calc(var(--px) * 2) solid var(--ink);
-  box-shadow: 0 0 0 var(--px) var(--coin), calc(var(--px) * 3) calc(var(--px) * 4) 0 var(--px) rgba(0, 0, 0, .4);
+  border: 1px solid var(--line);
+  box-shadow: 0 0 0 2px var(--accent);
 }
 .ar-screen :focus-visible { outline-color: var(--coin); }
-.ar-eyebrow { margin: 0; font-family: var(--font-pixel); font-size: 14px; color: var(--coin); }
+.ar-eyebrow { margin: 0; font-family: var(--font-pixel); font-size: 14px; color: var(--accent); }
 .ar-eyebrow #ar-round { margin-left: 6px; color: var(--on-carpet-soft); }
 .ar-coin { animation: ar-blink 1.2s steps(1) infinite; }
 @keyframes ar-blink { 50% { opacity: 0; } }
@@ -21,10 +21,10 @@
   font-family: var(--font-pixel);
   font-size: clamp(26px, 5vw, 40px);
   line-height: 1.25;
-  text-shadow: var(--px) var(--px) 0 var(--ink);
+  text-shadow: none;
 }
 .ar-question { margin: 12px 0 0; font-size: 17px; max-width: 36em; }
-.ar-question b { color: var(--coin); font-weight: 700; }
+.ar-question b { color: var(--accent); font-weight: 700; }
 .ar-question .up { color: var(--up); font-weight: 700; }
 .ar-question .down { color: var(--down); font-weight: 700; }
 
@@ -41,20 +41,20 @@
 .ar-choice {
   min-height: 64px;
   padding: 6px 4px;
-  border: var(--px) solid var(--ink);
+  border: 1px solid var(--line);
   background: var(--panel);
   color: var(--ink);
   font-family: var(--font-pixel);
   font-weight: 700;
   font-size: clamp(15px, 3.6vw, 19px);
   cursor: pointer;
-  box-shadow: var(--px) var(--px) 0 0 #000;
+  box-shadow: var(--shadow);
 }
 .ar-choice.is-up { color: var(--up-ink); }
 .ar-choice.is-down { color: var(--down-ink); }
-.ar-choice:not(:disabled):hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 #000; }
+.ar-choice:not(:disabled):hover { transform: translate(-2px, -2px); box-shadow: var(--shadow); }
 .ar-choice:disabled { cursor: default; opacity: .55; box-shadow: none; }
-.ar-choice.is-picked { opacity: 1; outline: var(--px) solid var(--coin); outline-offset: 2px; }
+.ar-choice.is-picked { opacity: 1; outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .ar-name { display: grid; gap: 6px; margin-top: 16px; }
 .ar-name label { font-family: var(--font-pixel); font-size: 14px; }
@@ -63,15 +63,15 @@
   max-width: 16em;
   min-height: 44px;
   padding: 0 12px;
-  border: var(--px) solid var(--ink);
+  border: 1px solid var(--line);
   background: var(--panel);
   color: var(--ink);
   font: 16px var(--font-body);
 }
 .ar-status { min-height: 1.6em; margin: 12px 0 0; font-size: 15px; color: var(--on-carpet-soft); }
-.ar-status b { color: var(--coin); }
+.ar-status b { color: var(--accent); }
 
-.ar-after { margin-top: 16px; padding-top: 16px; border-top: 2px dashed #3a3170; }
+.ar-after { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--line); }
 .ar-after h3 { margin: 0; font-family: var(--font-pixel); font-size: 17px; }
 .ar-picks { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
 .ar-picks li {
@@ -80,7 +80,7 @@
   align-items: baseline;
   gap: 4px 10px;
   padding: 8px 10px;
-  border: 2px solid #3a3170;
+  border: 1px solid var(--line);
   font-size: 15px;
 }
 .ar-picks .who { font-family: var(--font-pixel); font-weight: 700; }
@@ -90,7 +90,7 @@
 .ar-picks .rate { width: 100%; font-size: 13px; color: var(--on-carpet-soft); }
 .ar-picks li.is-me { border-color: var(--coin); }
 .ar-crowd { margin: 12px 0 0; font-size: 15px; }
-.ar-bar { display: flex; height: 18px; margin-top: 6px; border: 2px solid var(--ink); background: #2a2350; }
+.ar-bar { display: flex; height: 18px; margin-top: 6px; border: 1px solid var(--line); background: #2a2350; }
 .ar-bar span { display: block; height: 100%; }
 .ar-bar .up { background: var(--up); }
 .ar-bar .flat { background: var(--on-carpet-soft); }
@@ -106,20 +106,20 @@
 .ar-last .up { color: var(--up-ink); font-weight: 700; }
 .ar-last .down { color: var(--down-ink); font-weight: 700; }
 .ar-marks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; padding: 0; list-style: none; }
-.ar-marks li { padding: 2px 8px; border: 2px solid var(--ink); font-size: 13px; }
+.ar-marks li { padding: 2px 8px; border: 1px solid var(--line); font-size: 13px; }
 .ar-marks li.hit { background: var(--mint); }
 .ar-marks li.miss { background: #fff; color: var(--ink-soft); }
-.ar-marks li.is-me { outline: 2px solid var(--coin); outline-offset: 1px; font-weight: 700; }
+.ar-marks li.is-me { outline: 2px solid var(--accent); outline-offset: 1px; font-weight: 700; }
 
 .ar-table-wrap { overflow-x: auto; }
 .ar-table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
-.ar-table th, .ar-table td { padding: 10px 8px; border-bottom: 1px solid #c9bfe8; text-align: right; white-space: nowrap; }
+.ar-table th, .ar-table td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
 .ar-table th:first-child, .ar-table td:first-child { text-align: left; white-space: normal; }
 .ar-table .kind {
   display: inline-block;
   margin-right: 6px;
   padding: 0 5px;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--line);
   font-family: var(--font-pixel);
   font-size: 11px;
   vertical-align: 1px;
@@ -134,8 +134,8 @@
 .ar-long li { display: grid; grid-template-columns: minmax(0, 1fr) 4.5em; gap: 4px 10px; align-items: center; font-size: 14px; }
 .ar-long .name { grid-column: 1 / -1; display: flex; gap: 8px; align-items: baseline; }
 .ar-long .name b { font-family: var(--font-pixel); }
-.ar-long .boss { padding: 0 6px; border: 2px solid var(--ink); background: var(--coin); font-family: var(--font-pixel); font-size: 11px; }
-.ar-long .track { position: relative; height: 16px; border: 2px solid var(--ink); background: #fff; }
+.ar-long .boss { padding: 0 6px; border: 1px solid var(--line); background: var(--coin); font-family: var(--font-pixel); font-size: 11px; }
+.ar-long .track { position: relative; height: 16px; border: 1px solid var(--line); background: #fff; }
 .ar-long .fill { position: absolute; inset: 0 auto 0 0; background: var(--ink-soft); }
 .ar-long .coin { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }
 .ar-long .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }

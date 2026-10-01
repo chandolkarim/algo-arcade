@@ -68,9 +68,9 @@
     chart("bo-price-chart", {
       rows: shown, height: 300, theme: "dark", legend: $("bo-price-legend"), markers: events, segmentKey: "segment",
       label: `${asset.name} 최근 ${shown.length}일 종가와 당일 봉을 뺀 20일 범위, 선택한 기록의 모의 체결과 손절선`,
-      band: { lo: "lower", hi: "upper", color: "#3ce0a8", label: "20일 범위(벽)" },
-      series: [{ key: "close", label: "종가", color: "#f3eeff", width: 3 },
-               { key: "stop", label: "손절선", color: "#ff85c0", width: 2.5, dash: "6 4", segmented: true }],
+      band: { lo: "lower", hi: "upper", color: "#12b886", label: "20일 범위(벽)" },
+      series: [{ key: "close", label: "종가", color: "#191f28", width: 3 },
+               { key: "stop", label: "손절선", color: "#d6336c", width: 2.5, dash: "6 4", segmented: true }],
     });
     const L = asset.latest;
     $("bo-price-say").textContent = L.signal === "long" ? "종가가 어제까지의 20일 최고가(벽 위쪽)를 넘었습니다. 다음 시가가 여전히 위면 롱 진입." :
@@ -106,7 +106,7 @@
     chart("bo-equity-chart", {
       rows: equity, height: 250, theme: "light", zero: true, yfmt: signedPct, legend: $("bo-equity-legend"),
       label: "선택 구간 계좌 누적 수익률(%)",
-      series: [{ key: "return_pct", label: "계좌", color: "#1b1438", width: 3.5 }],
+      series: [{ key: "return_pct", label: "계좌", color: "#191f28", width: 3.5 }],
     });
     $("bo-equity-say").textContent = `이 구간 계좌는 ${signedPct(result.return_pct)}, 가장 깊이 빠졌을 때 고점 대비 −${result.max_drawdown_pct.toFixed(1)}%. ` +
       (result.win_rate != null && result.win_rate < 50 && result.return_pct > 0

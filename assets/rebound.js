@@ -87,7 +87,7 @@
       chart("rb-equity-chart", {
         rows: points, height: 250, theme: "light", zero: true, yfmt: signedPct, legend: $("rb-equity-legend"),
         label: "200일선 적용 여부에 따른 계좌 누적 수익률(%)",
-        series: [{ key: "filtered", label: "200일선 적용", color: "#1b1438", width: 3.5 },
+        series: [{ key: "filtered", label: "200일선 적용", color: "#191f28", width: 3.5 },
                  { key: "baseline", label: "미적용", color: "#d6589a", width: 2.5, dash: "7 4" }],
       });
       const diff = result.return_pct - base.return_pct;
@@ -139,9 +139,9 @@
     chart("rb-price-chart", {
       rows, height: 290, theme: "dark", legend: $("rb-price-legend"),
       label: `${asset.name} 최근 ${rows.length}일 종가와 25·200일 이동평균선, ${asset.currency} 기준`,
-      series: [{ key: "close", label: "종가", color: "#f3eeff", width: 3 },
-               { key: "sma25", label: "25일선", color: "#ff85c0", width: 2.5, dash: "8 5" },
-               { key: "sma200", label: "200일선", color: "#ffd23f", width: 2.5, dash: "3 4" }],
+      series: [{ key: "close", label: "종가", color: "#191f28", width: 3 },
+               { key: "sma25", label: "25일선", color: "#d6336c", width: 2.5, dash: "8 5" },
+               { key: "sma200", label: "200일선", color: "#f59f00", width: 2.5, dash: "3 4" }],
     });
     const gap25 = (r.close / r.sma25 - 1) * 100, gap200 = (r.close / r.sma200 - 1) * 100;
     $("rb-price-say").textContent = `종가는 25일선보다 ${signedPct(gap25)}, 200일선보다 ${signedPct(gap200)}. ` +
