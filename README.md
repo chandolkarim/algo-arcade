@@ -19,7 +19,7 @@
 - 파일: `index.html`(입구·결과 한눈에·이용 수칙·소개·문의), `machines/*.html`(기계별 상세 7개), `assets/`(CSS·JS·글꼴·공유 이미지), `data/`(계산 결과), `404.html`
 - 로컬 확인: 저장소를 Clone한 뒤 `index.html`을 브라우저로 연다. 서버로 보려면 `python3 -m http.server 8765` 후 `http://localhost:8765/`
 - 계산 다시 하기: 아래 “기계별 설명”의 명령
-- 테스트(8묶음 111개): `for d in foreign-flow rebound records kimchi breakout blind clock arena; do python3 -m unittest discover -s $d -p 'test_*.py'; done`
+- 테스트(8묶음 112개): `for d in foreign-flow rebound records kimchi breakout blind clock arena; do python3 -m unittest discover -s $d -p 'test_*.py'; done`
 - 반영: Stage → `git diff --cached` 확인 → Commit → Push → Actions 실행 결과 → 공개 URL 확인
 - 자동화: `.github/workflows/site.yml` (아래 “자동화” 참고)
 
@@ -40,7 +40,7 @@
 | 가로 넘침 | 2026-10-01, 로컬, 390px, 9개 페이지(입구·기계 7·404) | 넘침 없음 |
 | Tab 이동 위치 | 로컬, 키보드 Tab | 어두운 바탕 노란 테두리, 밝은 판넬 진한 테두리 보임 |
 | 메뉴 링크 | 2026-10-01, 전 페이지 메뉴·앵커·스크립트가 찾는 요소 | 모두 존재 |
-| 테스트 | 2026-10-01, 로컬 | 8묶음 111개 통과 (foreign-flow 13 · rebound 21 · records 9 · kimchi 11 · breakout 22 · blind 15 · clock 7 · arena 13) |
+| 테스트 | 2026-10-01, 로컬 | 8묶음 112개 통과 (foreign-flow 13 · rebound 21 · records 9 · kimchi 11 · breakout 22 · blind 15 · clock 7 · arena 14) |
 | 오늘의 한 판 투표 연결 | 2026-10-01, 시험 표(회차 2000-01-01) 1건을 폼으로 전송 | 시트에 바로 들어옴, 집계에서는 투표 시간 밖이라 건너뜀(공개 파일에 방문자 번호 없음) |
 | 오늘의 한 판 | 2026-10-01, 로컬 390px | 고르기 → 기계 선택 공개 → 브라우저 저장 확인. 가짜 투표 55표로 지난 회차·순위·군중 막대 표시 확인 후 실제 자료로 되돌림 |
 | 1번 데모 재생 | 로컬, BTC·ETH 실시간 시세 / 네트워크 차단 시 | 끝까지 재생 / 합성 데이터로 재생하며 실패 안내 |
@@ -217,7 +217,7 @@ python3 -m unittest discover -s clock -p 'test_*.py' -v
 
 | 작업 | 하는 일 |
 |---|---|
-| test | 8개 폴더의 파이썬 테스트(111개), 화면 스크립트 문법 검사. 실패하면 배포하지 않음 |
+| test | 8개 폴더의 파이썬 테스트(112개), 화면 스크립트 문법 검사. 실패하면 배포하지 않음 |
 | build | 플레이 기록(시트 검사), 김프 기록 1건 추가, 오늘의 한 판(투표 집계), 6번 상황 통계, 7번 시간대 지도·2·5번 백테스트(하루 한 번), 공개 파일만 `_site`로 모음 |
 | deploy | GitHub Pages에 게시 |
 

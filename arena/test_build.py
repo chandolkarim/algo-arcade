@@ -127,7 +127,8 @@ class BuildTest(unittest.TestCase):
     def test_board_and_privacy(self):
         closes = walk(320, seed=7)
         bars = bars_from(closes, start="2025-11-01")
-        cfg = {**CFG, "start": bars[300]["date"]}
+        cfg = {**CFG, "start": bars[300]["date"],
+               "form": {"action": "", "entries": {"round": "", "choice": "", "nickname": "", "visitor": ""}}}
         votes = []
         for i in range(300, 319):
             rid = bars[i]["date"]
@@ -144,6 +145,15 @@ class BuildTest(unittest.TestCase):
         flat = next(p for p in out["players"] if p["key"] == "flat")
         self.assertEqual(out["board"][0]["hit"], flat["hit"])   # 늘 횡보를 고른 사람 = 늘 횡보 기계
         self.assertIsNone(out["form"])                          # 폼 연결 전
+
+    def test_form_only_when_complete(self):
+        bars = bars_from(walk(260))
+        full = {"action": "https://docs.google.com/forms/d/e/x/formResponse",
+                "entries": {"round": "entry.1", "choice": "entry.2", "nickname": "entry.3", "visitor": "entry.4"}}
+        out = build.build(bars, [], set(), {**CFG, "form": full})
+        self.assertEqual(out["form"]["entries"]["visitor"], "entry.4")
+        half = {**full, "entries": {**full["entries"], "visitor": ""}}
+        self.assertIsNone(build.build(bars, [], set(), {**CFG, "form": half})["form"])
 
 
 if __name__ == "__main__":
