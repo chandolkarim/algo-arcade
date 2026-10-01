@@ -133,6 +133,18 @@ python3 blind/build.py
 python3 -m unittest discover -s blind -p 'test_*.py' -v
 ```
 
+### 7번 CLOCK TOWER
+비트코인이 한국 시간 몇 시, 무슨 요일에 많이 움직이는지 바이낸스 1시간봉(2017-08 ~, 약 8만 개)을 요일 7 × 시각 24 = 168칸으로 나눠 셉니다. 기준(`clock/config.json`)은 결과 계산 전에 고정했습니다.
+
+- 칸마다 출렁임(|등락| 평균), 평균 등락, 오른 비율을 “평소”(같은 구간 전체 평균)와 비교하고, 2023년 전·후 두 구간 모두 같은 쪽이면 “검증됨”.
+- 2026-10-01 계산: 출렁임은 168칸 중 44칸 검증됨(평일 23시 = 미국장 개장 무렵이 평소의 약 1.5~1.6배, 주말 낮이 가장 조용). 평균 등락 0칸, 오른 비율 1칸 — 언제 움직이는지는 뚜렷하지만 방향은 시간으로 알 수 없음.
+- 공개 파일에는 168칸 요약만 담습니다. Actions에서는 하루 한 번만 다시 계산합니다.
+
+```bash
+python3 clock/build.py
+python3 -m unittest discover -s clock -p 'test_*.py' -v
+```
+
 ## 자동화
 
 `.github/workflows/site.yml` — Pages Source는 **GitHub Actions**입니다.
