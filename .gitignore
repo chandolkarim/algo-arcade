@@ -24,3 +24,6 @@ foreign-flow/raw/
 
 # FOREIGN FLOW 코스피 시세 캐시 (다시 받을 수 있음)
 foreign-flow/cache/
+
+# 5번 원본 공개 시세 캐시
+breakout/cache/

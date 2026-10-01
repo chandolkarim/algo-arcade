@@ -1,0 +1,50 @@
+{
+  "started_at": "2026-10-01T00:52:41.596769+00:00",
+  "first_trade_date": "2026-10-02",
+  "anchor_date": "2026-09-30",
+  "rules_hash": "cb575692a83cba61fd7af2ceee66882ad978ff735c9d5d9c92055185ef0a549e",
+  "last_row": {
+    "date": "2026-09-30",
+    "open": 2676.94,
+    "high": 2738.0,
+    "low": 2656.23,
+    "close": 2684.68,
+    "funding": [
+      {
+        "rate": 6.622e-05,
+        "mark": 2676.94,
+        "mark_proxy": false,
+        "at_open": true
+      },
+      {
+        "rate": 5.437e-05,
+        "mark": 2673.54,
+        "mark_proxy": false,
+        "at_open": false
+      },
+      {
+        "rate": 3.478e-05,
+        "mark": 2682.37683721,
+        "mark_proxy": false,
+        "at_open": false
+      }
+    ],
+    "upper": 2806.76,
+    "lower": 2357.0,
+    "atr": 94.00514365953426
+  },
+  "account": {
+    "balance": 10000.0,
+    "position": null,
+    "trades": [],
+    "curve": [
+      {
+        "date": "2026-09-30",
+        "equity": 10000.0
+      }
+    ],
+    "last_date": "2026-09-30",
+    "cancellations": 0
+  },
+  "observations": []
+}

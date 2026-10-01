@@ -17,7 +17,10 @@ from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 import xml.etree.ElementTree as ET
 
-from engine import Rules, advance, backtest, describe, indicators, new_account, summary
+if __package__:
+    from .engine import Rules, advance, backtest, describe, indicators, new_account, summary
+else:
+    from engine import Rules, advance, backtest, describe, indicators, new_account, summary
 
 ROOT = Path(__file__).resolve().parent.parent
 HERE = ROOT / "rebound"

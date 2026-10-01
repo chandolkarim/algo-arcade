@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BREAKOUT · 5번 기계 · 알고리즘 오락실</title>
+  <meta name="description" content="어제까지의 20일 가격 범위를 넘으면 추세를 따라가는 일봉 돌파 실험. 실제 데이터 백테스트와 등록 이후 모의 기록.">
+  <link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/breakout.css">
+</head>
+<body class="breakout-page">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header"><div class="wrap"><a class="logo" href="../index.html"><span class="logo-coin" data-scene="coin"></span>알고리즘 오락실</a>
+    <nav class="site-nav" aria-label="5번 기계 안내"><ul><li><a href="#monitor">관측</a></li><li><a href="#results">기록</a></li><li><a href="#rules">규칙</a></li><li><a href="#sources">출처</a></li></ul></nav>
+  </div></header>
+  <main id="main">
+    <section class="machine-hero wrap" aria-labelledby="machine-title">
+      <a class="back-link" href="../index.html#machines">◀ 기계들로 돌아가기</a>
+      <p class="bo-eyebrow">MACHINE 05 <span>20-DAY CHANNEL · ATR TRAILING STOP</span></p>
+      <h1 class="machine-title" id="machine-title">BREAKOUT <span>20</span></h1>
+      <p class="machine-lead">어제까지의 벽을 넘으면,<br>새로 시작된 흐름을 따라갑니다.</p>
+      <p class="bo-intro">최근 20일의 최고·최저가를 종가로 돌파하면 다음 시가에 진입합니다.<br>추세가 이어지면 손절선도 따라 움직입니다. 코인·주식 일봉으로 검증하는 5번 기계입니다.</p>
+      <ul class="tags" aria-label="기계 상태"><li>20일 범위 돌파</li><li>2 ATR 추적 손절</li><li>백테스트 · 모의 기록</li></ul>
+    </section>
+
+    <section class="section wrap" id="monitor" aria-labelledby="monitor-title">
+      <div class="bo-section-head"><div><p class="bo-eyebrow">01 / WATCH THE WALL</p><h2 class="section-title" id="monitor-title">돌파를 기다리는 중</h2></div><p class="bo-caption">마지막 수집 시점의 확정 일봉</p></div>
+      <p id="bo-global-status" class="bo-notice" role="status">저장된 관측 데이터를 불러오는 중입니다.</p>
+      <noscript><p class="bo-notice">차트·기록 표시는 JavaScript가 필요합니다. 아래의 규칙과 출처는 그대로 읽을 수 있습니다. <a href="../data/breakout.json">계산 결과 JSON 보기</a></p></noscript>
+      <div class="bo-controls"><label for="bo-asset">관찰 종목</label><select id="bo-asset" disabled><option>데이터 준비 중</option></select><span id="bo-market" class="bo-caption"></span></div>
+      <p id="bo-asset-status" class="bo-notice" hidden></p>
+      <div id="bo-monitor-content" hidden><div class="bo-terminal">
+        <div class="bo-terminal-head"><h3 id="bo-symbol-title"></h3><span id="bo-date"></span></div>
+        <div class="bo-signal-line"><span id="bo-signal" class="bo-signal"></span><p id="bo-reason"></p></div>
+        <div class="bo-meter-grid"><div><span>확정 종가</span><strong id="bo-price"></strong></div><div><span>직전 20일 최고가</span><strong id="bo-upper"></strong></div><div><span>직전 20일 최저가</span><strong id="bo-lower"></strong></div><div><span>평소 변동폭 · ATR14</span><strong id="bo-atr"></strong></div></div>
+        <p id="bo-live-position" class="bo-caption"></p>
+        <div class="bo-chart-head"><h3>가격은 벽을 넘었을까?</h3><div class="bo-legend"><span class="legend-price">― 종가</span><span class="legend-fast">┄ 상단</span><span class="legend-slow">··· 하단</span><span class="bo-legend-stop">┄ 손절선</span></div></div>
+        <svg id="bo-price-chart" class="bo-chart" viewBox="0 0 960 320" role="img" aria-label="가격과 20일 범위, 모의 거래와 추적 손절선"></svg>
+        <p id="bo-chart-range" class="bo-caption"></p>
+        <p class="bo-caption">△ 롱 진입 · ▽ 숏 진입 · ◇ 청산. 손절선은 해당 봉에 실제 적용한 값입니다. 거래 표시는 아래에서 선택한 기록 구간을 따릅니다.</p>
+        <details class="bo-values"><summary>최근 10개 봉의 숫자 보기</summary><div class="bo-table-scroll" tabindex="0" role="region" aria-label="최근 가격과 돌파 기준"><table><thead><tr><th>날짜</th><th>종가</th><th>20일 상단</th><th>20일 하단</th></tr></thead><tbody id="bo-values"></tbody></table></div></details>
+      </div></div>
+    </section>
+
+    <section class="section wrap" id="results" aria-labelledby="results-title">
+      <div class="bo-section-head"><div><p class="bo-eyebrow">02 / RIDE & RECORD</p><h2 class="section-title" id="results-title">얼마나 오래 따라갔을까?</h2></div><p class="bo-caption">종목별 독립 모의계좌</p></div>
+      <div class="panel px-box bo-results">
+        <div class="bo-result-controls"><label for="bo-period">기록 구간</label><select id="bo-period"><option value="backtest">전체 과거 백테스트</option><option value="holdout">최근 구간 별도 검증 · 2025년부터</option><option value="paper">등록 이후 모의 기록</option></select></div>
+        <p id="bo-result-note">계산 결과를 기다리고 있습니다.</p>
+        <div id="bo-result-content" hidden>
+          <div class="bo-stats"><div><span>계좌 수익률</span><strong id="bo-return"></strong></div><div><span>최대 낙폭 · 종가 기준</span><strong id="bo-dd"></strong></div><div><span>청산한 거래</span><strong id="bo-count"></strong></div><div><span>비용 차감 후 승률</span><strong id="bo-win"></strong></div></div>
+          <div class="bo-average-grid"><div><span>수익 거래의 평균 순이익</span><strong id="bo-average-win"></strong></div><div><span>손실 거래의 평균 순손실</span><strong id="bo-average-loss"></strong></div><div><span>청산 거래의 평균 보유</span><strong id="bo-average-bars"></strong></div></div>
+          <p id="bo-position" class="bo-position"></p>
+          <h3>계좌의 경로</h3><svg id="bo-equity-chart" class="bo-chart" viewBox="0 0 960 230" role="img" aria-label="계좌 누적 수익률"></svg>
+          <p class="bo-small">누적 수익률(%)에는 미청산 포지션의 종가 평가손익을 포함합니다. 미래 청산 비용은 포함하지 않습니다.</p>
+          <div class="bo-table-scroll" tabindex="0" role="region" aria-label="방향별 성적"><table><thead><tr><th>방향</th><th>청산 거래</th><th>승률</th><th>확정 순손익</th></tr></thead><tbody id="bo-sides"></tbody></table></div>
+          <h3>최근 청산 기록</h3><p class="bo-small">최근 20건. 전체 기록은 아래 JSON에서 확인할 수 있습니다.</p>
+          <div class="bo-table-scroll" tabindex="0" role="region" aria-label="거래 내역"><table><thead><tr><th>진입 → 청산</th><th>방향</th><th>진입가 → 청산가</th><th>보유 봉</th><th>청산 이유</th><th>순손익</th></tr></thead><tbody id="bo-trades"></tbody></table></div>
+        </div>
+        <p id="bo-cost-note" class="bo-small"></p>
+        <p class="bo-small">고정한 설정으로 수행한 탐색적 검증입니다. 최근 구간도 과거 데이터이며, 선정한 6개 종목의 결과가 전체 시장이나 미래 성과를 대표하지 않습니다.</p>
+        <a class="bo-download" href="../data/breakout.json" download>전체 계산 결과 내려받기 · JSON ↓</a>
+      </div>
+    </section>
+
+    <section class="section wrap" id="rules" aria-labelledby="rules-title">
+      <div class="bo-section-head"><div><p class="bo-eyebrow">03 / INSIDE THE MACHINE</p><h2 class="section-title" id="rules-title">규칙은 이렇게 작동해요</h2></div><p class="bo-caption">VERSION 1.0 · 일봉</p></div>
+      <div class="bo-rule-grid">
+        <article class="panel px-box"><span class="bo-rule-number">01</span><h3>어제까지의 벽</h3><p>신호 당일을 제외한 직전 20개 봉의 고가 중 최댓값, 저가 중 최솟값으로 범위를 만듭니다. 오늘 종가가 상단을 넘으면 롱, 하단을 깨면 숏 후보입니다. 선에 닿기만 하면 대기합니다.</p></article>
+        <article class="panel px-box"><span class="bo-rule-number">02</span><h3>다음 시가에 확인</h3><p>다음 봉 시가가 여전히 신호일 기준선 바깥일 때 진입합니다. 다시 범위 안으로 돌아오거나 기준선에 닿으면 취소합니다. 최초 손절은 진입가에서 신호일 ATR의 2배 거리입니다.</p></article>
+        <article class="panel px-box"><span class="bo-rule-number">03</span><h3>흐름을 따라 손절선 이동</h3><p>롱은 최고 종가에서 2 ATR 아래, 숏은 최저 종가에서 2 ATR 위로 손절선을 조정합니다. 거리는 신호일 ATR로 고정하고 손절선은 이익을 보호하는 방향으로만 움직입니다.</p></article>
+      </div>
+      <div class="panel px-box bo-method"><h3>오늘의 기록은, 어제의 기록과 비교합니다</h3>
+        <div class="bo-lesson"><article><p>어제까지 20일 최고가</p><strong>100</strong><p>오늘 고가 105 · 오늘 종가 103</p></article><article><p>오늘의 돌파 판정</p><strong>103 &gt; 100</strong><p>상단 돌파 → 다음 시가 진입 후보</p></article></div>
+        <p class="bo-proof">오늘 고가 105를 기준에 넣지 않습니다. 이미 알고 있는 어제까지의 범위와 오늘 확정된 종가를 비교합니다.</p>
+        <ul>
+          <li>당일 종가로 갱신한 손절선은 다음 봉부터 적용합니다. 장중 손절 판단에는 그날 시작 전에 정해진 손절선만 사용합니다.</li>
+          <li>손절가를 건너뛰는 갭이 발생하면 시가로 청산하고 불리한 슬리피지를 반영합니다. 고정 익절가와 최대 보유일 제한은 없습니다.</li>
+          <li>종목당 한 포지션. 물타기·추가 진입 없이, 청산 당일에는 재진입하지 않습니다. 손절이 발생한 뒤 다음 날부터 새로운 조건을 확인합니다.</li>
+          <li>각 종목은 독립 계좌입니다. 초기 USD·USDT 10,000 / KRW 1,000만, 거래당 계획 손실 0.5%, 진입 시 노출 100% 이내입니다. 갭·보유 비용은 계획 손실을 초과할 수 있습니다.</li>
+          <li>편도 수수료 가정: 코인 0.05%, 주식 0.10%. 편도 슬리피지 0.05%. 주식 숏은 차입 가능 가정과 연 5% 차입료를 적용하며 세금·차입 제한·최소 수량·실제 증거금 규칙은 미반영입니다.</li>
+          <li>주식 배당과 선물 펀딩 이력을 반영합니다. 과거 펀딩 기준 가격이 없으면 일봉 시가로 추정하고, 손절일에는 시각을 알 수 없어 펀딩 지출만 반영합니다.</li>
+          <li>모의 장부는 등록 다음 현지 날짜부터 진입합니다. 수동 갱신 때 새 확정 봉을 처리하며, 등록 전 거래를 소급해 성과로 넣지 않습니다. 실제 주문은 없습니다.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="section wrap" id="sources" aria-labelledby="sources-title"><div class="panel px-box bo-origin">
+      <p class="bo-eyebrow">04 / RESEARCH NOTES</p><h2 class="section-title" id="sources-title">배경과 데이터 출처</h2>
+      <p>가격 범위를 돌파하는 움직임을 따라가는 추세 추종 아이디어를 일봉 규칙으로 구현했습니다. 20일 범위, 2 ATR 손절, 비용·자금 설정은 이 프로젝트의 실험 조건입니다.</p>
+      <ul class="bo-sources">
+        <li><a href="https://www.aqr.com/insights/research/journal-article/time-series-momentum">추세 추종 관련 연구 — Time Series Momentum</a><span>전략 계열의 연구 배경입니다. 해당 논문과 이 기계의 구체적인 규칙·성과는 다릅니다.</span></li>
+        <li><a href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/atr">ATR 지표 — Fidelity</a></li>
+        <li><a href="https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Kline-Candlestick-Data">선물 일봉</a> · <a href="https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Get-Funding-Rate-History">펀딩 이력 — Binance</a><span>UTC 일봉. 종료된 봉만 사용합니다.</span></li>
+        <li><a href="https://finance.yahoo.com/">주식 일봉·배당 — Yahoo Finance</a> · <a href="https://finance.naver.com/">한국 주식 오류 일봉 보완 — NAVER 금융</a><span>주식은 거래소 현지 날짜보다 앞선 봉만 사용합니다. 누락·오류 보완 날짜는 종목별 설명에 남깁니다.</span></li>
+      </ul>
+    </div></section>
+  </main>
+  <footer class="site-footer"><div class="wrap"><p>BREAKOUT 20 · 연구용 백테스트와 모의 기록. 실제 주문은 발생하지 않습니다.</p><p>© 2026 정찬민 · 픽셀 글꼴: 갈무리 · <a href="../index.html#machines">오락실 입구로</a></p></div></footer>
+  <script src="../assets/script.js"></script><script src="../data/breakout-data.js"></script><script src="../assets/breakout.js?v=1.0.0"></script>
+</body>
+</html>
