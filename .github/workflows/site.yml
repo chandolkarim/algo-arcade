@@ -42,6 +42,10 @@ jobs:
         run: python -m unittest discover -s records -p 'test_*.py' -v
       - name: 3번 김프 기록 테스트
         run: python -m unittest discover -s kimchi -p 'test_*.py' -v
+      - name: 5번 BREAKOUT 20 엔진 테스트
+        run: python -m unittest discover -s breakout -p 'test_*.py' -v
+      - name: 6번 BLIND CHART 계산 테스트 (미래 데이터 누수 검사 포함)
+        run: python -m unittest discover -s blind -p 'test_*.py' -v
       - name: 화면 스크립트 문법 검사
         run: for f in assets/*.js; do node --check "$f"; done
 
@@ -59,6 +63,8 @@ jobs:
         run: python records/build.py
       - name: 3번 김프 기록 1건 추가 (배포된 기록을 이어 받음)
         run: python kimchi/record.py --previous "https://chandolkarim.github.io/algo-arcade/data/kimchi-history.json"
+      - name: 6번 BLIND CHART 상황 통계·문제 목록 갱신 (실패하면 저장소에 있는 이전 결과 사용)
+        run: python blind/build.py || echo "::warning::BLIND CHART 갱신 실패 — 이전 결과로 배포"
       - name: 공개할 파일만 모으기
         run: |
           mkdir _site

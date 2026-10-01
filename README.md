@@ -120,6 +120,19 @@ python3 foreign-flow/build.py
 python3 -m unittest discover -s foreign-flow -p 'test_*.py' -v
 ```
 
+### 6번 BLIND CHART
+코인 이름과 날짜를 가린 실제 일봉 차트(BTC·ETH·SOL·XRP)를 보고 5일 뒤를 크게 오름 / 횡보 / 크게 내림 중에서 맞히는 게임입니다. 기준(`blind/config.json`)은 결과 계산 전에 고정했습니다.
+
+- 문제는 상황 52개(이동평균, RSI, 볼린저밴드, MACD, 최고·최저가, 연속, 급변, 거래량 등) 중 하나가 **막 생긴 날**에서만 나옵니다. 모두 그날까지의 자료로만 계산합니다(테스트로 검사).
+- '크게'의 기준 = 그 차트의 최근 20일 하루 변동 폭 × √5 × 0.5.
+- 상황별 과거 결과를 힌트로 보여 줍니다. 2022년까지(설계)와 2023년 이후(검증) 모두 같은 쪽으로 뚜렷해야 “검증됨”. 2026-10-01 계산: 상황 50개 + 조합 187개 중 검증됨 5개.
+- 차트는 방문자 브라우저가 바이낸스 공개 일봉을 직접 받습니다. 점수는 그 브라우저에만 저장합니다.
+
+```bash
+python3 blind/build.py
+python3 -m unittest discover -s blind -p 'test_*.py' -v
+```
+
 ## 자동화
 
 `.github/workflows/site.yml` — Pages Source는 **GitHub Actions**입니다.
@@ -189,3 +202,16 @@ python3 -m unittest discover -s foreign-flow -p 'test_*.py' -v
 1. `machines/trading-floor.html`을 복사해 `machines/새이름.html`로 만든다.
 2. 제목, 설명, 진행 순서, 기록을 바꾼다. 확인하지 않은 수치는 넣지 않는다.
 3. `index.html`에서 빈자리 `<div class="cabinet">`을 `<a class="cabinet" href="machines/새이름.html">`로 바꾸고 상태를 고친다.
+
+
+## 5번 기계 · BREAKOUT 20
+
+직전 20개 봉의 최고·최저가를 종가로 돌파하면 다음 시가에 진입합니다. 신호 당일 봉은 범위에서 제외하고, 2 ATR 추적 손절은 종가 확인 후 다음 봉부터 갱신합니다.
+
+- 상세 페이지: `machines/breakout.html`. 입구의 5번 기계에서 연결됩니다.
+- 데이터 갱신: `python3 breakout/update.py`
+- 단위 테스트: `python3 -m unittest discover -s breakout -p 'test_*.py' -v`
+- 6개 종목의 전체·최근 백테스트와 등록 이후 모의 장부를 분리합니다.
+- 공개 시세 수집 함수를 2번과 공유하고, 매매 엔진·설정·결과·장부는 5번 전용으로 관리합니다.
+- 자동 갱신·공개 배포·실제 주문은 연결하지 않았습니다.
+- 세부 규칙·비용·한계·출처: `breakout/README.md`. `breakout/paper/`는 보존해야 합니다.
