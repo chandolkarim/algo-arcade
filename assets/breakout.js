@@ -4,7 +4,10 @@
   const $ = (id) => document.getElementById(id);
   const data = window.BREAKOUT_DATA;
   const num = (n, digits = 2) => Number.isFinite(n) ? n.toLocaleString("ko-KR", { maximumFractionDigits: digits, minimumFractionDigits: digits }) : "—";
-  const pct = (n) => Number.isFinite(n) ? `${n > 0 ? "▲ +" : n < 0 ? "▼ " : ""}${num(n)}%` : "—";
+  // 한국 관례: 오름(+) 빨강 ▲, 내림(−) 파랑 ▼. 기호를 함께 써서 색만으로 구분하지 않는다.
+  const pct = (n) => Number.isFinite(n) ? `${n > 0 ? "▲ +" : n < 0 ? "▼ −" : ""}${num(Math.abs(n))}%` : "—";
+  const money = (n, currency) => Number.isFinite(n) ? `${n > 0 ? "▲ +" : n < 0 ? "▼ −" : ""}${num(Math.abs(n))} ${currency}` : "—";
+  const tone = (n) => n > 0 ? "bo-positive" : n < 0 ? "bo-negative" : "";
   const reasons = { stop: "최초 손절", trailing_stop: "추적 손절", gap_stop: "갭 손절" };
   const sideLabel = (side) => side === 1 ? "롱" : "숏";
   const svgNS = "http://www.w3.org/2000/svg";
@@ -18,7 +21,7 @@
   const tableRow = (values) => { const tr = document.createElement("tr"); values.forEach((v) => tr.append(cell(v))); return tr; };
   const signed = (id, value) => {
     $(id).textContent = pct(value);
-    $(id).className = value > 0 ? "bo-positive" : value < 0 ? "bo-negative" : "";
+    $(id).className = tone(value);
   };
   function chart(id, rows, series, height, light, label, events = []) {
     const svg = $(id);
@@ -76,7 +79,7 @@
   }
   const generated = new Date(data.generated_at);
   const staleSnapshot = Date.now() - generated.getTime() > 72*3600000;
-  $("bo-global-status").textContent = `${staleSnapshot ? "오래된 저장 결과입니다. " : ""}마지막 계산: ${generated.toLocaleString("ko-KR", {timeZone:"Asia/Seoul"})} (한국 시간). ${data.mode === "offline" ? "저장 원본으로 재계산. " : ""}자동 갱신은 아직 연결되지 않았습니다. 현재 시세와 다를 수 있습니다.`;
+  $("bo-global-status").textContent = `${staleSnapshot ? "오래된 저장 결과입니다. " : ""}마지막 계산: ${generated.toLocaleString("ko-KR", {timeZone:"Asia/Seoul"})} (한국 시간). ${data.mode === "offline" ? "저장된 원본으로 재계산했습니다. " : ""}${data.automatic_refresh ? "GitHub Actions가 하루 한 번 다시 계산하고, 실패한 종목은 이전 결과를 그대로 둡니다." : "내 컴퓨터에서 계산해 올린 결과입니다."} 현재 시세와 다를 수 있습니다.`;
   const selector = $("bo-asset");
   selector.replaceChildren();
   for (const a of data.assets) {
@@ -127,22 +130,25 @@
     $("bo-dd").textContent = `${num(result.max_drawdown_pct)}%`;
     $("bo-count").textContent = `${result.count}건`;
     $("bo-win").textContent = result.win_rate === null ? "표본 없음" : `${num(result.win_rate,1)}%`;
-    $("bo-average-win").textContent = result.average_win === null ? "표본 없음" : `${num(result.average_win)} ${currency}`;
-    $("bo-average-loss").textContent = result.average_loss === null ? "표본 없음" : `${num(result.average_loss)} ${currency}`;
+    $("bo-average-win").textContent = result.average_win === null ? "표본 없음" : money(result.average_win, currency);
+    $("bo-average-loss").textContent = result.average_loss === null ? "표본 없음" : money(result.average_loss, currency);
     $("bo-average-bars").textContent = result.average_bars === null ? "표본 없음" : `${num(result.average_bars,1)}개 봉`;
     $("bo-position").textContent = `${period === "paper" ? "모의 장부" : "백테스트 종료 시점"}: ${positionText(result.position,currency)} · 진입 취소 ${result.cancellations}건`;
     const equity = result.curve.map(r=>({date:r.date,return_pct:(r.equity/result.initial-1)*100}));
     chart("bo-equity-chart",equity,[{key:"return_pct",color:"#22644f"}],230,true,"선택 구간 계좌 누적 수익률 (%)");
     $("bo-sides").replaceChildren(...["long","short"].map(side=>{
       const s = result.sides[side];
-      return tableRow([side === "long" ? "롱" : "숏",`${s.count}건`,s.win_rate === null ? "표본 없음" : `${num(s.win_rate,1)}%`,`${num(s.net)} ${currency}`]);
+      const tr = tableRow([side === "long" ? "롱" : "숏",`${s.count}건`,s.win_rate === null ? "표본 없음" : `${num(s.win_rate,1)}%`,money(s.net, currency)]);
+      tr.lastChild.className = tone(s.net);
+      return tr;
     }));
     const trades = result.trades.slice(-20).reverse();
     $("bo-trades").replaceChildren();
     if (!trades.length) {const tr=tableRow(["아직 청산한 거래가 없습니다."]);tr.firstChild.colSpan=6;$("bo-trades").append(tr);}
     for (const t of trades) {
-      const tr=tableRow([`${t.entry_date} → ${t.exit_date}`,sideLabel(t.side),`${num(t.entry)} → ${num(t.exit)}`,`${t.bars}개`,reasons[t.reason] || t.reason,`${t.net > 0 ? "▲ +" : t.net < 0 ? "▼ " : ""}${num(t.net)} ${currency}`]);
-      tr.lastChild.className=t.net>0 ? "bo-positive" : t.net<0 ? "bo-negative" : "";
+      // 좁은 화면에서도 손익이 먼저 보이게 순손익을 두 번째 열에 둔다
+      const tr=tableRow([`${t.entry_date} → ${t.exit_date}`,money(t.net, currency),sideLabel(t.side),`${t.bars}개`,reasons[t.reason] || t.reason,`${num(t.entry)} → ${num(t.exit)}`]);
+      tr.children[1].className=tone(t.net);
       $("bo-trades").append(tr);
     }
     renderPrice(asset,result);
@@ -155,7 +161,7 @@
     $("bo-market").textContent=`${a.market === "crypto" ? "코인 무기한 선물" : "주식 · 공매도 가정 포함"} / ${a.currency}`;
     const stale=a.end && Date.now()-new Date(a.end+"T00:00:00Z").getTime() > (a.market === "crypto" ? 3:8)*86400000;
     $("bo-asset-status").hidden=a.status === "ok" && !stale;
-    $("bo-asset-status").textContent=a.status === "error" ? "시세 수집에 실패했습니다. 해당 종목의 결과는 표시하지 않습니다." : "갱신되지 않은 이전 결과입니다. 표시된 기준일을 확인해 주세요.";
+    $("bo-asset-status").textContent=a.status === "error" ? "시세 수집에 실패했습니다. 해당 종목의 결과는 표시하지 않습니다." : (a.market === "crypto" && a.status === "stale" ? "코인 선물 시세는 GitHub 서버(미국)에서 받을 수 없어, 마지막으로 내 컴퓨터에서 계산한 결과를 보여 줍니다. 표시된 기준일을 확인해 주세요." : "갱신되지 않은 이전 결과입니다. 표시된 기준일을 확인해 주세요.");
     if (!a.latest) {renderResults();return;}
     const r=a.latest;
     $("bo-symbol-title").textContent=`${a.name} / ${a.symbol}`;

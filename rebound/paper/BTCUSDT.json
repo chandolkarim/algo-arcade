@@ -3,34 +3,34 @@
   "anchor_date": "2026-09-29",
   "rules_hash": "649eff9b0202d8ecb986fb8fe33efb97e0de99aecbef9a4bcab0ff1d939e324a",
   "last_row": {
-    "date": "2026-09-29",
-    "open": 83461.1,
-    "high": 84554.9,
-    "low": 82724.3,
-    "close": 83624.5,
+    "date": "2026-09-30",
+    "open": 83624.5,
+    "high": 85632.7,
+    "low": 82901.3,
+    "close": 83576.9,
     "funding": [
       {
-        "rate": 3.836e-05,
-        "mark": 83461.0,
+        "rate": 7.697e-05,
+        "mark": 83624.5,
         "mark_proxy": false,
         "at_open": true
       },
       {
-        "rate": 6.798e-05,
-        "mark": 83949.59453523,
+        "rate": -2.44e-06,
+        "mark": 83259.62923913,
         "mark_proxy": false,
         "at_open": false
       },
       {
-        "rate": 1.399e-05,
-        "mark": 83039.3,
+        "rate": 6.606e-05,
+        "mark": 84104.8,
         "mark_proxy": false,
         "at_open": false
       }
     ],
-    "sma25": 80585.01200000002,
-    "sma200": 71204.13199999998,
-    "atr": 2256.980703982702
+    "sma25": 80736.18,
+    "sma200": 71266.14449999998,
+    "atr": 2290.8677965553657
   },
   "account": {
     "balance": 10000.0,
@@ -40,10 +40,48 @@
       {
         "date": "2026-09-29",
         "equity": 10000.0
+      },
+      {
+        "date": "2026-09-30",
+        "equity": 10000.0
       }
     ],
-    "last_date": "2026-09-29",
+    "last_date": "2026-09-30",
     "cancellations": 0
   },
-  "observations": []
+  "observations": [
+    {
+      "observed_at": "2026-10-01T04:21:09.010092+00:00",
+      "bar": {
+        "date": "2026-09-30",
+        "open": 83624.5,
+        "high": 85632.7,
+        "low": 82901.3,
+        "close": 83576.9,
+        "funding": [
+          {
+            "rate": 7.697e-05,
+            "mark": 83624.5,
+            "mark_proxy": false,
+            "at_open": true
+          },
+          {
+            "rate": -2.44e-06,
+            "mark": 83259.62923913,
+            "mark_proxy": false,
+            "at_open": false
+          },
+          {
+            "rate": 6.606e-05,
+            "mark": 84104.8,
+            "mark_proxy": false,
+            "at_open": false
+          }
+        ],
+        "sma25": 80736.18,
+        "sma200": 71266.14449999998,
+        "atr": 2290.8677965553657
+      }
+    }
+  ]
 }

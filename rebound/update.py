@@ -45,6 +45,24 @@ def fetch(url):
             time.sleep(attempt + 1)
 
 
+def load_deployed(url, version, out_json, out_js, var):
+    """--previous: 배포된 결과를 읽는다. 오늘(UTC) 같은 버전으로 이미 계산했으면 그대로 써서 True.
+    읽은 결과는 실패한 종목의 이전 값으로도 쓴다(저장소 파일보다 최신)."""
+    try:
+        prev = fetch(f"{url}?t={int(time.time())}")
+    except Exception as exc:
+        print(f"warning: deployed snapshot unavailable ({exc})", file=sys.stderr)
+        return None, False
+    today = datetime.now(UTC).date().isoformat()
+    if prev.get("generated_at", "")[:10] == today and prev.get("version") == version and prev.get("assets"):
+        write_json(out_json, prev)
+        text = f"window.{var} = " + json.dumps(prev, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c") + ";\n"
+        out_js.write_text(text, encoding="utf-8")
+        print(f"오늘 이미 계산한 결과를 그대로 씀 ({prev['generated_at']})")
+        return prev, True
+    return prev, False
+
+
 def milliseconds(day):
     return int(datetime.fromisoformat(day).replace(tzinfo=UTC).timestamp() * 1000)
 
@@ -219,15 +237,22 @@ def paper_update(path, rows, rules, asset, now, offline):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--offline", action="store_true", help="Rebuild from saved public data without advancing paper accounts")
+    parser.add_argument("--previous", help="Deployed rebound.json URL (Actions): reuse today's result, keep it for failed assets")
     args = parser.parse_args()
     now = datetime.now(UTC)
     config = json.loads((HERE / "config.json").read_text(encoding="utf-8"))
+    deployed = None
+    if args.previous:
+        deployed, done = load_deployed(args.previous, Rules().version, ROOT / "data" / "rebound.json",
+                                       ROOT / "data" / "rebound-data.js", "REBOUND_DATA")
+        if done:
+            return 0
     snapshot = {"schema": 1, "version": Rules().version, "generated_at": now.isoformat(),
-                "mode": "offline" if args.offline else "online", "automatic_refresh": False,
+                "mode": "offline" if args.offline else "online", "automatic_refresh": bool(args.previous),
                 "backtest_start": config["backtest_start"], "holdout_start": config["holdout_start"],
                 "rules": asdict(Rules()), "assets": []}
     previous_path = ROOT / "data" / "rebound.json"
-    previous = json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else {"assets": []}
+    previous = deployed or (json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else {"assets": []})
     failures = []
     warmup = (datetime.fromisoformat(config["backtest_start"]) - timedelta(days=400)).date().isoformat()
     for asset in config["assets"]:
@@ -269,7 +294,8 @@ def main():
             failures.append(f"{symbol}: {exc}")
             old = next((a for a in previous["assets"] if a["symbol"] == symbol), None)
             if old and old.get("latest"):
-                item = {**old, "status": "stale", "error": str(exc), "failed_at": now.isoformat()}
+                item = {**old, "status": "stale", "error": str(exc), "failed_at": now.isoformat(),
+                        "stale_since": old.get("stale_since") or old.get("fetched_at")}
             else:
                 item.update(status="error", error=str(exc))
             print(f"{symbol}: ERROR {exc}", file=sys.stderr, flush=True)

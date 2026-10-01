@@ -4,7 +4,10 @@
   const $ = (id) => document.getElementById(id);
   const data = window.REBOUND_DATA;
   const num = (n, digits = 2) => Number.isFinite(n) ? n.toLocaleString("ko-KR", { maximumFractionDigits: digits, minimumFractionDigits: digits }) : "—";
-  const pct = (n) => Number.isFinite(n) ? `${n > 0 ? "▲ +" : n < 0 ? "▼ " : ""}${num(n)}%` : "—";
+  // 한국 관례: 오름(+) 빨강 ▲, 내림(−) 파랑 ▼. 기호를 함께 써서 색만으로 구분하지 않는다.
+  const pct = (n) => Number.isFinite(n) ? `${n > 0 ? "▲ +" : n < 0 ? "▼ −" : ""}${num(Math.abs(n))}%` : "—";
+  const money = (n, currency) => Number.isFinite(n) ? `${n > 0 ? "▲ +" : n < 0 ? "▼ −" : ""}${num(Math.abs(n))} ${currency}` : "—";
+  const tone = (n) => n > 0 ? "rb-positive" : n < 0 ? "rb-negative" : "";
   const reasons = { mean: "25일선 복귀", trend: "200일선 이탈", timeout: "10개 봉 경과", stop: "손절", gap_stop: "갭 손절" };
   const sideLabel = (side) => side === 1 ? "롱" : "숏";
   const svgNS = "http://www.w3.org/2000/svg";
@@ -18,7 +21,7 @@
   const tableRow = (values) => { const tr = document.createElement("tr"); values.forEach((v) => tr.append(cell(v))); return tr; };
   const signed = (id, value) => {
     $(id).textContent = pct(value);
-    $(id).className = value > 0 ? "rb-positive" : value < 0 ? "rb-negative" : "";
+    $(id).className = tone(value);
   };
   function chart(id, rows, series, height, light, label) {
     const svg = $(id);
@@ -63,7 +66,7 @@
   const generated = new Date(data.generated_at);
   const oldSnapshot = (Date.now() - generated.getTime()) > 72 * 3600000;
   const updateDate = Number.isFinite(generated.getTime()) ? generated.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }) : "시각 확인 불가";
-  $("rb-global-status").textContent = `${oldSnapshot ? "오래된 저장 결과입니다. " : ""}마지막 계산: ${updateDate} (한국 시간). ${data.mode === "offline" ? "저장된 원본으로 재계산했습니다. " : ""}자동 갱신은 아직 연결되지 않았습니다. 현재 시세와 다를 수 있습니다.`;
+  $("rb-global-status").textContent = `${oldSnapshot ? "오래된 저장 결과입니다. " : ""}마지막 계산: ${updateDate} (한국 시간). ${data.mode === "offline" ? "저장된 원본으로 재계산했습니다. " : ""}${data.automatic_refresh ? "GitHub Actions가 하루 한 번 다시 계산하고, 실패한 종목은 이전 결과를 그대로 둡니다." : "내 컴퓨터에서 계산해 올린 결과입니다."} 현재 시세와 다를 수 있습니다.`;
   const selector = $("rb-asset");
   selector.replaceChildren();
   for (const asset of data.assets) {
@@ -111,7 +114,9 @@
     }
     $("rb-sides").replaceChildren(...["long", "short"].map((side) => {
       const s = result.sides[side];
-      return tableRow([side === "long" ? "롱" : "숏", `${s.count}건`, s.win_rate === null ? "표본 없음" : `${num(s.win_rate, 1)}%`, `${num(s.net)} ${currency}`]);
+      const tr = tableRow([side === "long" ? "롱" : "숏", `${s.count}건`, s.win_rate === null ? "표본 없음" : `${num(s.win_rate, 1)}%`, money(s.net, currency)]);
+      tr.lastChild.className = tone(s.net);
+      return tr;
     }));
     const trades = result.trades.slice(-20).reverse();
     $("rb-trades").replaceChildren();
@@ -120,8 +125,9 @@
       tr.firstChild.colSpan = 5; $("rb-trades").append(tr);
     }
     for (const t of trades) {
-      const tr = tableRow([`${t.entry_date} → ${t.exit_date}`, sideLabel(t.side), `${num(t.entry)} → ${num(t.exit)}`, reasons[t.reason] || t.reason, `${t.net > 0 ? "▲ +" : t.net < 0 ? "▼ " : ""}${num(t.net)} ${currency}`]);
-      tr.lastChild.className = t.net > 0 ? "rb-positive" : t.net < 0 ? "rb-negative" : "";
+      // 좁은 화면에서도 손익이 먼저 보이게 순손익을 두 번째 열에 둔다
+      const tr = tableRow([`${t.entry_date} → ${t.exit_date}`, money(t.net, currency), sideLabel(t.side), reasons[t.reason] || t.reason, `${num(t.entry)} → ${num(t.exit)}`]);
+      tr.children[1].className = tone(t.net);
       $("rb-trades").append(tr);
     }
   }
@@ -135,7 +141,7 @@
     const status = $("rb-asset-status");
     const stale = asset.end && (Date.now() - new Date(asset.end + "T00:00:00Z").getTime()) > (asset.market === "crypto" ? 3 : 8) * 86400000;
     status.hidden = asset.status === "ok" && !stale;
-    status.textContent = asset.status === "error" ? "시세 수집에 실패했습니다. 이 종목의 결과는 표시하지 않습니다." : "갱신되지 않은 이전 결과입니다. 표시된 기준일을 확인해 주세요.";
+    status.textContent = asset.status === "error" ? "시세 수집에 실패했습니다. 이 종목의 결과는 표시하지 않습니다." : (asset.market === "crypto" && asset.status === "stale" ? "코인 선물 시세는 GitHub 서버(미국)에서 받을 수 없어, 마지막으로 내 컴퓨터에서 계산한 결과를 보여 줍니다. 표시된 기준일을 확인해 주세요." : "갱신되지 않은 이전 결과입니다. 표시된 기준일을 확인해 주세요.");
     if (!asset.latest) { renderResults(); return; }
     const r = asset.latest;
     $("rb-symbol-title").textContent = `${asset.name} / ${asset.symbol}`;

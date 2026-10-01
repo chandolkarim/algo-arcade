@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>REBOUND 25/200 · 알고리즘 오락실</title>
   <meta name="description" content="BNF의 25일선 괴리율 매매에서 착안한 연구. 200일선으로 방향을 정하고 ATR로 되돌림을 기다리는 모의투자 기계.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="REBOUND 25/200 · 알고리즘 오락실">
+  <meta property="og:description" content="BNF의 25일선 괴리율 매매에서 착안한 연구. 200일선으로 방향을 정하고 ATR로 되돌림을 기다리는 모의투자 기계.">
+  <meta property="og:url" content="https://chandolkarim.github.io/algo-arcade/machines/rebound.html">
+  <meta property="og:image" content="https://chandolkarim.github.io/algo-arcade/assets/og.png">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="stylesheet" href="../assets/rebound.css">
 </head>
@@ -14,22 +22,22 @@
     <a class="logo" href="../index.html"><span class="logo-coin" data-scene="coin"></span>알고리즘 오락실</a>
     <nav class="site-nav" aria-label="2번 기계 안내"><ul>
       <li><a href="#monitor">관측</a></li><li><a href="#results">기록</a></li>
-      <li><a href="#rules">규칙</a></li><li><a href="#origin">아이디어</a></li>
+      <li><a href="#rules">규칙</a></li><li><a href="#contact">문의</a></li>
     </ul></nav>
   </div></header>
   <main id="main">
     <section class="machine-hero wrap" aria-labelledby="machine-title">
       <a class="back-link" href="../index.html#machines">◀ 기계들로 돌아가기</a>
-      <div class="rb-eyebrow">MACHINE 02 <span>DAILY · RULE BASED</span></div>
+      <div class="rb-eyebrow">2번 기계 <span>일봉 · 규칙 기반</span></div>
       <h1 class="machine-title" id="machine-title">REBOUND <span>25/200</span></h1>
       <p class="machine-lead">큰 흐름을 따라,<br>잠깐 멀어진 가격의 되돌림을 기다립니다.</p>
       <p class="rb-intro">200일선은 방향을, 25일선은 진입 위치를 정합니다.<br>코인과 주식의 일봉을 같은 규칙으로 관찰하는 모의투자 실험입니다.</p>
       <ul class="tags" aria-label="기계 상태"><li>실제 일봉으로 계산</li><li>백테스트 + 모의 기록</li><li>실제 주문 없음</li></ul>
-      <p class="rb-credit">IDEA CREDIT · 일본 개인투자자 <a href="#origin">BNF의 25일선 괴리율 매매</a>에서 착안</p>
+      <p class="rb-credit">아이디어 출처 · 일본 개인투자자 <a href="#origin">BNF의 25일선 괴리율 매매</a>에서 착안</p>
     </section>
 
     <section class="section wrap" id="monitor" aria-labelledby="monitor-title">
-      <div class="rb-section-head"><div><p class="rb-eyebrow">01 / OBSERVATORY</p><h2 class="section-title" id="monitor-title">기계가 보고 있는 것</h2></div>
+      <div class="rb-section-head"><div><p class="rb-eyebrow">01 / 관측</p><h2 class="section-title" id="monitor-title">기계가 보고 있는 것</h2></div>
         <p class="rb-caption">마지막으로 수집한 확정 일봉 기준</p></div>
       <p id="rb-global-status" class="rb-notice" role="status">저장된 관측 데이터를 불러오는 중입니다.</p>
       <noscript><p class="rb-notice">종목별 차트와 기록은 JavaScript가 필요합니다. 아래 전략 규칙과 출처는 그대로 읽을 수 있습니다. <a href="../data/rebound.json">계산 결과 JSON 보기</a></p></noscript>
@@ -58,7 +66,7 @@
     </section>
 
     <section class="section wrap" id="results" aria-labelledby="results-title">
-      <div class="rb-section-head"><div><p class="rb-eyebrow">02 / PLAY RECORD</p><h2 class="section-title" id="results-title">틀린 판단까지, 기록</h2></div><p class="rb-caption">선택한 종목의 독립 모의계좌</p></div>
+      <div class="rb-section-head"><div><p class="rb-eyebrow">02 / 플레이 기록</p><h2 class="section-title" id="results-title">틀린 판단까지, 기록</h2></div><p class="rb-caption">선택한 종목의 독립 모의계좌</p></div>
       <div class="panel px-box rb-results">
         <div class="rb-result-controls"><label for="rb-period">기록 구간</label><select id="rb-period"><option value="backtest">전체 과거 백테스트</option><option value="holdout">최근 구간 별도 검증 · 2025년부터</option><option value="paper">등록 이후 모의 기록</option></select></div>
         <p id="rb-result-note">관측 데이터가 준비되면 결과를 표시합니다.</p>
@@ -75,7 +83,7 @@
           </div>
           <div class="rb-table-scroll" tabindex="0" role="region" aria-label="매매 방향별 성적"><table><thead><tr><th>방향</th><th>청산 거래</th><th>승률</th><th>확정 순손익</th></tr></thead><tbody id="rb-sides"></tbody></table></div>
           <h3>최근 청산 기록</h3><p class="rb-small">최근 20건을 표시합니다. 손익은 수수료와 반영 가능한 보유 비용을 차감한 값입니다.</p>
-          <div class="rb-table-scroll" tabindex="0" role="region" aria-label="청산 거래 내역"><table><thead><tr><th>진입 → 청산</th><th>방향</th><th>진입가 → 청산가</th><th>청산 이유</th><th>순손익</th></tr></thead><tbody id="rb-trades"></tbody></table></div>
+          <div class="rb-table-scroll" tabindex="0" role="region" aria-label="청산 거래 내역"><table><thead><tr><th>진입 → 청산</th><th>순손익</th><th>방향</th><th>청산 이유</th><th>진입가 → 청산가</th></tr></thead><tbody id="rb-trades"></tbody></table></div>
         </div>
         <p id="rb-cost-note" class="rb-small"></p>
         <p class="rb-small">기본 설정을 고정한 탐색적 검증입니다. 최근 구간도 이미 지난 데이터이며, 완전히 새로운 미래 성과를 증명하지 않습니다. 선정한 6개 종목의 결과를 전체 시장으로 일반화할 수 없습니다.</p>
@@ -84,7 +92,7 @@
     </section>
 
     <section class="section wrap" id="rules" aria-labelledby="rules-title">
-      <div class="rb-section-head"><div><p class="rb-eyebrow">03 / THE RULES</p><h2 class="section-title" id="rules-title">기계 안의 규칙</h2></div><p class="rb-caption">VERSION 1.0 · 임의 최적화 없음</p></div>
+      <div class="rb-section-head"><div><p class="rb-eyebrow">03 / 규칙</p><h2 class="section-title" id="rules-title">기계 안의 규칙</h2></div><p class="rb-caption">버전 1.0 · 임의 최적화 없음</p></div>
       <div class="rb-rule-grid">
         <article class="panel px-box"><span class="rb-rule-number">01</span><h3>방향을 고른다</h3><p>종가가 200일선보다 <b>1 ATR 초과 위</b>면 롱만, <b>1 ATR 초과 아래</b>면 숏만 후보로 봅니다. 경계값과 그 사이는 대기합니다.</p></article>
         <article class="panel px-box"><span class="rb-rule-number">02</span><h3>멀어질 때 기다린다</h3><p>롱은 25일선보다 <b>2 ATR 이상 아래</b>, 숏은 <b>2 ATR 이상 위</b>에서 후보가 됩니다. 다음 시가에 방향 조건이 깨지거나 평균으로 돌아왔으면 취소합니다.</p></article>
@@ -98,12 +106,13 @@
           <li>편도 수수료 가정은 코인 0.05%, 주식 0.10%, 슬리피지는 각각 0.05%입니다. 주식 숏의 차입료는 연 5% 가정이며 실제 차입 가능 여부는 확인하지 않았습니다.</li>
           <li>주식 배당은 롱 수취·숏 지급으로 반영합니다. 선물 펀딩은 실제 이력을 사용하고 과거 기준 가격 누락 시 일봉 시가로 추정합니다. 손절일의 펀딩은 지출만 반영합니다.</li>
           <li>모의 기록은 등록 후 시작하며, 새로 수집한 확정 봉만 처리합니다. 데이터 오류는 표시하고 기존 장부를 보존합니다. 이 페이지는 저장된 결과를 보여주며 상시 실행되는 주문 시스템은 아닙니다.</li>
+          <li>GitHub Actions가 하루 한 번 다시 계산합니다. 바이낸스 선물 시세는 GitHub 서버(미국)에서 막힐 수 있어, 그때 코인은 마지막으로 내 컴퓨터에서 계산한 결과를 그대로 보여 주고 종목 위에 그 사실을 표시합니다.</li>
         </ul>
       </div>
     </section>
 
     <section class="section wrap" id="origin" aria-labelledby="origin-title">
-      <div class="panel px-box rb-origin"><p class="rb-eyebrow">04 / IDEA CREDIT</p><h2 class="section-title" id="origin-title">아이디어의 출발점, BNF</h2>
+      <div class="panel px-box rb-origin"><p class="rb-eyebrow">04 / 아이디어 출처</p><h2 class="section-title" id="origin-title">아이디어의 출발점, BNF</h2>
         <p>일본 개인투자자 <strong>BNF</strong>의 매매 방식으로 알려진 <strong>25일 이동평균선과의 괴리를 이용한 단기 역추세 매매</strong>에서 아이디어를 얻었습니다.</p>
         <p>이 프로젝트에서는 정찬민이 제안한 <strong>200일선 기준 롱·숏 방향 제한</strong>을 더하고, ATR 진입·손절과 보유 기간을 코드로 정의했습니다. BNF 본인의 실제 매매를 그대로 재현하거나 그의 성과를 검증한 결과는 아닙니다.</p>
         <div class="rb-attribution"><div><b>착안한 개념</b><span>BNF · 25일선 괴리와 단기 되돌림</span></div><div><b>이 프로젝트의 확장</b><span>200일선 방향 필터 · ATR 규칙 · 코인·주식 비교</span></div></div>
@@ -117,8 +126,26 @@
         </ul>
       </div>
     </section>
+
+    <section class="section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="contact-title">이 기계에 대해 묻기</h2>
+        <p>규칙이나 계산 방법이 궁금하면 메일 주세요.</p>
+        <div class="coin-slot">
+          <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=REBOUND%2025%2F200%20문의">메일 보내기</a>
+          <a class="btn btn-ghost" href="../index.html#machines">다른 기계 보기</a>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer"><div class="wrap"><p>REBOUND 25/200 · 연구용 백테스트와 모의투자입니다. 실제 주문은 발생하지 않습니다.</p><p>아이디어: BNF의 25일선 괴리율 매매에서 착안 · 기획: 정찬민 · 픽셀 글꼴: 갈무리</p><p>© 2026 정찬민 · <a href="../index.html#machines">오락실 입구로</a></p></div></footer>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>시세 출처: 바이낸스 선물 일봉·펀딩, Yahoo Finance, NAVER 금융. 연구용 백테스트와 모의 기록이며 실제 주문은 나가지 않습니다. 투자 조언이 아닙니다.</p>
+      <p>아이디어: BNF의 25일선 괴리율 매매에서 착안 · 픽셀 글꼴: 갈무리(Galmuri, SIL Open Font License 1.1)</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
   <script src="../assets/script.js"></script><script src="../data/rebound-data.js"></script><script src="../assets/rebound.js"></script>
 </body>
 </html>

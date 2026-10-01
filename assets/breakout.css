@@ -57,7 +57,7 @@
 .bo-attribution { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 24px 0; border-top: 2px dashed #c9bfe8; border-bottom: 2px dashed #c9bfe8; margin: 28px 0; }
 .bo-attribution b, .bo-attribution span { display: block; }.bo-attribution b { margin-bottom: 8px; font: 14px var(--font-pixel); }.bo-attribution span { font-size: 14px; color: var(--ink-soft); }
 .bo-sources { padding-left: 20px; font-size: 14px; }.bo-sources li { margin: 16px 0; }.bo-sources span { display: block; font-size: 13px; color: var(--ink-soft); }
-.bo-positive { color: #ac2443; }.bo-negative { color: #1261a7; }
+.bo-positive { color: var(--up-ink); font-weight: 600; }.bo-negative { color: var(--down-ink); font-weight: 600; }
 .breakout-page [hidden] { display: none !important; }
 @media (max-width: 760px) {
   .bo-rule-grid { grid-template-columns: 1fr; }

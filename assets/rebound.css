@@ -57,7 +57,7 @@
 .rb-attribution { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 24px 0; border-top: 2px dashed #c9bfe8; border-bottom: 2px dashed #c9bfe8; margin: 28px 0; }
 .rb-attribution b, .rb-attribution span { display: block; }.rb-attribution b { margin-bottom: 8px; font: 14px var(--font-pixel); }.rb-attribution span { font-size: 14px; color: var(--ink-soft); }
 .rb-sources { padding-left: 20px; font-size: 14px; }.rb-sources li { margin: 16px 0; }.rb-sources span { display: block; font-size: 13px; color: var(--ink-soft); }
-.rb-positive { color: #ac2443; }.rb-negative { color: #1261a7; }
+.rb-positive { color: var(--up-ink); font-weight: 600; }.rb-negative { color: var(--down-ink); font-weight: 600; }
 .rebound-page [hidden] { display: none !important; }
 @media (max-width: 760px) {
   .rb-rule-grid { grid-template-columns: 1fr; }

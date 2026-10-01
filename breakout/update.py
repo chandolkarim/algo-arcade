@@ -12,7 +12,7 @@ from zoneinfo import ZoneInfo
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from breakout.engine import Rules, advance, backtest, describe, indicators, new_account, summary
-from rebound.update import crypto_data, stock_data, write_json
+from rebound.update import crypto_data, load_deployed, stock_data, write_json
 
 HERE = ROOT / "breakout"
 UTC = timezone.utc
@@ -65,15 +65,22 @@ def paper_update(path, rows, rules, asset, now, offline):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--offline", action="store_true", help="Rebuild from saved public data without advancing paper accounts")
+    parser.add_argument("--previous", help="Deployed breakout.json URL (Actions): reuse today's result, keep it for failed assets")
     args = parser.parse_args()
     now = datetime.now(UTC)
     config = json.loads((HERE / "config.json").read_text(encoding="utf-8"))
+    deployed = None
+    if args.previous:
+        deployed, done = load_deployed(args.previous, Rules().version, ROOT / "data" / "breakout.json",
+                                       ROOT / "data" / "breakout-data.js", "BREAKOUT_DATA")
+        if done:
+            return 0
     snapshot = {"schema": 1, "strategy": "breakout", "version": Rules().version, "generated_at": now.isoformat(),
-                "mode": "offline" if args.offline else "online", "automatic_refresh": False,
+                "mode": "offline" if args.offline else "online", "automatic_refresh": bool(args.previous),
                 "backtest_start": config["backtest_start"], "holdout_start": config["holdout_start"],
                 "rules": asdict(Rules()), "assets": []}
     previous_path = ROOT / "data" / "breakout.json"
-    previous = json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else {"assets": []}
+    previous = deployed or (json.loads(previous_path.read_text(encoding="utf-8")) if previous_path.exists() else {"assets": []})
     failures = []
     warmup = (datetime.fromisoformat(config["backtest_start"]) - timedelta(days=400)).date().isoformat()
     for asset in config["assets"]:
@@ -114,7 +121,8 @@ def main():
             failures.append(f"{symbol}: {exc}")
             old = next((a for a in previous["assets"] if a["symbol"] == symbol), None)
             if old and old.get("latest"):
-                item = {**old, "status": "stale", "error": str(exc), "failed_at": now.isoformat()}
+                item = {**old, "status": "stale", "error": str(exc), "failed_at": now.isoformat(),
+                        "stale_since": old.get("stale_since") or old.get("fetched_at")}
             else:
                 item.update(status="error", error=str(exc))
             print(f"{symbol}: ERROR {exc}", file=sys.stderr, flush=True)
