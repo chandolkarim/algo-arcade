@@ -46,21 +46,38 @@ def fetch(url):
 
 
 def load_deployed(url, version, out_json, out_js, var):
-    """--previous: 배포된 결과를 읽는다. 오늘(UTC) 같은 버전으로 이미 계산했으면 그대로 써서 True.
-    읽은 결과는 실패한 종목의 이전 값으로도 쓴다(저장소 파일보다 최신)."""
+    """--previous: 배포된 결과와 저장소 결과 중 더 최근에 계산한 것을 고른다.
+    오늘(UTC) 같은 버전으로 이미 계산했으면 그대로 써서 True. 고른 결과는 실패한 종목의 이전 값으로도 쓴다.
+    (로컬에서 새로 계산해 커밋한 결과가 어제 배포본보다 최신일 수 있다.)"""
+    candidates = []
     try:
-        prev = fetch(f"{url}?t={int(time.time())}")
+        candidates.append(fetch(f"{url}?t={int(time.time())}"))
     except Exception as exc:
         print(f"warning: deployed snapshot unavailable ({exc})", file=sys.stderr)
+    if out_json.exists():
+        candidates.append(json.loads(out_json.read_text(encoding="utf-8")))
+    candidates = [c for c in candidates if c.get("schema") == 1 and c.get("assets")]
+    if not candidates:
         return None, False
+    prev = max(candidates, key=lambda c: c.get("generated_at", ""))
+    # 종목별로는 시세를 가장 최근에 받은 결과를 이전 값으로 쓴다
+    newest = {}
+    for c in candidates:
+        for a in c["assets"]:
+            if a.get("latest") and a.get("fetched_at", "") > newest.get(a["symbol"], {}).get("fetched_at", ""):
+                newest[a["symbol"]] = a
+    behind = any(newest.get(a["symbol"], a).get("fetched_at", "") > a.get("fetched_at", "") for a in prev["assets"])
+    merged = {**prev, "assets": [newest.get(a["symbol"], a) for a in prev["assets"]]}
     today = datetime.now(UTC).date().isoformat()
+    if behind:
+        return merged, False
     if prev.get("generated_at", "")[:10] == today and prev.get("version") == version and prev.get("assets"):
         write_json(out_json, prev)
         text = f"window.{var} = " + json.dumps(prev, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c") + ";\n"
         out_js.write_text(text, encoding="utf-8")
         print(f"오늘 이미 계산한 결과를 그대로 씀 ({prev['generated_at']})")
         return prev, True
-    return prev, False
+    return merged, False
 
 
 def milliseconds(day):
