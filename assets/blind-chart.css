@@ -1,0 +1,140 @@
+/* BLIND CHART — 공통 토큰(style.css)을 그대로 쓴다. */
+
+.bc-screen {
+  padding: clamp(16px, 4vw, 28px);
+  background: var(--screen);
+  color: var(--on-carpet);
+  border: calc(var(--px) * 2) solid var(--ink);
+  box-shadow: 0 0 0 var(--px) var(--coin), calc(var(--px) * 3) calc(var(--px) * 4) 0 var(--px) rgba(0,0,0,.4);
+}
+.bc-round {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: var(--coin);
+}
+.bc-round .btn { margin-left: 8px; }
+
+.bc-tags { display: grid; gap: 6px; margin-top: 14px; }
+.bc-tags-title { margin: 0; font-size: 13px; color: var(--on-carpet-soft); }
+.bc-tag button {
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 2px solid var(--on-carpet-soft);
+  background: transparent;
+  color: var(--on-carpet);
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.bc-tag button::before { content: "? "; color: var(--coin); }
+.bc-tag button[aria-expanded="true"] { border-color: var(--coin); }
+.bc-tag button[aria-expanded="true"]::before { content: "! "; }
+.bc-tag-body { padding: 8px 12px; border: 2px solid var(--coin); border-top: 0; }
+.bc-desc { margin: 0; font-size: 14px; color: var(--on-carpet-soft); }
+.bc-stat { margin: 4px 0 0; font-size: 14px; }
+.bc-screen .up, .bc-today-status .up { color: var(--up); }
+.bc-screen .down { color: var(--down); }
+
+.bc-chart { margin: 16px 0 0; }
+.bc-chart svg { display: block; width: 100%; height: auto; border: 2px solid #3a3170; }
+.bc-chart figcaption { margin-top: 6px; font-size: 12px; color: var(--on-carpet-soft); }
+
+.bc-question { margin: 16px 0 0; font-size: 15px; }
+.bc-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.bc-choice {
+  min-height: 52px;
+  padding: 6px 4px;
+  border: var(--px) solid var(--ink);
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+.bc-choice:disabled { cursor: default; opacity: 0.6; }
+.bc-choice.is-picked { opacity: 1; box-shadow: 0 0 0 var(--px) var(--coin); }
+.bc-choice.is-answer { opacity: 1; background: var(--mint); }
+.bc-screen :focus-visible { outline-color: var(--coin); }
+
+.bc-result { margin-top: 14px; }
+.bc-result p { margin: 4px 0 0; font-size: 15px; }
+.bc-ok, .bc-miss { font-family: var(--font-pixel); font-size: 18px !important; }
+.bc-ok { color: var(--mint); }
+.bc-miss { color: var(--coin); }
+.bc-reveal { color: var(--on-carpet-soft); }
+#bc-next { margin-top: 16px; }
+/* .btn·flex 표시가 hidden 속성을 덮지 않게 */
+#bc-next[hidden], .bc-filter[hidden] { display: none; }
+
+.bc-score { margin-top: 28px; padding: 20px; }
+.bc-score h3 { margin: 0 0 8px; font-family: var(--font-pixel); font-size: 18px; }
+.bc-score dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 16px;
+  margin: 0;
+  font-size: 15px;
+}
+.bc-score dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bc-note { margin: 12px 0; font-size: 13px; color: var(--ink-soft); }
+.bc-screen .bc-note { color: var(--on-carpet-soft); }
+
+/* 오늘의 차트는 밝은 판넬 안에 어두운 화면 */
+#bc-today .bc-chart svg { border-color: var(--ink); }
+#bc-today .bc-chart figcaption, #bc-today .bc-tags-title, #bc-today .bc-desc { color: var(--ink-soft); }
+#bc-today .bc-tag button { color: var(--ink); border-color: var(--ink-soft); }
+#bc-today .bc-tag button::before { color: var(--ink); }
+#bc-today .bc-tag-body { border-color: var(--ink); }
+#bc-today .up, .bc-history .up, .bc-table .up { color: var(--up-ink); font-weight: 600; }
+#bc-today .down, .bc-history .down, .bc-table .down { color: var(--down-ink); font-weight: 600; }
+.bc-today-status { font-weight: 600; }
+.bc-history { margin: 16px 0 0; padding-left: 20px; font-size: 14px; }
+.bc-history li + li { margin-top: 6px; }
+.bc-date { font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+
+/* 판정 표시는 시세색을 쓰지 않는다 */
+.bc-chip {
+  display: inline-block;
+  padding: 0 8px;
+  border: 2px solid var(--ink);
+  font-size: 12px;
+  color: var(--ink);
+}
+.bc-chip.is-verified { background: var(--mint); }
+.bc-chip.is-maybe_luck { background: var(--coin); }
+.bc-chip.is-no_lean { background: #fff; }
+.bc-chip.is-too_few { background: #e4def7; }
+
+.bc-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.bc-filter button {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  cursor: pointer;
+}
+.bc-filter button[aria-pressed="true"] { background: var(--ink); color: var(--coin); }
+.bc-table { display: grid; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+.bc-row { padding: 8px 12px; border: 2px solid #c9bfe8; background: #fff; }
+.bc-row-name { margin: 0; font-weight: 600; font-size: 14px; }
+.bc-row .bc-stat { font-size: 13px; }
+
+.bc-sub { margin: 32px 0 8px; font-family: var(--font-pixel); font-size: 18px; }
+.bc-limits { margin: 0; padding-left: 20px; font-size: 15px; }
+.bc-limits li + li { margin-top: 6px; }
+
+@media (max-width: 400px) {
+  .bc-choice { font-size: 13px; }
+}

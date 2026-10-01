@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BLIND CHART · 알고리즘 오락실</title>
+  <meta name="description" content="이름과 날짜를 가린 코인 차트를 보고 5일 뒤를 맞히는 게임. 다른 기계의 규칙이 힌트를 줍니다.">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/blind-chart.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="../index.html">
+        <span class="logo-coin" data-scene="coin"></span>
+        알고리즘 오락실
+      </a>
+      <nav class="site-nav" aria-label="이 기계 안내">
+        <ul>
+          <li><a href="#game">게임</a></li>
+          <li><a href="#today">오늘</a></li>
+          <li><a href="#table">상황표</a></li>
+          <li><a href="#method">방법</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="machine-hero wrap" aria-labelledby="machine-title">
+      <a class="back-link" href="../index.html#machines">◀ 기계들로 돌아가기</a>
+      <h1 class="machine-title machine-title-coin" id="machine-title">BLIND CHART</h1>
+      <p class="machine-lead">
+        코인 이름과 날짜를 가린 실제 차트를 보고 <strong>5일 뒤</strong>를 맞혀 보세요.
+        문제는 아무 날이 아니라 <strong>무슨 일이 막 생긴 날</strong>에서만 나옵니다.
+        그 상황이 과거에 어떻게 끝났는지는 힌트로 열어 볼 수 있습니다.
+      </p>
+      <ul class="tags" aria-label="기계 상태">
+        <li class="on">● 플레이 가능</li>
+        <li>BTC · ETH · SOL · XRP 일봉</li>
+        <li>점수는 내 브라우저에만 저장</li>
+      </ul>
+    </section>
+
+    <section class="section wrap" id="game" aria-labelledby="game-title">
+      <h2 class="visually-hidden" id="game-title">게임</h2>
+      <div class="bc-screen">
+        <p class="bc-round" id="bc-round">문제를 준비하는 중…</p>
+        <noscript><p class="bc-round">이 게임은 JavaScript가 필요합니다. 아래 상황표와 방법은 그대로 읽을 수 있어요.</p></noscript>
+
+        <div class="bc-tags" id="bc-tags" aria-label="이 날 생긴 상황(누르면 힌트)"></div>
+        <figure class="bc-chart" id="bc-chart"></figure>
+
+        <p class="bc-question" id="bc-question"></p>
+        <div class="bc-choices" id="bc-choices" role="group" aria-label="5일 뒤 예측">
+          <button type="button" class="bc-choice" data-choice="up" disabled>▲ 크게 오름</button>
+          <button type="button" class="bc-choice" data-choice="flat" disabled>━ 횡보</button>
+          <button type="button" class="bc-choice" data-choice="down" disabled>▼ 크게 내림</button>
+        </div>
+        <div class="bc-result" id="bc-result" role="status" aria-live="polite"></div>
+        <button type="button" class="btn" id="bc-next" hidden>다음 문제 ▶</button>
+      </div>
+
+      <div class="bc-score panel px-box" id="bc-score" aria-labelledby="score-title">
+        <h3 id="score-title">내 점수</h3>
+        <dl id="bc-score-list"></dl>
+        <p class="bc-note">세 개 중 하나를 찍으면 평균 33%쯤 맞습니다. 과거 모든 날을 세면 결과는 크게 오름 <span id="bc-base-up">-</span> · 횡보 <span id="bc-base-flat">-</span> · 크게 내림 <span id="bc-base-down">-</span>였어요.</p>
+        <button type="button" class="btn btn-ghost" id="bc-reset">점수 초기화</button>
+      </div>
+    </section>
+
+    <section class="section wrap" id="today" aria-labelledby="today-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="today-title">오늘의 차트</h2>
+        <p>과거 문제는 바로 정답이 나오지만, 여기는 <strong>어제 마감까지의 진짜 차트</strong>입니다. 정답은 5일 뒤에 나와요. 다시 들르면 결과를 알려 드립니다.</p>
+        <div id="bc-today"><p class="empty-note">불러오는 중…</p></div>
+        <ol class="bc-history" id="bc-history"></ol>
+      </div>
+    </section>
+
+    <section class="section wrap" id="table" aria-labelledby="table-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="table-title">상황표</h2>
+        <p id="bc-table-summary">계산 결과를 불러오는 중…</p>
+        <div class="bc-filter" id="bc-filter" role="group" aria-label="판정으로 거르기" hidden>
+          <button type="button" data-v="" aria-pressed="true">전체</button>
+          <button type="button" data-v="verified" aria-pressed="false">검증됨</button>
+          <button type="button" data-v="maybe_luck" aria-pressed="false">우연일 수 있음</button>
+          <button type="button" data-v="no_lean" aria-pressed="false">치우침 없음</button>
+        </div>
+        <ol class="bc-table" id="bc-table"></ol>
+      </div>
+    </section>
+
+    <section class="section wrap" id="method" aria-labelledby="method-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="method-title">방법</h2>
+        <p>기준은 <strong>결과를 계산하기 전(2026-10-01)</strong>에 파일로 고정했습니다.</p>
+        <div class="facts">
+          <div class="fact">
+            <h3>'크게'의 기준</h3>
+            <p>그 차트의 최근 20일 하루 변동 폭 × √5 × 0.5. 조용한 시기와 요동치는 시기를 같은 % 잣대로 재지 않으려고 차트마다 다르게 정합니다.</p>
+          </div>
+          <div class="fact">
+            <h3>막 생긴 날만</h3>
+            <p>상황 52개(이동평균, RSI, 볼린저밴드, MACD, 최고·최저가, 연속 상승·하락, 급변, 거래량 등)가 어제는 아니었고 오늘 처음 생긴 날만 문제로 냅니다. 모두 그날까지의 자료로만 계산합니다.</p>
+          </div>
+          <div class="fact">
+            <h3>두 구간으로 확인</h3>
+            <p>2022년까지(설계)와 2023년 이후(검증)를 따로 셉니다. 두 구간 모두에서 같은 결과로 뚜렷하게 치우쳐야(이항검정 p &lt; 0.05) “검증됨”입니다.</p>
+          </div>
+          <div class="fact">
+            <h3>표본 30번 이상</h3>
+            <p>과거에 30번 넘게 나온 상황만 힌트로 씁니다. 두 상황이 같은 날 겹친 조합도 같은 기준으로 셉니다.</p>
+          </div>
+        </div>
+        <h3 class="bc-sub">한계</h3>
+        <ul class="bc-limits">
+          <li>상황과 조합을 수백 개 세면 그중 몇 개는 우연히 뚜렷해 보입니다. 두 구간 확인으로 줄였지만 “검증됨”도 앞으로 맞는다는 보장은 없습니다.</li>
+          <li>네 코인은 함께 움직이는 날이 많아, 같은 날의 표본이 서로 독립적이지 않습니다. p값은 실제보다 낙관적일 수 있습니다.</li>
+          <li>거래 비용은 없고, 맞힌 비율은 수익률과 다릅니다. 게임이며 투자 조언이 아닙니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="contact-title">이 기계에 대해 묻기</h2>
+        <p>상황 기준이나 계산이 궁금하면 메일 주세요.</p>
+        <div class="coin-slot">
+          <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=BLIND%20CHART%20문의">메일 보내기</a>
+          <a class="btn btn-ghost" href="../index.html#machines">다른 기계 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>시세 출처: 바이낸스 공개 일봉. 과거 기록으로 만든 게임이며 투자 조언이 아닙니다.</p>
+      <p>픽셀 글꼴: 갈무리(Galmuri, SIL Open Font License 1.1)</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+  <script src="../data/blind-data.js"></script>
+  <script src="../assets/blind-chart.js"></script>
+</body>
+</html>

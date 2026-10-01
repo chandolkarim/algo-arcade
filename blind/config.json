@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "fixed_at": "2026-10-01",
+  "note": "결과를 계산하기 전에 고정한 기준. 바꾸면 version을 올리고 페이지에 바꾼 이유를 적는다.",
+  "coins": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT"],
+  "window": 60,
+  "horizon": 5,
+  "band_k": 0.5,
+  "band_note": "'크게'의 기준 = band_k × (최근 20일 일간 로그수익률 표준편차) × √horizon. 정규분포라면 세 선택지가 약 31/38/31%로 나뉜다.",
+  "validation_start": "2023-01-01",
+  "alpha": 0.05,
+  "min_samples": 30,
+  "combo_max": 2
+}
