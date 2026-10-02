@@ -125,6 +125,7 @@
   };
 
   function renderTags(box, ids, onOpen) {
+    if (!box) return;  // 힌트 칸은 2026-10-02 게임 단순화로 뺐다
     box.textContent = "";
     const keys = ids.map((i) => D.ids[i]);
     const combos = [];
@@ -163,7 +164,7 @@
   function renderScore() {
     const dl = $("bc-score-list");
     dl.textContent = "";
-    [["전체", score], ["힌트를 연 문제", score.hint], ["힌트 없이 푼 문제", score.plain]].forEach(([k, o]) => {
+    [["맞힌 문제", score]].forEach(([k, o]) => {
       dl.append(el("dt", "", k), el("dd", "", rate(o)));
     });
   }
@@ -257,6 +258,7 @@
   // ── 오늘의 차트
   async function renderToday() {
     const box = $("bc-today");
+    if (!box) return;
     const latest = Math.max(...D.today.map((t) => t.day));
     const cands = D.today.filter((t) => t.day === latest);
     const withSit = cands.filter((t) => t.situations.length);
@@ -311,6 +313,7 @@
   async function renderHistory() {
     const run = ++historyRun;
     const list = $("bc-history");
+    if (!list) return;
     const mine = store.get("bc-today", []).sort((a, b) => b.day - a.day);
     const items = [];
     for (const g of mine) {
@@ -337,31 +340,4 @@
   renderToday();
   renderHistory();
 
-  // ── 상황표
-  const vc = D.verdict_counts;
-  const baseN = D.situations.filter((s) => s.parts.length === 1).length;
-  $("bc-table-summary").textContent =
-    `상황 ${baseN}개와 조합 ${D.situations.length - baseN}개(겹치지 않게 세어 ${R.min_samples}번 이상 나온 것) 중` +
-    `검증됨 ${vc.verified || 0} · 우연일 수 있음 ${vc.maybe_luck || 0} · 치우침 없음 ${vc.no_lean || 0} · 표본 부족 ${vc.too_few || 0}. ` +
-    `문제 ${D.pool.length.toLocaleString("ko-KR")}개.`;
-  const table = $("bc-table");
-  const renderTable = (v) => {
-    table.textContent = "";
-    const rows = D.situations.filter((s) => (v ? s.verdict === v : s.parts.length === 1 || s.verdict === "verified" || s.verdict === "maybe_luck"));
-    rows.forEach((s) => {
-      const li = el("li", "bc-row");
-      li.append(el("p", "bc-row-name", `${s.group} · ${s.name}`), statLine(s));
-      table.append(li);
-    });
-    if (!rows.length) table.append(el("li", "empty-note", "해당하는 상황이 없습니다."));
-  };
-  const filter = $("bc-filter");
-  filter.hidden = false;
-  filter.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
-    filter.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-    renderTable(btn.dataset.v);
-  });
-  renderTable("");
 })();

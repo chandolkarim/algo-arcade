@@ -144,3 +144,7 @@
 .ar-rules summary { cursor: pointer; font-family: var(--font-pixel); }
 .ar-rules ul { padding-left: 20px; }
 .ar-rules li + li { margin-top: 4px; }
+.ar-yesterday { margin: 8px 0 0; font-size: 15px; color: var(--on-carpet-soft); }
+.ar-yesterday b { color: var(--on-carpet); }
+.ar-yesterday .up { color: var(--up); }
+.ar-yesterday .down { color: var(--down); }

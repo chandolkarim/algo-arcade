@@ -26,12 +26,11 @@
         <span class="logo-coin" data-scene="coin"></span>
         알고리즘 오락실
       </a>
-      <nav class="site-nav" aria-label="이 기계 안내">
+      <nav class="site-nav" aria-label="이 게임 안내">
         <ul>
           <li><a href="#game">게임</a></li>
-          <li><a href="#today">오늘</a></li>
-          <li><a href="#table">상황표</a></li>
-          <li><a href="#method">방법</a></li>
+          <li><a href="../games.html">게임 목록</a></li>
+          <li><a href="../index.html">의뢰소</a></li>
         </ul>
       </nav>
     </div>
@@ -43,7 +42,7 @@
       <p class="mh-top"><span class="mc-kind k-game">게임</span><span class="mc-en">BLIND CHART</span></p>
       <h1 class="mh-title" id="machine-title">가린 차트 맞히기</h1>
       <p class="mh-q">코인 이름과 날짜를 가린 차트, 5일 뒤를 맞힐 수 있을까?</p>
-      <div class="mh-result"><b>195개 중 2개</b><span>지표 상황 가운데 두 구간 모두에서 맞은 건 2개뿐. 직접 해 보세요.</span></div>
+      <div class="mh-result"><b>3개 중 하나</b><span>크게 오름 · 횡보 · 크게 내림. 아무거나 찍으면 33%쯤 맞아요. 몇 개나 맞힐 수 있을까요?</span></div>
       <a class="btn hero-play" href="#game">▶ 바로 한 판 하기</a>
       
     </section>
@@ -52,9 +51,8 @@
       <h2 class="visually-hidden" id="game-title">게임</h2>
       <div class="bc-screen">
         <p class="bc-round" id="bc-round">문제를 준비하는 중…</p>
-        <noscript><p class="bc-round">이 게임은 JavaScript가 필요합니다. 아래 상황표와 방법은 그대로 읽을 수 있어요.</p></noscript>
+        <noscript><p class="bc-round">이 게임은 JavaScript가 필요합니다.</p></noscript>
 
-        <div class="bc-tags" id="bc-tags" aria-label="이 날 생긴 상황(누르면 힌트)"></div>
         <figure class="bc-chart" id="bc-chart"></figure>
 
         <p class="bc-question" id="bc-question"></p>
@@ -72,68 +70,12 @@
         <dl id="bc-score-list"></dl>
         <p class="bc-note">세 개 중 하나를 찍으면 평균 33%쯤 맞습니다. 과거 모든 날을 세면 결과는 크게 오름 <span id="bc-base-up">-</span> · 횡보 <span id="bc-base-flat">-</span> · 크게 내림 <span id="bc-base-down">-</span>였어요.</p>
         <button type="button" class="btn btn-ghost" id="bc-reset">점수 초기화</button>
-      </div>
-    </section>
-
-    <section class="section wrap" id="today" aria-labelledby="today-title">
-      <div class="panel px-box">
-        <h2 class="section-title" id="today-title">오늘의 차트</h2>
-        <p>과거 문제는 바로 정답이 나오지만, 여기는 <strong>어제 마감까지의 진짜 차트</strong>입니다. 정답은 5일 뒤에 나와요. 다시 들르면 결과를 알려 드립니다.</p>
-        <div id="bc-today"><p class="empty-note">불러오는 중…</p></div>
-        <ol class="bc-history" id="bc-history"></ol>
-      </div>
-    </section>
-
-    <section class="section wrap" id="table" aria-labelledby="table-title">
-      <div class="panel px-box">
-        <h2 class="section-title" id="table-title">상황표</h2>
-        <p id="bc-table-summary">계산 결과를 불러오는 중…</p>
-        <div class="bc-filter" id="bc-filter" role="group" aria-label="판정으로 거르기" hidden>
-          <button type="button" data-v="" aria-pressed="true">전체</button>
-          <button type="button" data-v="verified" aria-pressed="false">검증됨</button>
-          <button type="button" data-v="maybe_luck" aria-pressed="false">우연일 수 있음</button>
-          <button type="button" data-v="no_lean" aria-pressed="false">치우침 없음</button>
-        </div>
-        <ol class="bc-table" id="bc-table"></ol>
-      </div>
-    </section>
-
-    <section class="section wrap" id="method" aria-labelledby="method-title">
-      <div class="panel px-box">
-        <h2 class="section-title" id="method-title">방법</h2>
-        <p>기준은 <strong>결과를 계산하기 전(2026-10-01)</strong>에 파일로 고정했습니다.</p>
-        <details class="fold">
-          <summary>계산 방법 자세히 (‘크게’의 기준 · 막 생긴 날 · 두 구간 · 겹치지 않게 세기 · 바꾼 기록 · 한계)</summary>
-        <div class="facts">
-          <div class="fact">
-            <h3>'크게'의 기준</h3>
-            <p>그 차트의 최근 20일 하루 변동 폭 × √5 × 0.5. 조용한 시기와 요동치는 시기를 같은 % 잣대로 재지 않으려고 차트마다 다르게 정합니다.</p>
-          </div>
-          <div class="fact">
-            <h3>막 생긴 날만</h3>
-            <p>상황 52개(이동평균, RSI, 볼린저밴드, MACD, 최고·최저가, 연속 상승·하락, 급변, 거래량 등)가 어제는 아니었고 오늘 처음 생긴 날만 문제로 냅니다. 모두 그날까지의 자료로만 계산합니다.</p>
-          </div>
-          <div class="fact">
-            <h3>두 구간으로 확인</h3>
-            <p>2022년까지(설계)와 2023년 이후(검증)를 따로 셉니다. 두 구간 모두에서 같은 결과로 뚜렷하게 치우쳐야(이항검정 p &lt; 0.05) “검증됨”입니다.</p>
-          </div>
-          <div class="fact">
-            <h3>겹치지 않게 세기</h3>
-            <p>네 코인은 같이 움직이고 5일 창이 겹치면 사실상 같은 사건입니다. 그래서 통계는 같은 상황을 한 번 센 뒤 5일이 지나야 다시 셉니다(코인이 달라도). 같은 날 여러 코인이면 하나만 셉니다. 문제로는 모두 냅니다.</p>
-          </div>
-          <div class="fact">
-            <h3>표본 30번 이상</h3>
-            <p>이렇게 센 횟수가 30번 이상인 상황만 힌트로 씁니다. 두 상황이 같은 날 겹친 조합도 같은 기준으로 셉니다.</p>
-          </div>
-        </div>
-        <p class="bc-change"><strong>바꾼 기록 1.0.0 → 1.1.0 (2026-10-01)</strong> — 처음에는 같은 날 네 코인과 겹치는 5일 창을 따로 세어 표본이 부풀었고, “검증됨”이 5개였습니다. 기준 숫자는 그대로 두고 세는 방법만 고쳤더니 2개로 줄었습니다.</p>
-        <h3 class="bc-sub">한계</h3>
+        <h3 class="bc-sub">규칙</h3>
         <ul class="bc-limits">
-          <li>상황과 조합을 수백 개 세면 그중 몇 개는 우연히 뚜렷해 보입니다. 두 구간 확인으로 줄였지만 “검증됨”도 앞으로 맞는다는 보장은 없습니다.</li>
-          <li>겹치지 않게 세도 코인끼리, 가까운 시기끼리는 여전히 비슷하게 움직입니다. p값은 완전히 독립인 경우보다 조금 낙관적일 수 있습니다.</li>
-          <li>거래 비용은 없고, 맞힌 비율은 수익률과 다릅니다. 게임이며 투자 조언이 아닙니다.</li>
+          <li>바이낸스 BTC·ETH·SOL·XRP 실제 일봉에서 무작위 60일을 고르고, 코인 이름과 날짜를 가립니다.</li>
+          <li>5일 뒤 종가가 ‘평소 변동 폭’(최근 20일 하루 변동 × √5 × 0.5)보다 크게 오르면 ▲, 크게 내리면 ▼, 그 사이면 ━.</li>
+          <li>점수는 이 브라우저에만 저장됩니다. 재미로 하는 게임이며 투자 조언이 아닙니다.</li>
         </ul>
-        </details>
       </div>
     </section>
 

@@ -36,7 +36,8 @@
     store.set("arena-id", visitor);
   }
   const votes = store.get("arena-votes", {});
-  const nick = $("ar-nick");
+  // 닉네임 칸은 2026-10-02 게임 단순화로 뺐다(있으면 쓴다)
+  const nick = $("ar-nick") || { value: "" };
   nick.value = store.get("arena-nick", "");
 
   // ── 지금 열려 있는 회차 = 마지막으로 닫힌 UTC 일봉
@@ -157,8 +158,8 @@
       const how = await send(choice, name);
       status.textContent = "";
       status.append("내 선택 ", el("b", "", LABEL[choice]), how === "sent"
-        ? " — 냈어요! 결과는 내일 오전 9시. 방문자 집계와 순위는 몇 시간 안에 반영돼요."
-        : " — 이 브라우저에 저장했어요(방문자 집계는 아직 연결 전). 결과는 내일 오전 9시.");
+        ? " — 골랐어요! 정답은 내일 오전 9시에 나와요."
+        : " — 골랐어요! 정답은 내일 오전 9시에 나와요.");
     } catch {
       status.textContent = "집계 서버로 보내지 못했어요. 내 기록에는 남았어요.";
     }
@@ -167,6 +168,7 @@
 
   // ── 고른 뒤: 다른 선수들의 선택
   function showAfter() {
+    if (!$("ar-after")) return;
     const mine = votes[curId];
     if (!mine) return;
     $("ar-after").hidden = false;
@@ -201,7 +203,20 @@
   }
 
   // ── 지난 회차와 순위
+  // 어제 문제 한 줄: 정답과 내 선택만
+  function renderYesterday() {
+    const box = $("ar-yesterday");
+    if (!box) return;
+    const lr = D.rounds.filter((r) => r.answer).pop();
+    box.textContent = "";
+    if (!lr) { box.textContent = `첫 정답은 ${kstDate(Date.parse(R.start) + 2 * DAY)} 오전 9시에 나와요.`; return; }
+    box.append("지난 문제 정답 ", el("b", lr.answer === "flat" ? "" : lr.answer, LABEL[lr.answer]), " (", move(lr.move), ")");
+    const mine = votes[lr.id];
+    if (mine) box.append(` · 내 선택 ${SHORT[mine.choice]} ${mine.choice === lr.answer ? "맞음 🎉" : "틀림"}`);
+  }
+
   function renderBoard() {
+    if (!$("ar-table")) { renderYesterday(); return; }
     const resolved = D.rounds.filter((r) => r.answer);
     const box = $("ar-last");
     box.textContent = "";
@@ -255,6 +270,7 @@
 
   // ── 연습 경기(긴 기록)
   function renderLong() {
+    if (!$("ar-long")) return;
     const list = $("ar-long");
     const ms = D.players.filter((p) => p.long_n);
     const best = Math.max(...ms.map((p) => p.long_hit / p.long_n));

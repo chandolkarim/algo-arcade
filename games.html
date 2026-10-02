@@ -49,8 +49,8 @@
 
     <section class="home-hero wrap" aria-labelledby="hero-title">
       <p class="home-eyebrow">게임</p>
-      <h1 id="hero-title">알고리즘이랑 붙어 보세요.</h1>
-      <p class="home-lead">같은 문제를 사람과 알고리즘이 함께 풉니다. 재미로 하는 예측 게임이며 투자 조언이 아닙니다.</p>
+      <h1 id="hero-title">가볍게 한 판 하고 가세요.</h1>
+      <p class="home-lead">차트 보고 오를지 내릴지 찍어 보는 게임이에요. 맞으면 좋고, 아니면 말고. 재미로 하는 게임이며 투자 조언이 아닙니다.</p>
       <ul class="cabinets game-list">
         <li>
           <a class="cabinet" href="#play" style="--cab-color: var(--coin)">
@@ -58,7 +58,7 @@
             <div class="cabinet-body">
               <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><rect x="4" y="30" width="3" height="8" fill="#ff4d6d"/><rect x="9" y="26" width="3" height="8" fill="#ff4d6d"/><rect x="14" y="28" width="3" height="6" fill="#3ea1ff"/><rect x="19" y="22" width="3" height="9" fill="#ff4d6d"/><rect x="24" y="18" width="3" height="8" fill="#ff4d6d"/><rect x="29" y="20" width="3" height="6" fill="#3ea1ff"/><rect x="34" y="16" width="3" height="7" fill="#ff4d6d"/><rect x="0" y="21" width="40" height="1" fill="#ffd23f"/><rect x="42" y="4" width="20" height="12" fill="#ff4d6d" opacity=".5"/><rect x="42" y="16" width="20" height="12" fill="#bfb5ea" opacity=".35"/><rect x="42" y="28" width="20" height="12" fill="#3ea1ff" opacity=".5"/><rect x="49" y="18" width="6" height="8" fill="#ffd23f"/><rect x="51" y="20" width="2" height="2" fill="#0f0b24"/><rect x="0" y="44" width="64" height="4" fill="#1b1438"/></svg></div>
               <p class="cabinet-q">비트코인, 내일 오전 9시엔 크게 오를까, 내릴까, 그대로일까?</p>
-              <div class="cabinet-result"><b>사람 vs 기계</b><span>방문자 군중·알고리즘 5개와 매일 순위 경쟁</span></div>
+              <div class="cabinet-result"><b>하루 한 문제</b><span>오늘 고르고, 내일 오전 9시에 정답 확인</span></div>
               <div class="cabinet-status"><span class="lamp on"></span>바로 아래에서 하기 ▶<span class="cabinet-kind">매일</span></div>
             </div>
           </a>
@@ -83,47 +83,13 @@
         <h2 class="ar-title" id="play-title">비트코인, 내일 이 시간엔?</h2>
         <p class="ar-question" id="ar-question">판을 준비하는 중…</p>
         <figure class="ar-chart" id="ar-chart"></figure>
-        <div class="ar-name">
-          <label for="ar-nick">순위표에 올릴 닉네임 <span>(선택 · 12자 · 개인정보 쓰지 마세요)</span></label>
-          <input id="ar-nick" type="text" maxlength="12" autocomplete="off" spellcheck="false" placeholder="비우면 익명">
-        </div>
         <div class="ar-choices" role="group" aria-label="내일 오전 9시 종가 예측">
           <button type="button" class="ar-choice is-up" data-choice="up" disabled>▲ 크게 오름</button>
           <button type="button" class="ar-choice" data-choice="flat" disabled>━ 횡보</button>
           <button type="button" class="ar-choice is-down" data-choice="down" disabled>▼ 크게 내림</button>
         </div>
         <p class="ar-status" id="ar-status" role="status" aria-live="polite"></p>
-        <div class="ar-after" id="ar-after" hidden>
-          <h3>다른 선수들은 이렇게 골랐어요</h3>
-          <ul class="ar-picks" id="ar-picks"></ul>
-          <p class="ar-crowd" id="ar-crowd"></p>
-        </div>
-      </div>
-
-      <div class="panel px-box ar-board">
-        <h3 class="ar-sub">지난 회차</h3>
-        <div id="ar-last"><p class="empty-note">불러오는 중…</p></div>
-        <h3 class="ar-sub">순위 — 사람 vs 기계</h3>
-        <p class="ar-note" id="ar-board-note"></p>
-        <div class="ar-table-wrap" tabindex="0" role="region" aria-label="순위표">
-          <table class="ar-table">
-            <thead><tr><th>선수</th><th>맞힘</th><th>적중률</th></tr></thead>
-            <tbody id="ar-table"></tbody>
-          </table>
-        </div>
-        <h3 class="ar-sub">연습 경기 — 2017년부터 매일 붙였다면</h3>
-        <ul class="ar-long" id="ar-long"></ul>
-        <details class="ar-rules">
-          <summary>규칙 자세히</summary>
-          <ul>
-            <li>회차는 매일 한국 시간 오전 9시(바이낸스 일봉 마감)에 열리고, 다음 날 오전 9시에 닫히며 바로 결과가 납니다.</li>
-            <li>‘크게’의 기준은 최근 20일 하루 변동 폭의 0.5배입니다. 조용한 날엔 좁고, 요동치는 날엔 넓어집니다.</li>
-            <li>기계의 선택은 내가 고른 뒤에 보여 줍니다. 기계는 모두 그날 마감까지의 자료만 씁니다.</li>
-            <li>한 사람(브라우저)당 회차마다 처음 한 표만 셉니다. 투표 집계와 순위는 사이트가 다시 만들어질 때(몇 시간마다) 바뀝니다.</li>
-            <li>닉네임 순위는 결과가 나온 회차를 <span id="ar-min">3</span>번 이상 맞혀 본 사람만 올라갑니다. 부적절한 이름은 숨깁니다.</li>
-            <li>재미로 하는 예측 게임입니다. 투자 조언이 아닙니다.</li>
-          </ul>
-        </details>
+        <p class="ar-yesterday" id="ar-yesterday"></p>
       </div>
     </section>
   </main>
