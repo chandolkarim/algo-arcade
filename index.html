@@ -13,7 +13,6 @@
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/home.css">
 </head>
@@ -35,6 +34,17 @@
       </nav>
     </div>
   </header>
+
+  <div class="led-strip" aria-hidden="true">
+    <div class="led-track">
+      <span><span class="on">●</span> 전략 의뢰 받는 중 · 무료</span>
+      <span><span class="on">●</span> 메일 한 통이면 코드 · 백테스트 · 결과 페이지</span>
+      <span><span class="build">◆</span> 잘 안 된 결과도 그대로 공개</span>
+      <span><span class="on">●</span> 결과물 6대 가동 중</span>
+      <span><span class="build">◆</span> 게임 코너: 오늘의 한 판 · BLIND CHART</span>
+      <span>실제 주문은 나가지 않습니다</span>
+    </div>
+  </div>
 
   <main id="main">
     <section class="home-hero wrap" aria-labelledby="hero-title">
@@ -70,49 +80,81 @@
         <h2 class="section-title" id="works-title">지금까지 만든 결과물</h2>
         <p>의뢰하면 이런 페이지로 받아요. 카드를 누르면 규칙·결과·한계를 볼 수 있어요. <span class="home-date">2026-10-01 계산 기준</span></p>
       </div>
-      <ul class="mc-list">
-        <li><a class="mc" href="machines/trading-floor.html">
-          <span class="mc-top"><span class="mc-kind k-trade">매매</span><span class="mc-en">TRADING FLOOR</span></span>
-          <strong class="mc-name">AI 13명이 토론하는 매매 판정</strong>
-          <span class="mc-q">AI끼리 토론하면 방향을 잘 맞힐까?</span>
-          <span class="mc-result"><b>2 / 19</b><span>24시간 뒤 맞은 판정(코인). 아직 근거 없음</span></span>
-          <span class="mc-more">자세히 보기 →</span>
-        </a></li>
-        <li><a class="mc" href="machines/rebound.html">
-          <span class="mc-top"><span class="mc-kind k-trade">매매</span><span class="mc-en">REBOUND 25/200</span></span>
-          <strong class="mc-name">멀어진 가격의 되돌림</strong>
-          <span class="mc-q">크게 빠지면 다시 돌아올까?</span>
-          <span class="mc-result"><b>손실 −6% → +1%</b><span>200일선 방향 제한이 손실을 크게 줄임. 수익은 작음</span></span>
-          <span class="mc-more">자세히 보기 →</span>
-        </a></li>
-        <li><a class="mc" href="machines/breakout.html">
-          <span class="mc-top"><span class="mc-kind k-trade">매매</span><span class="mc-en">BREAKOUT 20</span></span>
-          <strong class="mc-name">20일 가격 벽 돌파</strong>
-          <span class="mc-q">벽을 넘으면 따라가도 될까?</span>
-          <span class="mc-result"><b>6개 중 5개 +</b><span>비용 빼고 플러스, 2025년 이후도 같은 방향. 폭은 작음</span></span>
-          <span class="mc-more">자세히 보기 →</span>
-        </a></li>
-        <li><a class="mc" href="machines/foreign-flow.html">
-          <span class="mc-top"><span class="mc-kind k-test">검증</span><span class="mc-en">FOREIGN FLOW</span></span>
-          <strong class="mc-name">외국인 매수 속설</strong>
-          <span class="mc-q">외국인이 많이 사면 다음 날 오를까?</span>
-          <span class="mc-result"><b>효과 없음</b><span>14년치, 세 가지 질문 모두</span></span>
-          <span class="mc-more">자세히 보기 →</span>
-        </a></li>
-        <li><a class="mc" href="machines/clock-tower.html">
-          <span class="mc-top"><span class="mc-kind k-test">검증</span><span class="mc-en">CLOCK TOWER</span></span>
-          <strong class="mc-name">비트코인 시간대 지도</strong>
-          <span class="mc-q">비트코인은 언제 크게 움직일까?</span>
-          <span class="mc-result"><b>평일 밤 11시</b><span>평소의 1.6배 출렁임. 방향은 시간으로 못 맞힘</span></span>
-          <span class="mc-more">자세히 보기 →</span>
-        </a></li>
-        <li><a class="mc" href="machines/kimchi-gauge.html">
-          <span class="mc-top"><span class="mc-kind k-watch">관측</span><span class="mc-en">KIMCHI GAUGE</span></span>
-          <strong class="mc-name">김치 프리미엄</strong>
-          <span class="mc-q">한국 비트코인은 해외보다 얼마나 비쌀까?</span>
-          <span class="mc-result"><b>실시간</b><span>업비트 vs 바이낸스 가격 차이, 시간별 기록</span></span>
-          <span class="mc-more">자세히 보기 →</span>
-        </a></li>
+      <ul class="cabinets">
+        <li>
+          <a class="cabinet" href="machines/trading-floor.html" style="--cab-color: var(--mint)">
+            <div class="cabinet-marquee">TRADING FLOOR</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" data-scene="mini-floor">
+                <span>AI 트레이더 13명</span>
+              </div>
+              <p class="cabinet-q">AI끼리 토론하면 방향을 잘 맞힐까?</p>
+              <div class="cabinet-result"><b>2 / 19</b><span>24시간 뒤 맞은 판정(코인). 아직 근거 없음</span></div>
+              <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">매매</span></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="cabinet" href="machines/rebound.html" style="--cab-color: var(--pink)">
+            <div class="cabinet-marquee">REBOUND 25/200</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" aria-hidden="true">
+                <svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><path d="M4 12H60M4 24H60M4 36H60" stroke="#2e2560"/><path d="M4 36L14 34L24 32L34 30L44 28L60 26" fill="none" stroke="#ffd23f" stroke-width="2" stroke-dasharray="2 2"/><path d="M4 16L14 14L24 16L34 22L44 20L60 14" fill="none" stroke="#ff85c0" stroke-width="2"/><path d="M4 15L10 12L16 18L22 14L28 22L34 28L40 24L46 18L52 20L60 8" fill="none" stroke="#f3eeff" stroke-width="2"/><rect x="31" y="25" width="6" height="6" fill="#ffd23f"/></svg>
+              </div>
+              <p class="cabinet-q">크게 빠지면 다시 돌아올까?</p>
+              <div class="cabinet-result"><b>손실 −6% → +1%</b><span>200일선 방향 제한이 손실을 크게 줄임. 수익은 작음</span></div>
+              <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">매매</span></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="cabinet" href="machines/breakout.html" style="--cab-color: var(--mint)">
+            <div class="cabinet-marquee">BREAKOUT 20</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><path d="M4 16H44M4 36H60" fill="none" stroke="#3ce0a8" stroke-width="2" stroke-dasharray="4 3"/><path d="M4 27L12 24L20 30L28 23L36 25L44 18L50 12L56 14L62 6" fill="none" stroke="#f3eeff" stroke-width="2"/><path d="M44 32H50V26H56V24H62" fill="none" stroke="#ff85c0" stroke-width="2"/><rect x="48" y="10" width="5" height="5" fill="#ffd23f"/></svg></div>
+              <p class="cabinet-q">벽을 넘으면 따라가도 될까?</p>
+              <div class="cabinet-result"><b>6개 중 5개 +</b><span>비용 빼고 플러스, 2025년 이후도 같은 방향. 폭은 작음</span></div>
+              <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">매매</span></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="cabinet" href="machines/foreign-flow.html" style="--cab-color: var(--pink)">
+            <div class="cabinet-marquee">FOREIGN FLOW</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" data-scene="mini-flow">
+                <span>외국인 매매 검증</span>
+              </div>
+              <p class="cabinet-q">외국인이 많이 사면 다음 날 오를까?</p>
+              <div class="cabinet-result"><b>효과 없음</b><span>14년치, 세 가지 질문 모두</span></div>
+              <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">검증</span></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="cabinet" href="machines/clock-tower.html" style="--cab-color: var(--pink)">
+            <div class="cabinet-marquee">CLOCK TOWER</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><rect x="24" y="4" width="16" height="4" fill="#ff85c0"/><rect x="22" y="8" width="20" height="36" fill="#3a3170"/><rect x="25" y="11" width="14" height="14" fill="#f3eeff"/><rect x="31" y="13" width="2" height="6" fill="#1b1438"/><rect x="31" y="18" width="5" height="2" fill="#1b1438"/><rect x="27" y="29" width="4" height="5" fill="#ffd23f"/><rect x="33" y="29" width="4" height="5" fill="#1b1438"/><rect x="27" y="36" width="4" height="5" fill="#1b1438"/><rect x="33" y="36" width="4" height="5" fill="#ffd23f"/><rect x="6" y="40" width="3" height="4" fill="#ffd23f"/><rect x="10" y="34" width="3" height="10" fill="#ffd23f"/><rect x="14" y="38" width="3" height="6" fill="#ffd23f"/><rect x="47" y="36" width="3" height="8" fill="#ffd23f"/><rect x="51" y="30" width="3" height="14" fill="#ffd23f"/><rect x="55" y="38" width="3" height="6" fill="#ffd23f"/><rect x="0" y="44" width="64" height="4" fill="#1b1438"/></svg></div>
+              <p class="cabinet-q">비트코인은 언제 크게 움직일까?</p>
+              <div class="cabinet-result"><b>평일 밤 11시</b><span>평소의 1.6배 출렁임. 방향은 시간으로 못 맞힘</span></div>
+              <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">검증</span></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="cabinet" href="machines/kimchi-gauge.html" style="--cab-color: var(--coin)">
+            <div class="cabinet-marquee">KIMCHI GAUGE</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" data-scene="mini-gauge">
+                <span>김프 게이지</span>
+              </div>
+              <p class="cabinet-q">한국 비트코인은 해외보다 얼마나 비쌀까?</p>
+              <div class="cabinet-result"><b>실시간</b><span>업비트 vs 바이낸스 가격 차이, 시간별 기록</span></div>
+              <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">관측</span></div>
+            </div>
+          </a>
+        </li>
       </ul>
     </section>
 
@@ -125,7 +167,7 @@
     </section>
 
     <section class="section wrap" id="request" aria-labelledby="request-title">
-      <div class="panel request-card">
+      <div class="panel px-box request-card">
         <div>
           <p class="home-eyebrow">전략 의뢰하기</p>
           <h2 class="section-title" id="request-title">메일 한 통이면 돼요</h2>
@@ -155,7 +197,7 @@
     </section>
 
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="about-card panel">
+      <div class="about-card panel px-box">
         <div class="about-main">
           <p class="home-eyebrow">만든 사람</p>
           <h2 class="section-title" id="about-title">정찬민</h2>

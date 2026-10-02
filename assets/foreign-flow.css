@@ -1,7 +1,9 @@
 /* FOREIGN FLOW 전용 — 공통 토큰(style.css)을 그대로 쓴다. */
 
 .machine-title-pink {
-  text-shadow: none;
+  text-shadow:
+    var(--px) var(--px) 0 var(--pink),
+    calc(var(--px) * 2) calc(var(--px) * 2) 0 var(--ink);
 }
 .ff-on-carpet { margin-bottom: 12px; }
 .ff-summary {
@@ -10,7 +12,7 @@
   font-size: 17px;
   color: var(--on-carpet);
 }
-.ff-summary a { color: var(--accent); }
+.ff-summary a { color: var(--coin); }
 
 .ff-questions {
   display: grid;
@@ -33,7 +35,7 @@
 }
 .ff-badge {
   padding: 2px 10px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--ink);
   font-family: var(--font-pixel);
   font-size: 13px;
   white-space: nowrap;
@@ -56,7 +58,7 @@
 }
 .ff-period {
   padding: 12px;
-  border: 1px solid var(--line);
+  border: 2px solid #c9bfe8;
   background: #fff;
 }
 .ff-period h4 {
@@ -104,8 +106,8 @@ dl.ff-today { max-width: 360px; font-size: 16px; }
 .ff-bar { display: grid; grid-template-columns: 3.6em minmax(0, 1fr) 3.6em; gap: 8px; align-items: center; font-size: 14px; }
 .ff-bar-name { font-weight: 600; }
 .ff-bar-val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
-.ff-track { position: relative; height: 18px; border: 1px solid var(--line); background: #fff; }
+.ff-track { position: relative; height: 18px; border: 2px solid var(--ink); background: #fff; }
 .ff-fill { position: absolute; inset: 0 auto 0 0; }
 .ff-fill.is-signal { background: var(--coin); }
-.ff-fill.is-base { background: #ced4da; }
+.ff-fill.is-base { background: #c9bfe8; }
 .ff-half { position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }

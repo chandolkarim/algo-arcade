@@ -2,19 +2,19 @@
 .ch-say {
   margin: 12px 0 0;
   padding: 10px 12px;
-  border-left: 2px solid var(--accent);
-  background: var(--accent-soft);
+  border-left: var(--px) solid var(--coin);
+  background: rgba(255, 210, 63, .08);
   font-size: 16px;
   font-weight: 600;
   line-height: 1.6;
   color: var(--on-carpet);
 }
-.ch-say-light { background: #fff6cc; border-left-color: var(--accent); color: var(--ink); }
+.ch-say-light { background: #fff6cc; border-left-color: #e09a1a; color: var(--ink); }
 .ch-range { display: flex; gap: 6px; }
 .ch-range button {
   min-height: 36px;
   padding: 0 12px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--on-carpet-soft);
   background: transparent;
   color: var(--on-carpet);
   font-family: var(--font-pixel);
@@ -26,4 +26,4 @@
 .lc-legend-light { color: var(--ink); }
 .lc-chip { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .lc-chip i { display: inline-block; width: 22px; height: 4px; }
-svg[tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+svg[tabindex]:focus-visible { outline: var(--px) solid var(--coin); outline-offset: 2px; }

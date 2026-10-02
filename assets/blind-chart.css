@@ -4,14 +4,14 @@
   padding: clamp(16px, 4vw, 28px);
   background: var(--screen);
   color: var(--on-carpet);
-  border: 1px solid var(--line);
-  box-shadow: 0 0 0 2px var(--accent);
+  border: calc(var(--px) * 2) solid var(--ink);
+  box-shadow: 0 0 0 var(--px) var(--coin), calc(var(--px) * 3) calc(var(--px) * 4) 0 var(--px) rgba(0,0,0,.4);
 }
 .bc-round {
   margin: 0;
   font-family: var(--font-pixel);
   font-size: 14px;
-  color: var(--accent);
+  color: var(--coin);
 }
 .bc-round .btn { margin-left: 8px; }
 
@@ -21,7 +21,7 @@
   width: 100%;
   min-height: 40px;
   padding: 6px 12px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--on-carpet-soft);
   background: transparent;
   color: var(--on-carpet);
   font-family: var(--font-pixel);
@@ -29,17 +29,17 @@
   text-align: left;
   cursor: pointer;
 }
-.bc-tag button::before { content: "? "; color: var(--accent); }
+.bc-tag button::before { content: "? "; color: var(--coin); }
 .bc-tag button[aria-expanded="true"] { border-color: var(--coin); }
 .bc-tag button[aria-expanded="true"]::before { content: "! "; }
-.bc-tag-body { padding: 8px 12px; border: 2px solid var(--accent); border-top: 0; }
+.bc-tag-body { padding: 8px 12px; border: 2px solid var(--coin); border-top: 0; }
 .bc-desc { margin: 0; font-size: 14px; color: var(--on-carpet-soft); }
 .bc-stat { margin: 4px 0 0; font-size: 14px; }
 .bc-screen .up, .bc-today-status .up { color: var(--up); }
 .bc-screen .down { color: var(--down); }
 
 .bc-chart { margin: 16px 0 0; }
-.bc-chart svg { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+.bc-chart svg { display: block; width: 100%; height: auto; border: 2px solid #3a3170; }
 .bc-chart figcaption { margin-top: 6px; font-size: 12px; color: var(--on-carpet-soft); }
 
 .bc-question { margin: 16px 0 0; font-size: 15px; }
@@ -52,7 +52,7 @@
 .bc-choice {
   min-height: 52px;
   padding: 6px 4px;
-  border: 1px solid var(--line);
+  border: var(--px) solid var(--ink);
   background: var(--panel);
   color: var(--ink);
   font-family: var(--font-pixel);
@@ -61,7 +61,7 @@
   cursor: pointer;
 }
 .bc-choice:disabled { cursor: default; opacity: 0.6; }
-.bc-choice.is-picked { opacity: 1; box-shadow: 0 0 0 2px var(--accent); }
+.bc-choice.is-picked { opacity: 1; box-shadow: 0 0 0 var(--px) var(--coin); }
 .bc-choice.is-answer { opacity: 1; background: var(--mint); }
 .bc-screen :focus-visible { outline-color: var(--coin); }
 
@@ -69,7 +69,7 @@
 .bc-result p { margin: 4px 0 0; font-size: 15px; }
 .bc-ok, .bc-miss { font-family: var(--font-pixel); font-size: 18px !important; }
 .bc-ok { color: var(--mint); }
-.bc-miss { color: var(--accent); }
+.bc-miss { color: var(--coin); }
 .bc-reveal { color: var(--on-carpet-soft); }
 #bc-next { margin-top: 16px; }
 /* .btn·flex 표시가 hidden 속성을 덮지 않게 */
@@ -105,7 +105,7 @@
 .bc-chip {
   display: inline-block;
   padding: 0 8px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--ink);
   font-size: 12px;
   color: var(--ink);
 }
@@ -118,16 +118,16 @@
 .bc-filter button {
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--ink);
   background: #fff;
   color: var(--ink);
   font-family: var(--font-pixel);
   font-size: 13px;
   cursor: pointer;
 }
-.bc-filter button[aria-pressed="true"] { background: var(--ink); color: var(--accent); }
+.bc-filter button[aria-pressed="true"] { background: var(--ink); color: var(--coin); }
 .bc-table { display: grid; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
-.bc-row { padding: 8px 12px; border: 1px solid var(--line); background: #fff; }
+.bc-row { padding: 8px 12px; border: 2px solid #c9bfe8; background: #fff; }
 .bc-row-name { margin: 0; font-weight: 600; font-size: 14px; }
 .bc-row .bc-stat { font-size: 13px; }
 
@@ -138,4 +138,4 @@
 @media (max-width: 400px) {
   .bc-choice { font-size: 13px; }
 }
-.bc-change { margin: 16px 0 0; padding: 10px 12px; border: 1px dashed var(--line); font-size: 15px; }
+.bc-change { margin: 16px 0 0; padding: 10px 12px; border: 2px dashed var(--ink); font-size: 15px; }

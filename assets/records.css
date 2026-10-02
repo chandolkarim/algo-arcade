@@ -10,14 +10,14 @@
 .rc-filter button {
   min-height: 44px;
   padding: 0 14px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--ink);
   background: #fff;
   color: var(--ink);
   font-family: var(--font-pixel);
   font-size: 14px;
   cursor: pointer;
 }
-.rc-filter button[aria-pressed="true"] { background: var(--ink); color: var(--accent); }
+.rc-filter button[aria-pressed="true"] { background: var(--ink); color: var(--coin); }
 .rc-count {
   margin: 12px 0 0;
   font-family: var(--font-pixel);
@@ -33,7 +33,7 @@
 }
 .rc-item {
   padding: 10px 14px;
-  border: 1px solid var(--line);
+  border: 2px solid #c9bfe8;
   background: #fff;
 }
 .rc-head, .rc-body {
@@ -52,7 +52,7 @@
 /* 판정 결과 표시는 시세색(빨강·파랑)을 쓰지 않는다 */
 .rc-chip {
   padding: 0 8px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--ink);
   font-size: 12px;
 }
 .rc-chip.is-hit { background: var(--mint); }

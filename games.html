@@ -13,7 +13,6 @@
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/home.css">
   <link rel="stylesheet" href="assets/arena.css">
@@ -37,26 +36,44 @@
     </div>
   </header>
 
-  <main id="main">
+  <div class="led-strip" aria-hidden="true">
+    <div class="led-track">
+      <span><span class="on">●</span> 게임 코너 영업 중</span>
+      <span><span class="on">●</span> 오늘의 한 판: 사람 vs 기계</span>
+      <span><span class="build">◆</span> 잘 안 된 결과도 그대로 공개</span>
+      <span><span class="on">●</span> 결과물 6대 가동 중</span>
+      <span><span class="build">◆</span> 게임 코너: 오늘의 한 판 · BLIND CHART</span>
+      <span>실제 주문은 나가지 않습니다</span>
+    </div>
+  </div>
+
     <section class="home-hero wrap" aria-labelledby="hero-title">
       <p class="home-eyebrow">게임</p>
       <h1 id="hero-title">알고리즘이랑 붙어 보세요.</h1>
       <p class="home-lead">같은 문제를 사람과 알고리즘이 함께 풉니다. 재미로 하는 예측 게임이며 투자 조언이 아닙니다.</p>
-      <ul class="mc-list game-list">
-        <li><a class="mc" href="#play">
-          <span class="mc-top"><span class="mc-kind k-game">매일</span><span class="mc-en">TODAY'S ROUND</span></span>
-          <strong class="mc-name">오늘의 한 판</strong>
-          <span class="mc-q">비트코인, 내일 오전 9시엔 크게 오를까, 내릴까, 그대로일까?</span>
-          <span class="mc-result"><b>사람 vs 기계</b><span>방문자 군중·알고리즘 5개와 매일 순위 경쟁</span></span>
-          <span class="mc-more">바로 아래에서 하기 ↓</span>
-        </a></li>
-        <li><a class="mc" href="machines/blind-chart.html">
-          <span class="mc-top"><span class="mc-kind k-game">무제한</span><span class="mc-en">BLIND CHART</span></span>
-          <strong class="mc-name">가린 차트 맞히기</strong>
-          <span class="mc-q">코인 이름과 날짜를 가린 차트, 5일 뒤를 맞힐 수 있을까?</span>
-          <span class="mc-result"><b>7,600여 문제</b><span>지표 힌트를 열어 볼 수 있어요. 195개 상황 중 두 구간 모두 맞은 건 2개뿐</span></span>
-          <span class="mc-more">하러 가기 →</span>
-        </a></li>
+      <ul class="cabinets game-list">
+        <li>
+          <a class="cabinet" href="#play" style="--cab-color: var(--coin)">
+            <div class="cabinet-marquee">오늘의 한 판</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><rect x="4" y="30" width="3" height="8" fill="#ff4d6d"/><rect x="9" y="26" width="3" height="8" fill="#ff4d6d"/><rect x="14" y="28" width="3" height="6" fill="#3ea1ff"/><rect x="19" y="22" width="3" height="9" fill="#ff4d6d"/><rect x="24" y="18" width="3" height="8" fill="#ff4d6d"/><rect x="29" y="20" width="3" height="6" fill="#3ea1ff"/><rect x="34" y="16" width="3" height="7" fill="#ff4d6d"/><rect x="0" y="21" width="40" height="1" fill="#ffd23f"/><rect x="42" y="4" width="20" height="12" fill="#ff4d6d" opacity=".5"/><rect x="42" y="16" width="20" height="12" fill="#bfb5ea" opacity=".35"/><rect x="42" y="28" width="20" height="12" fill="#3ea1ff" opacity=".5"/><rect x="49" y="18" width="6" height="8" fill="#ffd23f"/><rect x="51" y="20" width="2" height="2" fill="#0f0b24"/><rect x="0" y="44" width="64" height="4" fill="#1b1438"/></svg></div>
+              <p class="cabinet-q">비트코인, 내일 오전 9시엔 크게 오를까, 내릴까, 그대로일까?</p>
+              <div class="cabinet-result"><b>사람 vs 기계</b><span>방문자 군중·알고리즘 5개와 매일 순위 경쟁</span></div>
+              <div class="cabinet-status"><span class="lamp on"></span>바로 아래에서 하기 ▶<span class="cabinet-kind">매일</span></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="cabinet" href="machines/blind-chart.html" style="--cab-color: var(--coin)">
+            <div class="cabinet-marquee">BLIND CHART</div>
+            <div class="cabinet-body">
+              <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><rect x="6" y="28" width="3" height="8" fill="#3ea1ff"/><rect x="11" y="24" width="3" height="9" fill="#ff4d6d"/><rect x="16" y="20" width="3" height="7" fill="#ff4d6d"/><rect x="21" y="22" width="3" height="6" fill="#3ea1ff"/><rect x="26" y="16" width="3" height="9" fill="#ff4d6d"/><rect x="31" y="14" width="3" height="5" fill="#ff4d6d"/><rect x="36" y="17" width="3" height="6" fill="#3ea1ff"/><rect x="42" y="6" width="1" height="36" fill="#ffd23f"/><rect x="44" y="6" width="16" height="36" fill="#1b1438"/><rect x="48" y="14" width="8" height="2" fill="#ffd23f"/><rect x="54" y="16" width="2" height="6" fill="#ffd23f"/><rect x="50" y="22" width="4" height="2" fill="#ffd23f"/><rect x="50" y="24" width="2" height="4" fill="#ffd23f"/><rect x="50" y="32" width="2" height="2" fill="#ffd23f"/></svg></div>
+              <p class="cabinet-q">코인 이름과 날짜를 가린 차트, 5일 뒤를 맞힐 수 있을까?</p>
+              <div class="cabinet-result"><b>7,600여 문제</b><span>지표 힌트를 열어 볼 수 있어요. 195개 상황 중 두 구간 모두 맞은 건 2개뿐</span></div>
+              <div class="cabinet-status"><span class="lamp on"></span>하러 가기 ▶<span class="cabinet-kind">무제한</span></div>
+            </div>
+          </a>
+        </li>
       </ul>
     </section>
 
