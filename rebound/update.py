@@ -45,6 +45,52 @@ def fetch(url):
             time.sleep(attempt + 1)
 
 
+# 페이지용 스크립트에는 화면에 쓰는 칸만 남기고 숫자를 6자리로 줄인다(원본 JSON은 그대로).
+PAGE_TRADE_KEYS = ("side", "entry_date", "exit_date", "entry", "exit", "net", "reason", "bars", "stop", "pending_exit", "return_pct")
+PAGE_CURVE_KEYS = ("date", "equity", "stop_used")
+
+
+def _short(value):
+    if isinstance(value, float):
+        return float(f"{value:.6g}")
+    if isinstance(value, dict):
+        return {k: _short(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_short(v) for v in value]
+    return value
+
+
+def _page_result(result, keep_trades=True):
+    if not isinstance(result, dict):
+        return result
+    out = dict(result)
+    if "trades" in out:
+        out["trades"] = [{k: t[k] for k in PAGE_TRADE_KEYS if k in t} for t in out["trades"]] if keep_trades else []
+    if "curve" in out:
+        out["curve"] = [{k: r[k] for k in PAGE_CURVE_KEYS if k in r} for r in out["curve"]]
+    return out
+
+
+def page_payload(snapshot):
+    assets = []
+    for a in snapshot.get("assets", []):
+        a = dict(a)
+        for key in ("backtest", "holdout", "paper"):
+            if key in a:
+                a[key] = _page_result(a[key])
+        for key in ("baseline", "holdout_baseline"):  # 비교 곡선과 합계만 쓴다
+            if key in a:
+                a[key] = _page_result(a[key], keep_trades=False)
+        assets.append(a)
+    return _short({**snapshot, "assets": assets})
+
+
+def page_script(var, snapshot):
+    """A generated script permits double-click/file:// use without fetch/CORS failures."""
+    body = json.dumps(page_payload(snapshot), ensure_ascii=False, allow_nan=False, separators=(",", ":"))
+    return f"window.{var} = " + body.replace("<", "\\u003c") + ";\n"
+
+
 def load_deployed(url, version, out_json, out_js, var):
     """--previous: 배포된 결과와 저장소 결과 중 더 최근에 계산한 것을 고른다.
     오늘(UTC) 같은 버전으로 이미 계산했으면 그대로 써서 True. 고른 결과는 실패한 종목의 이전 값으로도 쓴다.
@@ -73,8 +119,7 @@ def load_deployed(url, version, out_json, out_js, var):
         return merged, False
     if prev.get("generated_at", "")[:10] == today and prev.get("version") == version and prev.get("assets"):
         write_json(out_json, prev)
-        text = f"window.{var} = " + json.dumps(prev, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c") + ";\n"
-        out_js.write_text(text, encoding="utf-8")
+        out_js.write_text(page_script(var, prev), encoding="utf-8")
         print(f"오늘 이미 계산한 결과를 그대로 씀 ({prev['generated_at']})")
         return prev, True
     return merged, False
@@ -321,8 +366,7 @@ def main():
             print(f"{symbol}: ERROR {exc}", file=sys.stderr, flush=True)
         snapshot["assets"].append(item)
     write_json(previous_path, snapshot)
-    # A generated script permits double-click/file:// use without fetch/CORS failures.
-    text = "window.REBOUND_DATA = " + json.dumps(snapshot, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c") + ";\n"
+    text = page_script("REBOUND_DATA", snapshot)
     js = ROOT / "data" / "rebound-data.js"
     temp = js.with_suffix(".tmp")
     temp.write_text(text, encoding="utf-8")

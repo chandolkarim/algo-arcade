@@ -43,6 +43,7 @@
       <h1 class="mh-title" id="machine-title">외국인 매수 속설</h1>
       <p class="mh-q">외국인이 코스피를 많이 사면 다음 날 오를까?</p>
       <div class="mh-result"><b>효과 없음</b><span>14년치 거래일로 세 가지 질문을 했고, 셋 다 두 구간에서 확인되지 않았어요.</span></div>
+      <p class="mh-meta mh-updated" data-updated="FOREIGN_FLOW_DATA" data-note="거래소 원자료라 내 컴퓨터에서 계산해 올려요">마지막 계산 날짜를 불러오는 중</p>
       <a class="btn hero-play" href="../index.html#request">이런 전략 의뢰하기</a>
       <a class="code-link" href="https://github.com/chandolkarim/algo-arcade/tree/main/foreign-flow">코드 · 테스트 보기 (GitHub) →</a>
       <p class="mh-meta" id="ff-range-tag">2012–2026 거래일</p>
@@ -62,11 +63,22 @@
         <h3 class="easy-sub">규칙 요약</h3>
         <dl class="easy-rules">
           <div><dt>데이터</dt><dd>KRX 외국인 순매수(2012-10 ~ 2026-09), 코스피 종가</dd></div>
-          <div><dt>신호</dt><dd>‘아주 많이 산 날’ = 직전 60일 대비 표준화 값 +2 이상 / 5일 연속 순매수 / 아주 많이 판 날</dd></div>
+          <div><dt>신호</dt><dd>‘아주 많이 산 날’ = 직전 60일 평소보다 크게 튄 날(표준화 값 +2 이상) / 5일 연속 순매수 / 아주 많이 판 날</dd></div>
           <div><dt>비교</dt><dd>같은 기간 아무 날이나 골랐을 때 다음 날 오른 비율</dd></div>
-          <div><dt>판정</dt><dd>2012–2021년, 2022년부터 두 구간 모두 같은 쪽으로 뚜렷하면(p < 0.05) ‘효과 있음’</dd></div>
+          <div><dt>판정</dt><dd>2012–2021년, 2022년부터 두 구간 모두 같은 쪽으로 뚜렷하면(우연일 확률 5% 미만, p < 0.05) ‘효과 있음’</dd></div>
         </dl>
         <div class="easy-example"><b>예시</b><p>외국인이 아주 많이 산 다음 날 코스피가 오른 비율 58%, 그냥 아무 날 53% → 2022년 이후엔 51% vs 55%로 뒤집혀서, 두 기간 모두 확인되지 않았어요.</p></div>
+        <details class="easy-glossary">
+          <summary>이 페이지에 나오는 말 풀이</summary>
+          <dl>
+            <div><dt>순매수</dt><dd>산 금액 − 판 금액. +면 많이 산 날, −면 많이 판 날.</dd></div>
+            <div><dt>표준화 값</dt><dd>‘평소보다 얼마나 튀었나’를 잰 숫자. 0이면 평소 수준, +2면 평소보다 아주 많이 산 날이에요.</dd></div>
+            <div><dt>기준선</dt><dd>아무 날이나 골랐을 때 다음 날 오른 비율. 신호가 이것보다 나아야 의미가 있어요.</dd></div>
+            <div><dt>p < 0.05</dt><dd>‘우연이라면 이 정도 차이가 나올 확률이 5%도 안 된다’는 뜻. 이 기준을 통과해야 ‘뚜렷하다’고 봐요.</dd></div>
+            <div><dt>이항검정</dt><dd>동전 던지기처럼 ‘오른 날/내린 날’ 횟수가 우연으로 설명되는지 계산하는 방법.</dd></div>
+            <div><dt>두 구간</dt><dd>2012–2021년과 2022년부터를 따로 봐요. 한 구간에서만 맞으면 우연일 수 있어서요.</dd></div>
+          </dl>
+        </details>
       </div>
     </section>
 
@@ -106,7 +118,7 @@
           </div>
           <div class="fact">
             <h3>판정 규칙</h3>
-            <p>오른 비율이 기준선과 다른지 이항검정으로 봅니다(p &lt; 0.05, 신호 20건 이상). 두 구간 모두 해당하면 효과 있음, 둘 다 아니면 효과 없음, 그 사이는 불확실입니다.</p>
+            <p>오른 비율이 기준선과 다른지 이항검정(오른 날 수가 우연으로 설명되는지 계산)으로 봅니다(p &lt; 0.05, 신호 20건 이상). 두 구간 모두 해당하면 효과 있음, 둘 다 아니면 효과 없음, 그 사이는 불확실입니다.</p>
           </div>
           <div class="fact">
             <h3>5일 연속은 첫날만</h3>

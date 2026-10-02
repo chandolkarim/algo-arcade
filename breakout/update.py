@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from breakout.engine import Rules, advance, backtest, describe, indicators, new_account, summary
 from rebound.engine import buy_and_hold
-from rebound.update import crypto_data, load_deployed, stock_data, write_json
+from rebound.update import crypto_data, load_deployed, page_script, stock_data, write_json
 
 HERE = ROOT / "breakout"
 UTC = timezone.utc
@@ -132,8 +132,7 @@ def main():
             print(f"{symbol}: ERROR {exc}", file=sys.stderr, flush=True)
         snapshot["assets"].append(item)
     write_json(previous_path, snapshot)
-    # A generated script permits double-click/file:// use without fetch/CORS failures.
-    text = "window.BREAKOUT_DATA = " + json.dumps(snapshot, ensure_ascii=False, allow_nan=False).replace("<", "\\u003c") + ";\n"
+    text = page_script("BREAKOUT_DATA", snapshot)
     js = ROOT / "data" / "breakout-data.js"
     temp = js.with_suffix(".tmp")
     temp.write_text(text, encoding="utf-8")

@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import patch
 
 from engine import Rules, advance, backtest, buy_and_hold, indicators, new_account, signal, summary
-from update import paper_update, stock_data
+from update import page_payload, page_script, paper_update, stock_data
 
 
 def row(day="2026-01-01", **changes):
@@ -232,6 +232,26 @@ class BuyAndHoldTests(unittest.TestCase):
 
     def test_empty(self):
         self.assertIsNone(buy_and_hold([], None))
+
+class PagePayloadTests(unittest.TestCase):
+    def test_page_keeps_used_fields_and_shortens_numbers(self):
+        trade = {"side": 1, "entry_date": "2024-01-02", "exit_date": "2024-01-05", "entry": 1.23456789, "exit": 2.0,
+                 "net": 10.123456789, "reason": "stop", "qty": 0.1, "signal_atr": 3.3, "fees": 0.2}
+        snapshot = {"schema": 1, "assets": [{
+            "symbol": "X", "backtest": {"initial": 10000.0, "trades": [trade],
+                                        "curve": [{"date": "2024-01-02", "equity": 10000.123456789, "next_stop": 1.0}]},
+            "baseline": {"return_pct": -1.5, "count": 3, "trades": [trade], "curve": []}}]}
+        page = page_payload(snapshot)
+        a = page["assets"][0]
+        self.assertEqual(set(a["backtest"]["trades"][0]), {"side", "entry_date", "exit_date", "entry", "exit", "net", "reason"})
+        self.assertEqual(a["backtest"]["trades"][0]["entry"], 1.23457)
+        self.assertEqual(a["backtest"]["curve"][0], {"date": "2024-01-02", "equity": 10000.1})
+        self.assertEqual(a["baseline"]["trades"], [])
+        self.assertEqual(a["baseline"]["count"], 3)
+        self.assertEqual(len(snapshot["assets"][0]["backtest"]["trades"][0]), 10)  # 원본은 건드리지 않음
+        self.assertTrue(page_script("V", {"schema": 1, "assets": [], "note": "<b>"}).startswith("window.V = {"))
+        self.assertNotIn("<", page_script("V", {"note": "<b>"}))
+
 
 if __name__ == "__main__":
     unittest.main()

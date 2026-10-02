@@ -184,4 +184,15 @@
     }, { rootMargin: "-30% 0px -60% 0px", threshold: [0, 0.25] });
     sections.forEach((s) => io.observe(s));
   }
+  // 결과 페이지 머리: "마지막 계산" 날짜를 같은 자리에 (데이터 스크립트가 다 읽힌 뒤)
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-updated]").forEach((el) => {
+      const at = window[el.dataset.updated]?.generated_at;
+      if (!at) { el.hidden = true; return; }
+      const t = new Date(at);
+      const when = new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(t);
+      const days = Math.floor((Date.now() - t.getTime()) / 86400000);
+      el.textContent = `마지막 계산 ${when} (한국 시간)${days >= 1 ? ` · ${days}일 전` : ""}${el.dataset.note ? ` · ${el.dataset.note}` : ""}`;
+    });
+  });
 })();

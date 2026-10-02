@@ -181,3 +181,15 @@
 .code-link:hover { color: var(--coin); }
 .home-tag { display: block; margin-bottom: 6px; color: var(--coin); font-weight: 700; }
 .cabinet.is-empty .cabinet-q { color: var(--on-carpet-soft); }
+
+/* 이 페이지에 나오는 말 풀이 · 마지막 계산 */
+.easy-glossary { margin-top: 16px; border: 2px solid var(--ink); background: #fff; }
+.easy-glossary summary { padding: 10px 12px; cursor: pointer; font-family: var(--font-pixel); font-size: 14px; }
+.easy-glossary[open] summary { border-bottom: 1px solid #c9bfe8; }
+.easy-glossary dl { margin: 0; }
+.easy-glossary dl div { display: grid; grid-template-columns: 8.5em 1fr; gap: 10px; padding: 8px 12px; }
+.easy-glossary dl div + div { border-top: 1px solid #ece7fb; }
+.easy-glossary dt { font-weight: 700; font-size: 14px; }
+.easy-glossary dd { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+@media (max-width: 480px) { .easy-glossary dl div { grid-template-columns: 1fr; gap: 2px; } }
+.mh-updated { margin-top: 10px; }
