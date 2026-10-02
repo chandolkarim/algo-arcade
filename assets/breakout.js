@@ -95,6 +95,17 @@
       ? `등록: ${new Date(result.started_at).toLocaleString("ko-KR",{timeZone:"Asia/Seoul"})} (한국 시간) · 마지막 처리: ${result.last_date}. ${result.note}`
       : `${period === "holdout" ? data.holdout_start : data.backtest_start} ~ ${asset.end} · 과거 확정 일봉 재생 · 초기 ${num(result.initial,0)} ${currency}. ${period === "holdout" ? "이 구간의 시작에 빈 계좌로 새로 계산했습니다." : "손실 거래도 포함한 전체 기록입니다."}`;
     signed("bo-return",result.return_pct);
+    // 비교 기준: 같은 기간 그냥 사서 들고 있었다면
+    const bh = period !== "paper" && asset.buy_hold && asset.buy_hold[period];
+    $("bo-bh-box").hidden = !bh;
+    if (bh) {
+      signed("bo-bh-strategy", result.return_pct);
+      signed("bo-bh", bh.return_pct);
+      $("bo-bh-strategy-dd").textContent = `가장 크게 빠졌을 때 −${result.max_drawdown_pct.toFixed(1)}%`;
+      $("bo-bh-dd").textContent = `가장 크게 빠졌을 때 −${bh.max_drawdown_pct.toFixed(1)}%`;
+      $("bo-bh-note").textContent = `${bh.start}에 ${asset.name} 매수 후 그대로 들고 있었다면 ${bh.return_pct >= 0 ? "+" : "−"}${Math.abs(bh.return_pct).toFixed(1)}%. ` +
+        `이 전략은 한 번 거래에 계좌의 0.5%만 손실 위험으로 걸도록 정해서, 버는 것도 잃는 것도 작아요. 수익만 보면 그냥 들고 있는 쪽이 ${bh.return_pct > result.return_pct ? "더 컸고" : "더 작았고"}, 대신 중간에 빠지는 폭은 전략이 훨씬 작았어요.`;
+    }
     $("bo-dd").textContent = `${num(result.max_drawdown_pct)}%`;
     $("bo-count").textContent = `${result.count}건`;
     $("bo-win").textContent = result.win_rate === null ? "표본 없음" : `${num(result.win_rate,1)}%`;

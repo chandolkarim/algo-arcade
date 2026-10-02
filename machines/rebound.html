@@ -22,10 +22,13 @@
   <a class="skip-link" href="#main">본문 바로가기</a>
   <header class="site-header"><div class="wrap">
     <a class="logo" href="../index.html"><span class="logo-coin" data-scene="coin"></span>알고리즘 오락실</a>
-    <nav class="site-nav" aria-label="2번 기계 안내"><ul>
-      <li><a href="#monitor">관측</a></li><li><a href="#results">기록</a></li>
-      <li><a href="#rules">규칙</a></li><li><a href="#contact">문의</a></li>
-    </ul></nav>
+    <nav class="site-nav" aria-label="주요 메뉴">
+        <ul>
+          <li><a href="../index.html#request">의뢰하기</a></li>
+          <li><a href="../index.html#works">결과물</a></li>
+          <li><a href="../games.html">게임</a></li>
+        </ul>
+      </nav>
   </div></header>
   <main id="main">
     <section class="machine-hero wrap" aria-labelledby="machine-title">
@@ -33,8 +36,9 @@
       <p class="mh-top"><span class="mc-kind k-trade">매매</span><span class="mc-en">REBOUND 25/200</span></p>
       <h1 class="mh-title" id="machine-title">멀어진 가격의 되돌림</h1>
       <p class="mh-q">200일선으로 방향을 정하고, 25일선에서 크게 멀어지면 돌아올까?</p>
-      <div class="mh-result"><b>손실 −6% → +1%</b><span>200일선 방향 제한이 손실을 크게 줄였어요. 남는 수익은 작아요. (2022년부터 6종목)</span></div>
+      <div class="mh-result"><b>덜 잃지만, 덜 번다</b><span>최대 낙폭은 2% 안팎으로 작았지만 수익도 −1~+3%. 같은 기간 비트코인을 그냥 들고 있었으면 +84%(중간에 −67%까지). 200일선 필터는 손실을 줄이는 데는 도움이 됐어요.</span></div>
       <a class="btn hero-play" href="../index.html#request">이런 전략 의뢰하기</a>
+      <a class="code-link" href="https://github.com/chandolkarim/algo-arcade/tree/main/rebound">코드 · 테스트 보기 (GitHub) →</a>
       
     </section>
 
@@ -49,6 +53,17 @@
           <li><b>3. 다음 날 아침 진입</b><span>장 마감 뒤 신호를 보고 다음 날 시가에 들어가요. 미래 정보는 안 써요.</span></li>
           <li><b>4. 나오는 때</b><span>25일 평균으로 돌아오면 / 2 ATR 손해(손절) / 10일이 지나면 정리해요.</span></li>
         </ol>
+        <h3 class="easy-sub">규칙 요약</h3>
+        <dl class="easy-rules">
+          <div><dt>대상</dt><dd>비트코인·이더리움 선물, 애플·S&P500 ETF·삼성전자·SK하이닉스</dd></div>
+          <div><dt>봉</dt><dd>일봉(코인 UTC, 주식 거래소 날짜)</dd></div>
+          <div><dt>진입</dt><dd>200일선 방향 쪽으로만, 25일선에서 2 ATR 넘게 벌어진 다음 날 시가</dd></div>
+          <div><dt>청산</dt><dd>25일선 복귀 · 200일선 반대편 · 10일 경과 → 다음 날 시가</dd></div>
+          <div><dt>손절</dt><dd>진입가에서 2 ATR(장중)</dd></div>
+          <div><dt>위험</dt><dd>거래 한 번에 계좌의 0.5%</dd></div>
+          <div><dt>비용</dt><dd>수수료 코인 0.05%·주식 0.10%, 슬리피지 0.05%, 숏 차입료 연 5%</dd></div>
+          <div><dt>검증</dt><dd>2022년부터 전체 + 2025년부터 따로, 200일선 없는 버전과 비교</dd></div>
+        </dl>
         <div class="easy-example"><b>예시</b><p>비트코인이 200일 평균보다 위에 있는데, 하루 평소 움직임이 2,000달러일 때 25일 평균보다 4,000달러 넘게 떨어지면 → 다음 날 아침에 사요. 평균 근처로 돌아오면 팔아요.</p></div>
       </div>
     </section>
@@ -94,6 +109,14 @@
           <div class="rb-stats">
             <div><span>계좌 수익률</span><strong id="rb-return"></strong></div><div><span>최대 낙폭 · 종가 기준</span><strong id="rb-dd"></strong></div>
             <div><span>청산한 거래</span><strong id="rb-count"></strong></div><div><span>승률 · 비용 차감 후</span><strong id="rb-win"></strong></div>
+          </div>
+          <div class="bh-box" id="rb-bh-box" hidden>
+            <p class="bh-title">비교: 그냥 사서 들고 있었다면</p>
+            <div class="bh-grid">
+              <div><span>이 전략</span><strong id="rb-bh-strategy"></strong><em id="rb-bh-strategy-dd"></em></div>
+              <div><span>그냥 들고 있기</span><strong id="rb-bh"></strong><em id="rb-bh-dd"></em></div>
+            </div>
+            <p class="bh-note" id="rb-bh-note"></p>
           </div>
           <p id="rb-position" class="rb-position"></p>
           <div id="rb-comparison"><h3>200일선이 도움이 됐을까?</h3><p class="rb-small">같은 기간·비용·자금으로 비교합니다. 비교군은 200일선 진입 필터와 추세 이탈 청산을 함께 제거했습니다.</p>

@@ -18,9 +18,9 @@ from zoneinfo import ZoneInfo
 import xml.etree.ElementTree as ET
 
 if __package__:
-    from .engine import Rules, advance, backtest, describe, indicators, new_account, summary
+    from .engine import Rules, advance, backtest, buy_and_hold, describe, indicators, new_account, summary
 else:
-    from engine import Rules, advance, backtest, describe, indicators, new_account, summary
+    from engine import Rules, advance, backtest, buy_and_hold, describe, indicators, new_account, summary
 
 ROOT = Path(__file__).resolve().parent.parent
 HERE = ROOT / "rebound"
@@ -300,6 +300,9 @@ def main():
             item["backtest"] = backtest(rows, rules, True, asset["market"], config["backtest_start"])
             item["baseline"] = backtest(rows, rules, False, asset["market"], config["backtest_start"])
             item["holdout"] = backtest(rows, rules, True, asset["market"], config["holdout_start"])
+            # 비교 기준: 같은 기간 그냥 사서 들고 있었다면(비용 없음)
+            item["buy_hold"] = {"backtest": buy_and_hold(rows, config["backtest_start"]),
+                                "holdout": buy_and_hold(rows, config["holdout_start"])}
             item["holdout_baseline"] = backtest(rows, rules, False, asset["market"], config["holdout_start"])
             try:
                 item["paper"] = paper_update(HERE / "paper" / (symbol + ".json"), rows, rules, asset, now, args.offline)

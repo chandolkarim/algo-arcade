@@ -12,6 +12,7 @@ from zoneinfo import ZoneInfo
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from breakout.engine import Rules, advance, backtest, describe, indicators, new_account, summary
+from rebound.engine import buy_and_hold
 from rebound.update import crypto_data, load_deployed, stock_data, write_json
 
 HERE = ROOT / "breakout"
@@ -111,6 +112,9 @@ def main():
                          "chart": [{k: r[k] for k in ("date", "close", "upper", "lower")} for r in rows[-365:]]})
             item["backtest"] = backtest(rows, rules, asset["market"], config["backtest_start"])
             item["holdout"] = backtest(rows, rules, asset["market"], config["holdout_start"])
+            # 비교 기준: 같은 기간 그냥 사서 들고 있었다면(비용 없음)
+            item["buy_hold"] = {"backtest": buy_and_hold(rows, config["backtest_start"]),
+                                "holdout": buy_and_hold(rows, config["holdout_start"])}
             try:
                 item["paper"] = paper_update(HERE / "paper" / (symbol + ".json"), rows, rules, asset, now, args.offline)
             except Exception as exc:

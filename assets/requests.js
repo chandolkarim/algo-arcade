@@ -10,6 +10,8 @@
       summary.textContent = "의뢰 현황 파일을 찾지 못했습니다.";
     } else {
       const c = D.counts;
+      // 의뢰가 하나도 없으면 빈 목록 대신 칸을 숨긴다(빈자리 오락기가 대신 안내)
+      if (!D.total) { const sec = document.getElementById("requests"); if (sec) sec.hidden = true; }
       summary.textContent = D.total
         ? `지금까지 ${D.total}건 · 접수 ${c["접수"]} · 진행 중 ${c["진행 중"]} · 완료 ${c["완료"]}. 공개에 동의한 의뢰만 보여요.`
         : "아직 받은 의뢰가 없어요. 첫 의뢰를 보내 주시면 여기에 올라가요.";

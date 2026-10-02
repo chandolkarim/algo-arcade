@@ -4,34 +4,34 @@
   "anchor_date": "2026-09-30",
   "rules_hash": "cb575692a83cba61fd7af2ceee66882ad978ff735c9d5d9c92055185ef0a549e",
   "last_row": {
-    "date": "2026-09-30",
-    "open": 83624.5,
-    "high": 85632.7,
-    "low": 82901.3,
-    "close": 83576.9,
+    "date": "2026-10-01",
+    "open": 83576.8,
+    "high": 85265.3,
+    "low": 83136.6,
+    "close": 84829.6,
     "funding": [
       {
-        "rate": 7.697e-05,
-        "mark": 83624.5,
+        "rate": 7.981e-05,
+        "mark": 83582.73222464,
         "mark_proxy": false,
         "at_open": true
       },
       {
-        "rate": -2.44e-06,
-        "mark": 83259.62923913,
+        "rate": 4.568e-05,
+        "mark": 83381.6,
         "mark_proxy": false,
         "at_open": false
       },
       {
-        "rate": 6.606e-05,
-        "mark": 84104.8,
+        "rate": 6.98e-05,
+        "mark": 84126.41078986,
         "mark_proxy": false,
         "at_open": false
       }
     ],
     "upper": 87385.1,
     "lower": 74909.4,
-    "atr": 2290.8677965553657
+    "atr": 2279.2843825156965
   },
   "account": {
     "balance": 10000.0,
@@ -41,10 +41,48 @@
       {
         "date": "2026-09-30",
         "equity": 10000.0
+      },
+      {
+        "date": "2026-10-01",
+        "equity": 10000.0
       }
     ],
-    "last_date": "2026-09-30",
+    "last_date": "2026-10-01",
     "cancellations": 0
   },
-  "observations": []
+  "observations": [
+    {
+      "observed_at": "2026-10-02T03:21:01.146164+00:00",
+      "bar": {
+        "date": "2026-10-01",
+        "open": 83576.8,
+        "high": 85265.3,
+        "low": 83136.6,
+        "close": 84829.6,
+        "funding": [
+          {
+            "rate": 7.981e-05,
+            "mark": 83582.73222464,
+            "mark_proxy": false,
+            "at_open": true
+          },
+          {
+            "rate": 4.568e-05,
+            "mark": 83381.6,
+            "mark_proxy": false,
+            "at_open": false
+          },
+          {
+            "rate": 6.98e-05,
+            "mark": 84126.41078986,
+            "mark_proxy": false,
+            "at_open": false
+          }
+        ],
+        "upper": 87385.1,
+        "lower": 74909.4,
+        "atr": 2279.2843825156965
+      }
+    }
+  ]
 }

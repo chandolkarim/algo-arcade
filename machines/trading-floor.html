@@ -27,12 +27,11 @@
         <span class="logo-coin" data-scene="coin"></span>
         알고리즘 오락실
       </a>
-      <nav class="site-nav" aria-label="이 기계 안내">
+      <nav class="site-nav" aria-label="주요 메뉴">
         <ul>
-          <li><a href="#flow">진행 순서</a></li>
-          <li><a href="#modes">모드</a></li>
-          <li><a href="#records">기록</a></li>
-          <li><a href="#contact">문의</a></li>
+          <li><a href="../index.html#request">의뢰하기</a></li>
+          <li><a href="../index.html#works">결과물</a></li>
+          <li><a href="../games.html">게임</a></li>
         </ul>
       </nav>
     </div>
@@ -46,6 +45,7 @@
       <p class="mh-q">AI끼리 분석·토론·심사를 거치면 방향을 잘 맞힐까?</p>
       <div class="mh-result"><b>2 / 19</b><span>24시간 뒤 맞은 판정(코인). 아직 잘 맞힌다는 근거는 없어요.</span></div>
       <a class="btn hero-play" href="../index.html#request">이런 전략 의뢰하기</a>
+      <a class="code-link" href="https://github.com/chandolkarim/algo-arcade/tree/main/records">코드 · 테스트 보기 (GitHub) →</a>
       
     </section>
 
@@ -61,6 +61,14 @@
           <li><b>4. 트레이더 계획</b><span>진입가·손절가·목표가를 정해요.</span></li>
           <li><b>5. 리스크 심사 → 최종 판정</b><span>공격·보수·중립 3명이 심사하고, 책임자가 매수·매도·관망을 정해요.</span></li>
         </ol>
+        <h3 class="easy-sub">규칙 요약</h3>
+        <dl class="easy-rules">
+          <div><dt>대상</dt><dd>코인(BTC·ETH·SOL·XRP 등)과 주식</dd></div>
+          <div><dt>방식</dt><dd>AI 13명이 5단계(분석 → 토론 → 계획 → 심사 → 최종 판정)</dd></div>
+          <div><dt>기록</dt><dd>실제 판정 24건 공개(2026-08-24 ~ 09-01)</dd></div>
+          <div><dt>채점</dt><dd>판정 24시간 뒤 바이낸스 가격. ±1% 안이면 ‘움직임 작음’, 관망은 ±1% 안이어야 맞음</dd></div>
+          <div><dt>공개하지 않는 것</dt><dd>AI 프롬프트와 실제 기계 코드(인증키 보호)</dd></div>
+        </dl>
         <div class="easy-example"><b>예시</b><p>9월 1일 SOL에 ‘관망’ 판정 → 24시간 뒤 1.36% 내렸어요. 관망은 ±1% 안에서 움직여야 맞는 거라 ‘빗나감’으로 기록했어요.</p></div>
       </div>
     </section>

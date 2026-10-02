@@ -169,3 +169,15 @@
 .easy-terms div { padding: 12px; background: var(--screen); color: var(--on-carpet); }
 .easy-terms dt { font-family: var(--font-pixel); font-size: 14px; color: var(--coin); }
 .easy-terms dd { margin: 4px 0 0; font-size: 14px; color: var(--on-carpet-soft); }
+
+/* 규칙 요약표 · 코드 보기 */
+.easy-sub { margin: 22px 0 8px; font-family: var(--font-pixel); font-size: 16px; }
+.easy-rules { margin: 0; border: 2px solid var(--ink); }
+.easy-rules div { display: grid; grid-template-columns: 6.5em 1fr; gap: 10px; padding: 9px 12px; background: #fff; }
+.easy-rules div + div { border-top: 1px solid #c9bfe8; }
+.easy-rules dt { font-family: var(--font-pixel); font-size: 13px; }
+.easy-rules dd { margin: 0; font-size: 14px; color: var(--ink-soft); }
+.code-link { display: inline-block; margin: 14px 0 0 2px; font-size: 14px; color: var(--on-carpet-soft); text-underline-offset: 4px; }
+.code-link:hover { color: var(--coin); }
+.home-tag { display: block; margin-bottom: 6px; color: var(--coin); font-weight: 700; }
+.cabinet.is-empty .cabinet-q { color: var(--on-carpet-soft); }

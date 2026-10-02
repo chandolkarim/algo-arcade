@@ -219,3 +219,18 @@ def describe(row, rules=Rules()):
             "sma200": row["sma200"], "atr": a, "deviation_pct": (row["close"] / row["sma25"] - 1) * 100,
             "deviation_atr": (row["close"] - row["sma25"]) / a if a else None,
             "trend": trend, "signal": "long" if side == 1 else "short" if side == -1 else "wait"}
+
+
+def buy_and_hold(rows, start_date=None):
+    """Benchmark: buy at the first open on/after start_date, hold to the last close (no costs).
+    Returns return_pct and max drawdown (close basis) so a strategy can be compared with doing nothing."""
+    picked = [r for r in rows if not start_date or r["date"] >= start_date]
+    if not picked:
+        return None
+    entry = picked[0]["open"]
+    peak, drawdown = entry, 0.0
+    for r in picked:
+        peak = max(peak, r["close"])
+        drawdown = max(drawdown, (peak - r["close"]) / peak)
+    return {"start": picked[0]["date"], "end": picked[-1]["date"],
+            "return_pct": (picked[-1]["close"] / entry - 1) * 100, "max_drawdown_pct": drawdown * 100}

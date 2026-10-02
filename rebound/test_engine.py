@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from engine import Rules, advance, backtest, indicators, new_account, signal, summary
+from engine import Rules, advance, backtest, buy_and_hold, indicators, new_account, signal, summary
 from update import paper_update, stock_data
 
 
@@ -219,6 +219,19 @@ class EngineTests(unittest.TestCase):
         prefix = backtest(indicators(bars[:8], r), r, False)
         self.assertEqual(full["curve"][:len(prefix["curve"])], prefix["curve"])
 
+
+
+class BuyAndHoldTests(unittest.TestCase):
+    def test_return_and_drawdown(self):
+        rows = [{"date": d, "open": o, "close": c} for d, o, c in
+                [("2022-01-01", 90, 100), ("2022-01-02", 100, 120), ("2022-01-03", 120, 90), ("2022-01-04", 90, 110)]]
+        bh = buy_and_hold(rows, "2022-01-02")
+        self.assertEqual(bh["start"], "2022-01-02")
+        self.assertAlmostEqual(bh["return_pct"], 10.0)        # 시가 100에 사서 종가 110
+        self.assertAlmostEqual(bh["max_drawdown_pct"], 25.0)  # 120 → 90
+
+    def test_empty(self):
+        self.assertIsNone(buy_and_hold([], None))
 
 if __name__ == "__main__":
     unittest.main()
