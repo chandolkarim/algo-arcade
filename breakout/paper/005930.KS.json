@@ -4,16 +4,16 @@
   "anchor_date": "2026-09-30",
   "rules_hash": "6391fb97d9cdf28e9f11425acf19a5dcb8b3cf3b73bdcb2d66f49477ba7071b2",
   "last_row": {
-    "date": "2026-10-01",
-    "open": 266500.0,
-    "high": 276000.0,
-    "low": 264500.0,
+    "date": "2026-10-02",
+    "open": 273500.0,
+    "high": 277000.0,
+    "low": 271500.0,
     "close": 276000.0,
     "dividend": 0,
     "source": "Yahoo Finance",
     "upper": 285500.0,
     "lower": 243000.0,
-    "atr": 11928.133311609698
+    "atr": 11468.980932209004
   },
   "account": {
     "balance": 10000000.0,
@@ -27,9 +27,16 @@
       {
         "date": "2026-10-01",
         "equity": 10000000.0
+      },
+      {
+        "date": "2026-10-02",
+        "equity": 10000000.0,
+        "stop_used": null,
+        "side": null,
+        "next_stop": null
       }
     ],
-    "last_date": "2026-10-01",
+    "last_date": "2026-10-02",
     "cancellations": 0
   },
   "observations": [
@@ -46,6 +53,21 @@
         "upper": 285500.0,
         "lower": 243000.0,
         "atr": 11928.133311609698
+      }
+    },
+    {
+      "observed_at": "2026-10-03T05:47:55.497003+00:00",
+      "bar": {
+        "date": "2026-10-02",
+        "open": 273500.0,
+        "high": 277000.0,
+        "low": 271500.0,
+        "close": 276000.0,
+        "dividend": 0,
+        "source": "Yahoo Finance",
+        "upper": 285500.0,
+        "lower": 243000.0,
+        "atr": 11468.980932209004
       }
     }
   ]
