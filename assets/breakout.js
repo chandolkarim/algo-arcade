@@ -104,7 +104,11 @@
       $("bo-bh-strategy-dd").textContent = `가장 크게 빠졌을 때 −${result.max_drawdown_pct.toFixed(1)}%`;
       $("bo-bh-dd").textContent = `가장 크게 빠졌을 때 −${bh.max_drawdown_pct.toFixed(1)}%`;
       $("bo-bh-note").textContent = `${bh.start}에 ${asset.name} 매수 후 그대로 들고 있었다면 ${bh.return_pct >= 0 ? "+" : "−"}${Math.abs(bh.return_pct).toFixed(1)}%. ` +
-        `이 전략은 한 번 거래에 계좌의 0.5%만 손실 위험으로 걸도록 정해서, 버는 것도 잃는 것도 작아요. 수익만 보면 그냥 들고 있는 쪽이 ${bh.return_pct > result.return_pct ? "더 컸고" : "더 작았고"}, 대신 중간에 빠지는 폭은 전략이 훨씬 작았어요.`;
+        `이 전략은 한 번 거래에 계좌의 0.5%만 손실 위험으로 걸도록 정해서, 버는 것도 잃는 것도 작아요. ` +
+        // 맞바꿈(수익↔낙폭)인지, 전략이 둘 다 나았는지에 따라 문장을 나눈다
+        (bh.return_pct > result.return_pct
+          ? (bh.max_drawdown_pct > result.max_drawdown_pct ? "수익은 그냥 들고 있는 쪽이 더 컸고, 대신 중간에 빠지는 폭은 전략이 더 작았어요." : "수익도, 중간에 빠지는 폭도 그냥 들고 있는 쪽이 나았어요.")
+          : (bh.max_drawdown_pct > result.max_drawdown_pct ? "이 기간에는 그냥 들고 있기가 수익이 더 작았고, 중간에 빠지는 폭도 더 컸어요. 수익도 낙폭도 전략이 나았어요." : "수익은 전략이 더 컸지만, 중간에 빠지는 폭은 그냥 들고 있는 쪽이 더 작았어요."));
     }
     $("bo-dd").textContent = `${num(result.max_drawdown_pct)}%`;
     $("bo-count").textContent = `${result.count}건`;
