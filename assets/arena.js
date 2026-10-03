@@ -111,7 +111,9 @@
       `오른쪽 확대 칸: 내일 오전 9시 종가가 +${upP}% 넘게 오르면 크게 오름, −${dnP}% 넘게 내리면 크게 내림, 그 사이면 횡보.`;
     const fig = $("ar-chart");
     fig.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">${s}</svg>`;
-    fig.append(el("figcaption", "", "왼쪽: 최근 60일 일봉(빨강 오름, 파랑 내림) · 오른쪽: 내일 결과 구역을 크게 키운 칸"));
+    const cap = el("figcaption", "", "왼쪽: 최근 60일 일봉(빨강 오름, 파랑 내림)");
+    cap.append(document.createElement("br"), "오른쪽: 내일 결과 구역을 크게 키운 칸");
+    fig.append(cap);
   }
 
   function writeQuestion() {
