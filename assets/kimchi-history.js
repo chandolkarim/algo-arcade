@@ -2,7 +2,6 @@
 (() => {
   const box = document.getElementById("kh-body");
   if (!box) return;
-  const data = window.KIMCHI_HISTORY;
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
   const kst = (iso) => new Date(iso).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", hour12: false, month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" });
   // 한국 관례: 김프(+) 빨강 ▲, 역프(−) 파랑 ▼
@@ -12,6 +11,7 @@
     return v > 0 ? el("span", "up", `▲ +${t}%`) : el("span", "down", `▼ −${t}%`);
   };
 
+  function render(data) {
   box.textContent = "";
   const points = (data && data.points) || [];
   if (!points.length) {
@@ -74,4 +74,20 @@
   const made = new Date(data.generated_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", hour12: false });
   box.append(el("p", "kh-meta", `생성 ${made} (한국 시각)`));
   if (data.last_error) box.append(el("p", "kh-meta kh-error", `최근 실행 실패: ${data.last_error}. 기존 기록은 그대로 둡니다.`));
+  }
+
+  render(window.KIMCHI_HISTORY);
+  // 기록은 GitHub Actions가 공개 사이트에만 쌓는다(저장소 파일은 그대로).
+  // 그래서 내 컴퓨터에서 연 사본이나 브라우저에 남은 예전 파일이어도, 공개 사이트의 최신 기록을 받아 더 새로우면 다시 그린다.
+  const LIVE = "https://chandolkarim.github.io/algo-arcade/data/kimchi-history.json";
+  fetch(`${LIVE}?t=${Date.now()}`, { cache: "no-store" })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((live) => {
+      const now = window.KIMCHI_HISTORY;
+      if (!live || !Array.isArray(live.points) || (now && now.generated_at >= live.generated_at)) return;
+      window.KIMCHI_HISTORY = live;
+      render(live);
+      if (window.showUpdated) window.showUpdated();
+    })
+    .catch(() => {});  // 인터넷이 안 되면 가지고 있는 기록 그대로
 })();

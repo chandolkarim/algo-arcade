@@ -185,7 +185,8 @@
     sections.forEach((s) => io.observe(s));
   }
   // 결과 페이지 머리: "마지막 계산" 날짜를 같은 자리에 (데이터 스크립트가 다 읽힌 뒤)
-  document.addEventListener("DOMContentLoaded", () => {
+  // 데이터를 나중에 새로 받은 페이지(3번 김프 기록)도 다시 부를 수 있게 이름을 붙여 둔다
+  window.showUpdated = () => {
     document.querySelectorAll("[data-updated]").forEach((el) => {
       const at = window[el.dataset.updated]?.generated_at;
       if (!at) { el.hidden = true; return; }
@@ -196,5 +197,6 @@
       el.replaceChildren(`마지막 계산 ${when} (한국 시간)${days >= 1 ? ` · ${days}일 전` : ""}`,
         ...(el.dataset.note ? [document.createElement("br"), el.dataset.note] : []));
     });
-  });
+  };
+  document.addEventListener("DOMContentLoaded", window.showUpdated);
 })();
