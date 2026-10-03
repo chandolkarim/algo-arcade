@@ -94,8 +94,6 @@
 @media (min-width: 820px) { .about-card { grid-template-columns: 1.2fr 1fr; } }
 .about-card .home-eyebrow { color: var(--ink-soft); }
 .about-card .section-title { margin-bottom: 8px; }
-.about-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
-.about-tags li { padding: 2px 10px; border: 2px solid var(--ink); font-family: var(--font-pixel); font-size: 13px; }
 .about-rules { padding: 18px; border: 2px dashed var(--ink); }
 .about-rules h3 { margin: 0 0 8px; font-family: var(--font-pixel); font-size: 16px; }
 .about-rules ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-soft); }
@@ -213,3 +211,8 @@
 .games-more { margin: 20px 0 0; }
 .cabinet-state { margin: 10px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink); }
 .cabinet-state b { margin-right: 4px; padding: 0 5px; border: 2px solid var(--ink); font-family: var(--font-pixel); font-size: 11px; font-weight: 400; }
+.about-sub { margin: 18px 0 8px; font-family: var(--font-pixel); font-size: 16px; }
+.about-interests { display: grid; gap: 10px; margin: 0; }
+.about-interests div { padding: 10px 12px; border: 2px solid var(--ink); background: #fff; }
+.about-interests dt { font-weight: 700; font-size: 15px; }
+.about-interests dd { margin: 4px 0 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
