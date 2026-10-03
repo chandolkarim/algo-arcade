@@ -42,7 +42,7 @@
       <p class="mh-top"><span class="mc-kind k-test">검증</span><span class="mc-en">FOREIGN FLOW</span></p>
       <h1 class="mh-title" id="machine-title">외국인 매수 속설</h1>
       <p class="mh-q">외국인이 코스피를 많이 사면 다음 날 오를까?</p>
-      <div class="mh-result"><b>효과 없음</b><span>14년치 거래일로 세 가지 질문을 했고, 셋 다 두 구간에서 확인되지 않았어요.</span></div>
+      <div class="mh-result"><b>효과 미확인</b><span>14년치 거래일을 조사했지만, 이번 세 조건에서는 두 구간에 걸친 예측 효과를 확인하지 못했어요.</span></div>
       <p class="mh-meta mh-updated" data-updated="FOREIGN_FLOW_DATA" data-note="거래소 원자료라 내 컴퓨터에서 계산해 올려요">마지막 계산 날짜를 불러오는 중</p>
       <a class="btn hero-play" href="../index.html#request">이런 전략 의뢰하기</a>
       <a class="code-link" href="https://github.com/chandolkarim/algo-arcade/tree/main/foreign-flow">코드 · 테스트 보기 (GitHub) →</a>
@@ -58,7 +58,7 @@
           <li><b>1. 외국인 매수 금액</b><span>매일 외국인이 코스피를 얼마나 사고팔았는지 모아요.</span></li>
           <li><b>2. ‘아주 많이 산 날’ 고르기</b><span>평소(지난 60일)보다 유난히 많이 산 날만 골라요.</span></li>
           <li><b>3. 다음 날 확인</b><span>그다음 날 코스피가 올랐는지 셉니다.</span></li>
-          <li><b>4. 평소와 비교</b><span>아무 날이나 골랐을 때 오른 비율과 비교해요. 차이가 우연 수준이면 ‘효과 없음’.</span></li>
+          <li><b>4. 평소와 비교</b><span>아무 날이나 골랐을 때 오른 비율과 비교해요. 차이가 우연 수준이면 ‘효과 미확인’.</span></li>
         </ol>
         <h3 class="easy-sub">규칙 요약</h3>
         <dl class="easy-rules">
@@ -118,7 +118,7 @@
           </div>
           <div class="fact">
             <h3>판정 규칙</h3>
-            <p>오른 비율이 기준선과 다른지 이항검정(오른 날 수가 우연으로 설명되는지 계산)으로 봅니다(p &lt; 0.05, 신호 20건 이상). 두 구간 모두 해당하면 효과 있음, 둘 다 아니면 효과 없음, 그 사이는 불확실입니다.</p>
+            <p>오른 비율이 기준선과 다른지 이항검정(오른 날 수가 우연으로 설명되는지 계산)으로 봅니다(p &lt; 0.05, 신호 20건 이상). 두 구간 모두 해당하면 효과 있음, 둘 다 확인되지 않으면 효과 미확인, 그 사이는 불확실입니다.</p>
           </div>
           <div class="fact">
             <h3>5일 연속은 첫날만</h3>
@@ -162,7 +162,7 @@
         <p>계산 방법이나 데이터가 궁금하면 메일 주세요.</p>
         <div class="coin-slot">
           <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=FOREIGN%20FLOW%20문의">메일 보내기</a>
-          <a class="btn btn-ghost" href="../index.html#machines">다른 기계 보기</a>
+          <a class="btn btn-ghost" href="../index.html#works">다른 기계 보기</a>
         </div>
       </div>
     </section>

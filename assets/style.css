@@ -973,3 +973,15 @@ a.cabinet:focus-visible .cabinet-body { outline: var(--px) solid var(--coin); ou
 .bh-grid strong { display: block; font: 700 22px/1.4 var(--font-pixel); }
 .bh-grid em { display: block; font-style: normal; font-size: 13px; color: var(--ink-soft); }
 .bh-note { margin: 10px 0 0; font-size: 14px; }
+
+/* 본문·표·수치의 판독성: 장식 제목과 기계 이름에는 픽셀 글꼴을 유지한다. */
+main :is(table, th, td, dt, dd, label, summary),
+main :is(.rb-stats, .bo-stats, .rb-meter-grid, .bo-meter-grid, .bh-grid) strong,
+main :is(.rb-terminal-head, .bo-terminal-head) > span,
+main :is(.ff-bar-val, .ff-badge, .ct-pick, .lc-legend),
+main svg text {
+  font-family: var(--font-body) !important;
+  font-variant-numeric: tabular-nums;
+}
+main :is(td, th) { line-height: 1.65; }
+.led-strip:hover .led-track { animation-play-state: paused; }

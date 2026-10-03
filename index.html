@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>알고리즘 오락실 · 정찬민</title>
-  <meta name="description" content="구현해 보고 싶은 매매 전략을 메일로 보내 주세요. 코드로 만들고 실제 과거 데이터로 백테스트해 결과 페이지로 공개합니다. 무료 · 연구·교육 목적.">
+  <meta name="description" content="기술개발연구프로젝트 개인 웹페이지. 매매 아이디어를 규칙과 코드로 구현하고, 과거 데이터로 검증한 과정과 결과를 공개합니다.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="알고리즘 오락실 · 정찬민">
-  <meta property="og:description" content="원하는 매매 전략을 코드로 만들어 백테스트하고 결과를 공개합니다. 잘 안 된 결과도 그대로.">
+  <meta property="og:description" content="매매 아이디어를 코드와 과거 데이터로 검증한 개인 프로젝트. 제작 과정, AI 활용, 결과와 한계를 함께 공개합니다.">
   <meta property="og:url" content="https://chandolkarim.github.io/algo-arcade/">
   <meta property="og:image" content="https://chandolkarim.github.io/algo-arcade/assets/og.png">
   <meta property="og:locale" content="ko_KR">
@@ -27,6 +27,7 @@
       </a>
       <nav class="site-nav" aria-label="주요 메뉴">
         <ul>
+          <li><a href="#project">프로젝트</a></li>
           <li><a href="#request">의뢰하기</a></li>
           <li><a href="#works">결과물</a></li>
           <li><a href="games.html">게임</a></li>
@@ -37,10 +38,10 @@
 
   <div class="led-strip" aria-hidden="true">
     <div class="led-track">
-      <span><span class="on">●</span> 전략 의뢰 받는 중 · 무료</span>
-      <span><span class="on">●</span> 메일 한 통이면 코드 · 백테스트 · 결과 페이지</span>
-      <span><span class="build">◆</span> 잘 안 된 결과도 그대로 공개</span>
-      <span><span class="on">●</span> 결과물 6대 가동 중</span>
+      <span><span class="on">●</span> 기술개발연구프로젝트 · 2026-2</span>
+      <span><span class="on">●</span> 전략·검증 6대 가동 중</span>
+      <span><span class="build">◆</span> 잘 된 결과도, 안 된 결과도 그대로 공개</span>
+      <span><span class="on">●</span> 전략 아이디어 받는 중 · 무료</span>
       <span><span class="build">◆</span> 게임 코너: 오늘의 한 판 · BLIND CHART</span>
       <span>실제 주문은 나가지 않습니다</span>
     </div>
@@ -48,18 +49,38 @@
 
   <main id="main">
     <section class="home-hero wrap" aria-labelledby="hero-title">
-      <p class="home-eyebrow">INSERT COIN · 정찬민의 전략 의뢰소</p>
-      <h1 id="hero-title">원하는 매매 전략,<br>코드로 만들어 백테스트해 드려요.</h1>
-      <p class="home-lead"><b class="home-tag">전략 아이디어를 넣으면, 오락기 한 대가 만들어져요.</b> 아이디어를 메일로 보내 주시면 규칙을 함께 숫자로 정리하고, 실제 과거 데이터로 시험해 결과 페이지로 공개합니다. 잘 안 된 결과도 그대로 보여 드려요.</p>
+      <p class="home-eyebrow">INSERT COIN · 정찬민의 알고리즘 연구</p>
+      <h1 id="hero-title">매매 아이디어,<br>과거 데이터에서도 통할까?</h1>
+      <p class="home-lead"><b class="home-tag">아이디어 하나를, 검증할 수 있는 오락기 한 대로.</b> 매매 규칙을 코드로 구현하고 과거 데이터로 시험한 개인 프로젝트입니다. 잘 된 결과와 잘 안 된 결과, 만드는 과정에서 확인한 한계를 함께 공개합니다. 새로운 전략 아이디어도 받고 있어요.</p>
       <div class="home-cta">
-        <a class="btn" href="#request">전략 의뢰하기</a>
-        <a class="btn btn-ghost" href="#works">만든 결과 보기</a>
+        <a class="btn" href="#works">결과물 살펴보기</a>
+        <a class="btn btn-ghost" href="#project">어떻게 만들었나</a>
+        <a class="home-request-link" href="#request">전략 아이디어 보내기 →</a>
       </div>
       <ul class="home-stats" aria-label="한눈에">
         <li><b>6개</b><span>지금까지 만든 전략·검증</span></li>
-        <li><b>9년</b><span>가장 긴 검증 데이터</span></li>
+        <li><b>14년</b><span>가장 긴 검증 데이터</span></li>
         <li><b>무료</b><span>연구·교육 목적</span></li>
       </ul>
+    </section>
+
+    <section class="section wrap" id="project" aria-labelledby="project-title">
+      <div class="home-head">
+        <p class="home-eyebrow">기술개발연구프로젝트 · 개인 웹페이지</p>
+        <h2 class="section-title" id="project-title">질문부터 검증까지</h2>
+        <p>투자에 대한 생각을 숫자로 된 규칙으로 바꾸고, 그 결과를 누구나 읽을 수 있게 만드는 것이 이 프로젝트의 목표입니다.</p>
+      </div>
+      <div class="project-grid">
+        <article class="panel"><h3>기획과 판단 · 정찬민</h3><p>오락실 콘셉트와 기계를 선정하고 결과를 검토했습니다. REBOUND의 200일선 방향 조건을 제안하고, 일봉·코인·주식이라는 적용 범위를 정했습니다. 외국인 수급 검증에 필요한 KRX 자료도 직접 수집했습니다.</p></article>
+        <article class="panel"><h3>구현 과정의 AI 활용</h3><p>Claude Code와 사이트 구조·디자인 및 여러 기계를 만들고, ChatGPT와 REBOUND·BREAKOUT 코드를 작업했습니다. 코드 작성과 수정, 테스트에도 AI의 도움을 받았습니다.</p><a href="https://github.com/chandolkarim/algo-arcade#자료와-ai-도움">작업별 기여 기록 보기 →</a></article>
+        <article class="panel"><h3>결과를 확인하는 방법</h3><p>사용한 데이터 출처와 비용 가정을 공개하고, 거래 규칙을 테스트로 확인합니다. 과거 백테스트와 등록 이후 모의 기록을 구분하며, 결과 페이지에 계산 날짜·거래 내역·한계를 함께 표시합니다.</p><a href="https://github.com/chandolkarim/algo-arcade">코드와 테스트 보기 →</a></article>
+      </div>
+      <details class="project-example panel">
+        <summary>구현에서 확인한 문제: 오늘의 고가를 기준에 넣으면?</summary>
+        <p>BREAKOUT은 어제까지 20일 최고가가 100이고 오늘 종가가 103이면 돌파로 판단합니다. 오늘 고가 105까지 기준에 넣으면 103 &gt; 105를 비교하게 돼 원래 확인하려던 돌파를 놓칩니다.</p>
+        <p>따라서 신호 당일 봉을 제외해 기준을 계산하고, 다음 시가에 진입하도록 구현했습니다. 당일 종가로 갱신한 손절선도 다음 봉부터 적용합니다. 두 조건은 테스트로 확인합니다.</p>
+        <a href="https://github.com/chandolkarim/algo-arcade/blob/main/breakout/test_breakout.py">돌파 기준·손절 시점 테스트 보기 →</a>
+      </details>
     </section>
 
     <section class="section wrap" id="what" aria-labelledby="what-title">
@@ -72,12 +93,13 @@
           <li><b>2. 규칙 정하기</b><span>“많이 떨어지면 산다” 대신 “25일 평균보다 10% 아래면 산다”처럼 숫자로.</span></li>
           <li><b>3. 신호 내기</b><span>컴퓨터가 매일 마감 뒤 규칙을 확인해 ‘산다 / 판다 / 기다린다’를 정해요.</span></li>
           <li><b>4. 모의 주문</b><span>다음 날 아침 가격에 산 것으로 치고, 수수료와 미끄러짐(슬리피지)까지 빼요. 실제 돈은 안 써요.</span></li>
-          <li><b>5. 백테스트·검증</b><span>몇 년치 과거에 그대로 돌려 계좌가 어떻게 됐는지 봐요. 앞 기간으로 만들고 뒤 기간에서 다시 확인해 ‘우연’을 걸러요.</span></li>
+          <li><b>5. 백테스트·검증</b><span>몇 년치 과거에 그대로 돌려 계좌가 어떻게 됐는지 봐요. 기간을 나눠 결과가 유지되는지 살펴봐요. 반복 검증으로 우연의 가능성을 점검하지만, 미래 성과가 보장되지는 않아요.</span></li>
         </ol>
         <dl class="easy-terms">
           <div><dt>이동평균선</dt><dd>최근 N일 마감가의 평균. 25일선 = 한 달쯤의 평균, 200일선 = 1년쯤의 큰 흐름.</dd></div>
+          <div><dt>롱·숏</dt><dd>롱은 가격이 오르면, 숏은 가격이 내리면 이익이 나는 방향입니다.</dd></div>
           <div><dt>ATR</dt><dd>그 종목이 하루에 ‘평소’ 얼마나 움직이는지. 손절 폭을 정할 때 써요.</dd></div>
-          <div><dt>최대 낙폭</dt><dd>계좌가 가장 높았던 때에서 가장 많이 빠졌던 비율. 얼마나 아팠는지를 보여 줘요.</dd></div>
+          <div><dt>최대 낙폭</dt><dd>계좌가 가장 높았던 때에서 가장 많이 빠졌던 비율. 손실을 견뎌야 했던 폭을 보여 줘요.</dd></div>
         </dl>
       </div>
     </section>
@@ -98,7 +120,7 @@
     <section class="section wrap" id="works" aria-labelledby="works-title">
       <div class="home-head">
         <h2 class="section-title" id="works-title">지금까지 들어온 오락기</h2>
-        <p>의뢰하면 이런 오락기(결과 페이지)를 받아요. 누르면 규칙·성적·한계·코드를 볼 수 있어요. <span class="home-date">2026-10-01 계산 기준</span></p>
+        <p>의뢰하면 이런 오락기(결과 페이지)를 받아요. 누르면 규칙·성적·한계·코드를 볼 수 있어요. <span class="home-date">카드 요약: 2026-10-01 기준 · 최신 결과는 각 페이지</span></p>
       </div>
       <ul class="cabinets">
         <li>
@@ -122,7 +144,7 @@
                 <svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><path d="M4 12H60M4 24H60M4 36H60" stroke="#2e2560"/><path d="M4 36L14 34L24 32L34 30L44 28L60 26" fill="none" stroke="#ffd23f" stroke-width="2" stroke-dasharray="2 2"/><path d="M4 16L14 14L24 16L34 22L44 20L60 14" fill="none" stroke="#ff85c0" stroke-width="2"/><path d="M4 15L10 12L16 18L22 14L28 22L34 28L40 24L46 18L52 20L60 8" fill="none" stroke="#f3eeff" stroke-width="2"/><rect x="31" y="25" width="6" height="6" fill="#ffd23f"/></svg>
               </div>
               <p class="cabinet-q">크게 빠지면 다시 돌아올까?</p>
-              <div class="cabinet-result"><b>덜 잃지만, 덜 번다</b><span>최대 낙폭은 2% 안팎으로 작았지만 수익도 −1~+3%. 같은 기간 비트코인을 그냥 들고 있었으면 +84%(중간에 −67%까지). 200일선 필터는 손실을 줄이는 데는 도움이 됐어요.</span></div>
+              <div class="cabinet-result"><b>덜 잃지만, 덜 번다</b><span>2022년 이후 누적 · 6개 종목별 −1~+3%<br>비용 차감 · 최대 낙폭 약 2%</span></div>
               <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">매매</span></div>
             </div>
           </a>
@@ -133,7 +155,7 @@
             <div class="cabinet-body">
               <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><path d="M4 16H44M4 36H60" fill="none" stroke="#3ce0a8" stroke-width="2" stroke-dasharray="4 3"/><path d="M4 27L12 24L20 30L28 23L36 25L44 18L50 12L56 14L62 6" fill="none" stroke="#f3eeff" stroke-width="2"/><path d="M44 32H50V26H56V24H62" fill="none" stroke="#ff85c0" stroke-width="2"/><rect x="48" y="10" width="5" height="5" fill="#ffd23f"/></svg></div>
               <p class="cabinet-q">벽을 넘으면 따라가도 될까?</p>
-              <div class="cabinet-result"><b>6개 중 5개 +, 하지만 작게</b><span>비용을 빼고 −1~+10%(애플만 마이너스), 최대 낙폭 3~5%. 그냥 들고 있기(비트코인 +84%, 중간에 −67%)보다 수익은 훨씬 작고, 대신 훨씬 덜 흔들렸어요.</span></div>
+              <div class="cabinet-result"><b>6개 중 5개 +, 하지만 작게</b><span>2022년 이후 누적 · 6개 종목별 −1~+10%<br>비용 차감 · 최대 낙폭 3~5%</span></div>
               <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">매매</span></div>
             </div>
           </a>
@@ -146,7 +168,7 @@
                 <span>외국인 매매 검증</span>
               </div>
               <p class="cabinet-q">외국인이 많이 사면 다음 날 오를까?</p>
-              <div class="cabinet-result"><b>효과 없음</b><span>14년치, 세 가지 질문 모두</span></div>
+              <div class="cabinet-result"><b>효과 미확인</b><span>14년치 · 이번 세 조건에서 확인되지 않음</span></div>
               <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">검증</span></div>
             </div>
           </a>
@@ -157,7 +179,7 @@
             <div class="cabinet-body">
               <div class="cabinet-screen" aria-hidden="true"><svg viewBox="0 0 64 48" shape-rendering="crispEdges" focusable="false"><rect width="64" height="48" fill="#0f0b24"/><rect x="24" y="4" width="16" height="4" fill="#ff85c0"/><rect x="22" y="8" width="20" height="36" fill="#3a3170"/><rect x="25" y="11" width="14" height="14" fill="#f3eeff"/><rect x="31" y="13" width="2" height="6" fill="#1b1438"/><rect x="31" y="18" width="5" height="2" fill="#1b1438"/><rect x="27" y="29" width="4" height="5" fill="#ffd23f"/><rect x="33" y="29" width="4" height="5" fill="#1b1438"/><rect x="27" y="36" width="4" height="5" fill="#1b1438"/><rect x="33" y="36" width="4" height="5" fill="#ffd23f"/><rect x="6" y="40" width="3" height="4" fill="#ffd23f"/><rect x="10" y="34" width="3" height="10" fill="#ffd23f"/><rect x="14" y="38" width="3" height="6" fill="#ffd23f"/><rect x="47" y="36" width="3" height="8" fill="#ffd23f"/><rect x="51" y="30" width="3" height="14" fill="#ffd23f"/><rect x="55" y="38" width="3" height="6" fill="#ffd23f"/><rect x="0" y="44" width="64" height="4" fill="#1b1438"/></svg></div>
               <p class="cabinet-q">비트코인은 언제 크게 움직일까?</p>
-              <div class="cabinet-result"><b>평일 밤 11시</b><span>평소의 1.6배 출렁임. 방향은 시간으로 못 맞힘</span></div>
+              <div class="cabinet-result"><b>평일 밤 11시</b><span>평소의 1.6배 출렁임. 방향 예측의 일관된 근거는 부족</span></div>
               <div class="cabinet-status"><span class="lamp on"></span>자세히 보기 ▶<span class="cabinet-kind">검증</span></div>
             </div>
           </a>

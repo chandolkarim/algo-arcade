@@ -55,6 +55,8 @@ jobs:
         run: python -m unittest discover -s arena -p 'test_*.py' -v
       - name: 의뢰 현황 검사 테스트 (연락처가 공개되지 않는지 포함)
         run: python -m unittest discover -s requests -p 'test_*.py' -v
+      - name: 2·5번 단계별 설명 예시 검사 (실제 엔진으로 다시 만들어 저장본과 같은지)
+        run: python lessons/build.py && git diff --exit-code data/strategy-lessons.js
       - name: 화면 스크립트 문법 검사
         run: for f in assets/*.js; do node --check "$f"; done
 

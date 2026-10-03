@@ -27,6 +27,16 @@
     return r > 0 ? el("span", "up", `▲ +${v}%`) : el("span", "down", `▼ ${v.replace("-", "−")}%`);
   };
 
+  // 로그 수익률의 대칭 경계를 실제 가격 등락률로 바꾸면 상승·하락 폭은 다르다.
+  const bandPercent = (band) => ({
+    up: ((Math.exp(band) - 1) * 100).toFixed(1),
+    down: ((1 - Math.exp(-band)) * 100).toFixed(1),
+  });
+  const bandText = (band) => {
+    const { up, down } = bandPercent(band);
+    return `상승 +${up}% / 하락 −${down}%`;
+  };
+
   // ── 저장소: 실패해도 게임은 돌아간다
   const store = {
     get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
@@ -91,7 +101,7 @@
       s += `<rect x="${zx}" y="${zt + 2 * third}" width="${zw}" height="${third}" fill="#3182f6" opacity=".28"/>`;
       s += `<rect x="${zx}" y="${zt}" width="${zw}" height="${zh}" fill="none" stroke="#6b4eff" stroke-width="2"/>`;
       s += `<path d="M${PW} ${yc.toFixed(1)} L${zx} ${zc.toFixed(1)}" stroke="#6b4eff" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>`;
-      const upP = ((Math.exp(band) - 1) * 100).toFixed(1), dnP = ((1 - Math.exp(-band)) * 100).toFixed(1), mid = zx + zw / 2;
+      const { up: upP, down: dnP } = bandPercent(band), mid = zx + zw / 2;
       s += t(mid, zt - 4, "5일 뒤", "#6b4eff", 11, "middle", 700);
       s += t(mid, zt + third / 2 + 1, "▲ 크게", "#e42939", 12, "middle", 700) + t(mid, zt + third / 2 + 15, `+${upP}%↑`, "#191f28", 10);
       s += t(mid, zc + 4, "━ 횡보", "#191f28", 12, "middle", 700);
@@ -213,8 +223,7 @@
     roundEl.textContent = `${solved}번째 문제 · 어떤 코인인지, 언제인지는 정답 뒤에 공개`;
     renderTags($("bc-tags"), sit, () => { if (current) current.hint = true; });
     drawChart($("bc-chart"), cs, R.window, false, band);
-    const b = ((Math.exp(band) - 1) * 100).toFixed(1);
-    $("bc-question").textContent = `5일 뒤 종가는? 이 차트의 평소 변동 폭으로 정한 기준 ±${b}% — 넘게 오르면 크게 오름, 넘게 내리면 크게 내림, 그 사이는 횡보`;
+    $("bc-question").textContent = `5일 뒤 종가는? 이 차트의 평소 변동 폭으로 정한 기준 ${bandText(band)} — 넘게 오르면 크게 오름, 넘게 내리면 크게 내림, 그 사이는 횡보`;
     choices.forEach((btn) => { btn.disabled = false; });
     choices[0].focus({ preventScroll: true });
   }
@@ -242,7 +251,7 @@
     box.textContent = "";
     box.append(el("p", ok ? "bc-ok" : "bc-miss", ok ? "맞았어요!" : `아쉬워요. 정답은 ${LABEL[q.answer]}`));
     const line = el("p", "");
-    line.append(`5일 동안 `, move(q.r), ` (기준 ±${((Math.exp(q.band) - 1) * 100).toFixed(1)}%)`);
+    line.append(`5일 동안 `, move(q.r), ` (기준 ${bandText(q.band)})`);
     box.append(line);
     const d0 = q.cs[R.window - 1], d5 = q.cs[R.window - 1 + R.horizon];
     box.append(el("p", "bc-reveal", `${COIN_NAME[q.symbol]} · ${dateOf(q.day)} 종가 $${d0.c.toLocaleString("en-US")} → ${dateOf(q.day + R.horizon)} $${d5.c.toLocaleString("en-US")}`));
@@ -285,7 +294,7 @@
     renderTags(tags, t.situations, () => {});
     const band = bandAt(cs, R.window - 1);
     drawChart(fig, cs, R.window, false, band);
-    q.textContent = `${dateOf(t.day + R.horizon)} 종가는? 기준 ±${((Math.exp(band) - 1) * 100).toFixed(1)}%`;
+    q.textContent = `${dateOf(t.day + R.horizon)} 종가는? 기준 ${bandText(band)}`;
     const mine = store.get("bc-today", []);
     const already = mine.find((g) => g.day === t.day);
     ["up", "flat", "down"].forEach((k) => {

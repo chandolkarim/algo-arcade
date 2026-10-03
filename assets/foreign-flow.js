@@ -24,7 +24,7 @@
 
   const VERDICT = {
     effect: { label: "효과 있음", cls: "is-effect" },
-    none: { label: "효과 없음", cls: "is-none" },
+    none: { label: "효과 미확인", cls: "is-none" },
     uncertain: { label: "불확실", cls: "is-uncertain" },
   };
   const split = data.rules.validation_start.slice(0, 4);

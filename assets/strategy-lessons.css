@@ -1,0 +1,29 @@
+.strategy-lesson { margin-top: 28px; padding: clamp(16px,3vw,28px); background: #fff; color: #1b1438; border: 2px solid #3a3170; border-radius: 8px; }
+.strategy-lesson h3 { margin: 0 0 8px; font: 700 21px/1.5 var(--font-body); }
+.lesson-note { margin: 0 0 18px; color: #566170; font-size: 14px; }
+.lesson-cases, .lesson-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.strategy-lesson button { min-height: 44px; padding: 8px 14px; border: 2px solid #655482; border-radius: 5px; background: #fff; color: #34264d; font: 600 15px/1.4 var(--font-body); cursor: pointer; }
+.strategy-lesson button[aria-pressed="true"], .strategy-lesson [data-action="next"] { background: #34264d; color: #fff; }
+.strategy-lesson button:disabled { opacity: .4; cursor: default; }
+.strategy-lesson button:focus-visible { outline: 3px solid #2166d1; outline-offset: 3px; }
+.lesson-chart { display: block; width: 100%; height: auto; margin-top: 16px; background: #fff; }
+.lesson-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: #566170; }
+.lesson-legend .mean { color: #6b46c1; }.lesson-legend .range { color: #087f5b; }.lesson-legend .stop { color: #b54708; }
+.lesson-caption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; font-size: 13px; color: #566170; }
+.lesson-description { padding: 18px; margin: 16px 0; background: #f3f0fa; border-left: 4px solid #6b46c1; min-height: 110px; }
+.strategy-lesson h4 { margin: 0 0 8px; font: 700 18px/1.5 var(--font-body); }
+.lesson-explanation { margin: 0; font-size: 16px; line-height: 1.75; }
+.lesson-nav [data-action="restart"] { margin-left: auto; border-color: transparent; text-decoration: underline; }
+.lesson-nav .lesson-progress { min-width: 72px; text-align: center; font-variant-numeric: tabular-nums; font-size: 14px; }
+.lesson-other-rules { margin: 18px 0 0; color: #566170; font-size: 14px; }
+@media(max-width: 480px) {
+  .strategy-lesson { padding: 12px; }
+  .lesson-description { padding: 14px; min-height: 0; }
+  .strategy-lesson button { padding: 8px 10px; font-size: 14px; }
+  .lesson-nav { gap: 6px; }
+}
+
+.lesson-nav { margin-top: 12px; }
+
+.lesson-calculation { margin-top: 12px; font-size: 14px; color: #566170; }
+.lesson-calculation summary { cursor: pointer; }

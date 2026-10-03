@@ -14,6 +14,7 @@
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="stylesheet" href="../assets/home.css"><link rel="stylesheet" href="../assets/breakout.css"><link rel="stylesheet" href="../assets/linechart.css">
+  <link rel="stylesheet" href="../assets/strategy-lessons.css">
 </head>
 <body class="breakout-page">
   <a class="skip-link" href="#main">본문 바로가기</a>
@@ -32,7 +33,7 @@
       <p class="mh-top"><span class="mc-kind k-trade">매매</span><span class="mc-en">BREAKOUT 20</span></p>
       <h1 class="mh-title" id="machine-title">20일 가격 벽 돌파</h1>
       <p class="mh-q">어제까지의 20일 최고·최저가를 넘으면 따라가도 될까?</p>
-      <div class="mh-result"><b>6개 중 5개 +, 하지만 작게</b><span>비용을 빼고 −1~+10%(애플만 마이너스), 최대 낙폭 3~5%. 그냥 들고 있기(비트코인 +84%, 중간에 −67%)보다 수익은 훨씬 작고, 대신 훨씬 덜 흔들렸어요.</span></div>
+      <div class="mh-result"><b>6개 중 5개 +, 하지만 작게</b><span>2022년 이후 전체 백테스트 · 6개 종목별 비용 차감 누적 수익률 −1~+10%, 최대 낙폭 3~5%. 연 수익률이나 종목을 합친 수익률이 아닙니다.</span></div>
       <p class="mh-meta mh-updated" data-updated="BREAKOUT_DATA" data-note="주식은 매일 자동, 코인은 내 컴퓨터에서">마지막 계산 날짜를 불러오는 중</p>
       <a class="btn hero-play" href="../index.html#request">이런 전략 의뢰하기</a>
       <a class="code-link" href="https://github.com/chandolkarim/algo-arcade/tree/main/breakout">코드 · 테스트 보기 (GitHub) →</a>
@@ -44,12 +45,26 @@
         <p class="easy-eyebrow">쉽게 말하면</p>
         <h2 class="section-title" id="easy-title">벽을 뚫으면 따라간다</h2>
         <p class="easy-lead">지난 20일 동안의 최고가를 ‘천장’, 최저가를 ‘바닥’이라고 생각해요. 천장을 뚫고 올라가면 새 흐름이 시작됐다고 보고 따라 타요.</p>
-        <ol class="easy-flow" style="--steps: 4">
-          <li><b>1. 벽 그리기</b><span>매일 ‘어제까지’ 20일의 최고가·최저가를 확인해요(오늘 값은 빼요).</span></li>
-          <li><b>2. 뚫었나</b><span>종가가 천장 위면 사고(롱), 바닥 아래면 팔아요(숏).</span></li>
-          <li><b>3. 다음 날 아침 진입</b><span>다음 날 시가가 여전히 벽 밖이면 들어가요. 안으로 돌아오면 취소해요.</span></li>
-          <li><b>4. 손절선 따라 올리기</b><span>가격이 오를수록 손절선도 같이 올려서 번 돈을 지켜요. 손절선에 닿으면 정리해요.</span></li>
-        </ol>
+
+        <section class="strategy-lesson" data-strategy-lesson="breakout" aria-labelledby="lesson-title">
+          <h3 id="lesson-title">차트로 한 단계씩 따라가기</h3>
+          <p class="lesson-note">설명용 가상 가격 · 롱 예시 · 비용 미반영<br>실제 성과 기록과 별개인 예시입니다.</p>
+          <p class="lesson-fallback">단계별 차트는 JavaScript가 필요합니다. 아래 규칙 요약에서도 진입·청산 조건을 읽을 수 있습니다.</p>
+          <div class="lesson-interactive" hidden>
+            <div class="lesson-cases" role="group" aria-label="예시 시나리오">
+              <button type="button" data-outcome="win" aria-pressed="true">수익 청산 예시</button>
+              <button type="button" data-outcome="loss" aria-pressed="false">손절 예시</button>
+            </div>
+            <div class="lesson-nav" role="group" aria-label="설명 단계 이동"><button type="button" data-action="prev" disabled>← 이전</button><span class="lesson-progress"></span><button type="button" data-action="next">다음 →</button><button type="button" data-action="restart">처음부터</button></div>
+            <svg class="lesson-chart" role="img" viewBox="0 0 720 300"></svg>
+            <div class="lesson-legend"><span class="range">┄ 20일 상단 · ·· 하단 (신호일 기준)</span><span class="stop">┄ 해당 봉에 적용한 손절선</span></div>
+            <p class="lesson-caption"><span>빨강: 상승 봉 · 파랑: 하락 봉 · 노란 칸: 현재 단계</span><span class="lesson-day"></span></p>
+            <div class="lesson-description" aria-live="polite" aria-atomic="true"><h4 class="lesson-step-title"></h4><p class="lesson-explanation"></p></div>
+
+            <p class="lesson-other-rules">숏은 방향을 반대로 적용합니다. 다음 시가가 신호일 범위 안으로 돌아오면 진입을 취소합니다. 손절선을 건너뛰는 갭은 시가에 청산하므로 손실이 예시보다 커질 수 있습니다.</p>
+            <details class="lesson-calculation"><summary>예시 계산 방법</summary><p>가상 일봉에 이 기계의 실제 계산 엔진을 적용했습니다. 지표 계산에는 차트에 보이는 구간 이전의 봉도 사용합니다. 가격 단위는 임의이며 숫자는 소수 둘째 자리로 반올림했습니다. 수수료·슬리피지·보유 비용은 제외했습니다.</p></details>
+          </div>
+        </section>
         <h3 class="easy-sub">규칙 요약</h3>
         <dl class="easy-rules">
           <div><dt>대상</dt><dd>비트코인·이더리움 선물, 애플·S&P500 ETF·삼성전자·SK하이닉스</dd></div>
@@ -106,7 +121,7 @@
         <div class="bo-result-controls"><label for="bo-period">기록 구간</label><select id="bo-period"><option value="backtest">전체 과거 백테스트</option><option value="holdout">최근 구간 별도 검증 · 2025년부터</option><option value="paper">등록 이후 모의 기록</option></select></div>
         <p id="bo-result-note">계산 결과를 기다리고 있습니다.</p>
         <div id="bo-result-content" hidden>
-          <div class="bo-stats"><div><span>계좌 수익률</span><strong id="bo-return"></strong></div><div><span>최대 낙폭 · 종가 기준</span><strong id="bo-dd"></strong></div><div><span>청산한 거래</span><strong id="bo-count"></strong></div><div><span>비용 차감 후 승률</span><strong id="bo-win"></strong></div></div>
+          <div class="bo-stats"><div><span>선택 기간 누적 수익률</span><strong id="bo-return"></strong></div><div><span>최대 낙폭 · 종가 기준</span><strong id="bo-dd"></strong></div><div><span>청산한 거래</span><strong id="bo-count"></strong></div><div><span>비용 차감 후 승률</span><strong id="bo-win"></strong></div></div>
           <div class="bh-box" id="bo-bh-box" hidden>
             <p class="bh-title">비교: 그냥 사서 들고 있었다면</p>
             <div class="bh-grid">
@@ -114,6 +129,7 @@
               <div><span>그냥 들고 있기</span><strong id="bo-bh"></strong><em id="bo-bh-dd"></em></div>
             </div>
             <p class="bh-note" id="bo-bh-note"></p>
+            <p class="bh-note">비교를 읽을 때: 전략은 거래당 계획 손실을 제한하고 현금을 보유하는 기간이 있습니다. 계속 투자하는 단순 보유와 투자 비중이 달라, 작은 낙폭을 매매 규칙만의 효과로 해석할 수는 없습니다.</p>
           </div>
           <div class="bo-average-grid"><div><span>수익 거래의 평균 순이익</span><strong id="bo-average-win"></strong></div><div><span>손실 거래의 평균 순손실</span><strong id="bo-average-loss"></strong></div><div><span>청산 거래의 평균 보유</span><strong id="bo-average-bars"></strong></div></div>
           <p id="bo-position" class="bo-position"></p>
@@ -174,7 +190,7 @@
         <p>규칙이나 계산 방법이 궁금하면 메일 주세요.</p>
         <div class="coin-slot">
           <a class="btn" href="mailto:wjdcksals24@hufs.ac.kr?subject=BREAKOUT%2020%20문의">메일 보내기</a>
-          <a class="btn btn-ghost" href="../index.html#machines">다른 기계 보기</a>
+          <a class="btn btn-ghost" href="../index.html#works">다른 기계 보기</a>
         </div>
       </div>
     </section>
@@ -188,5 +204,7 @@
     </div>
   </footer>
   <script src="../assets/script.js"></script><script src="../data/breakout-data.js"></script><script src="../assets/linechart.js"></script><script src="../assets/breakout.js"></script>
+  <script src="../data/strategy-lessons.js"></script>
+  <script src="../assets/strategy-lessons.js"></script>
 </body>
 </html>
