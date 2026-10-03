@@ -14,7 +14,7 @@
 
 ## 2. 주소
 
-- 공개 홈페이지: https://chandolkarim.github.io/algo-arcade/ [접속 확인 2026-10-03, 배포 커밋 `d5d7790`]
+- 공개 홈페이지: https://chandolkarim.github.io/algo-arcade/ [접속 확인 2026-10-03, 배포 커밋 `cc79add`, 페이지 11개 모두 200]
 - GitHub 저장소: https://github.com/chandolkarim/algo-arcade
 - 기존 홈페이지(물류·SCM 주제): https://chandolkarim.github.io/ — 이 과제 이전 버전, 별도 저장소
 
