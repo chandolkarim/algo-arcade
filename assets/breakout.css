@@ -86,3 +86,15 @@
   .breakout-page th, .breakout-page td { padding: 10px 6px; font-size: 13px; }
   .breakout-page th { white-space: normal; }
 }
+
+/* 빗각: 거래 하나 뜯어보기 */
+.bg-ep-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.bg-ep-nav button { min-height: 36px; padding: 0 12px; border: 2px solid var(--on-carpet-soft); background: transparent; color: var(--on-carpet); font: 13px var(--font-pixel); cursor: pointer; }
+.bg-ep-nav button:disabled { opacity: .35; cursor: default; }
+.bg-ep-nav span { font-size: 14px; color: var(--on-carpet); font-variant-numeric: tabular-nums; }
+.bg-ep-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 12px 0 8px; padding: 8px 12px; background: #fff; font-size: 13px; color: #191f28; }
+.bg-ep-key .k-line { color: #e8590c; } .bg-ep-key .k-channel { color: #b8a6f0; } .bg-ep-key .k-delay { color: #d6336c; }
+.bg-ep-key .k-exit { color: #1c7ed6; } .bg-ep-key .k-stop { color: #868e96; }
+.bg-ep-chart { background: #fff; }
+.bg-ep-steps { margin: 14px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: 15px; line-height: 1.6; color: var(--on-carpet); }
+.bg-ep-steps b { color: var(--coin); }

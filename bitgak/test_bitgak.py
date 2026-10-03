@@ -120,6 +120,15 @@ class TradingTests(unittest.TestCase):
         advance(acc, row(2, open=100), row(1, exit_delay=True), rules)
         self.assertLess(acc["trades"][0]["net"], 0)
 
+    def test_trade_keeps_the_line_it_used(self):
+        rules = replace(Rules(), pivot=2, atr_period=3, fee=0, slippage=0)
+        rows = indicators(falling_then_rising(), rules)
+        out = backtest(rows, rules)
+        t = (out["trades"] + ([out["position"]] if out["position"] else []))[0]
+        signal = next(r for r in rows if r["date"] == t["signal_date"])
+        self.assertEqual(t["entry_line"], signal["dn_def"])
+        self.assertEqual(t["entry_line"]["a"][0], day(4))
+
     def test_backtest_on_synthetic_series(self):
         rules = replace(Rules(), pivot=2, atr_period=3, fee=0, slippage=0)
         out = backtest(indicators(falling_then_rising(), rules), rules)

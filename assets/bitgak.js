@@ -52,12 +52,7 @@
     return o;
   }));
   selector.disabled = false;
-  let days = 180;
-  document.querySelectorAll("#bg-range button").forEach((b) => b.addEventListener("click", () => {
-    days = Number(b.dataset.days);
-    document.querySelectorAll("#bg-range button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    render();
-  }));
+  let epIndex = -1;  // 보고 있는 거래(-1 = 가장 최근)
 
   function render() {
     const a = data.assets.find((x) => x.symbol === selector.value);
@@ -81,19 +76,9 @@
       : "최근 확정된 두 고점이 내려가고 있지 않아 지금은 그을 하락 빗각이 없어요. 새 고점이 생기면 다시 확인해요.";
 
     const result = a[period], plain = a[`${period}_plain`], bh = a.buy_hold?.[period];
-    const trades = [...result.trades, ...(result.position ? [result.position] : [])];
-    const events = trades.flatMap((t) => [{ date: t.entry_date, price: t.entry, side: 1, kind: "entry" },
-      ...(t.exit_date ? [{ date: t.exit_date, price: t.exit, side: 1, kind: "exit" }] : [])]);
-    const shown = a.chart.slice(-days);
-    chart("bg-price-chart", {
-      rows: shown, height: 300, theme: "dark", legend: $("bg-price-legend"), markers: events,
-      label: `${a.name} 최근 ${shown.length}일 종가, 하락 빗각과 지연선, 상승 지연선`,
-      series: [{ key: "close", label: "종가", color: "#191f28", width: 3 },
-               { key: "dn_line", label: "하락 빗각", color: "#f59f00", width: 2, dash: "3 4" },
-               { key: "dn_delay", label: "지연선(사는 선)", color: "#d6336c", width: 2.5 },
-               { key: "up_delay", label: "상승 지연선(파는 선)", color: "#1c7ed6", width: 2.5, dash: "7 4" }],
-    });
-    $("bg-chart-range").textContent = `${shown[0].date} ~ ${a.end} · ${cur} · 차트를 짚으면 그날 값 · ${a.source}`;
+    const eps = (a.episodes || []).filter((e) => period !== "holdout" || e.entry_date >= data.holdout_start);
+    if (epIndex < 0 || epIndex >= eps.length) epIndex = eps.length - 1;
+    drawEpisode(a, eps, cur);
 
     const rowFor = (label, r) => tableRow([label, [pct(r.return_pct), tone(r.return_pct)], `−${num(r.max_drawdown_pct, 1)}%`,
       `${r.count}건`, r.win_rate == null ? "—" : `${Math.round(r.win_rate)}%`, share(r.stop_rate),
@@ -122,8 +107,78 @@
     $("bg-cost-note").textContent = `${a.cost_note} 편도 수수료 ${num(a.rules.fee * 100)}%, 슬리피지 ${num(a.rules.slippage * 100)}% 가정.` +
       (result.position ? ` 계산 끝 시점에 보유 중: ${result.position.entry_date} 진입, 진입가 ${num(result.position.entry)} ${cur}.` : "");
   }
-  selector.addEventListener("change", render);
-  $("bg-period").addEventListener("change", render);
+
+  // ---------- 거래 하나 뜯어보기: 그 거래에 쓴 선만 그린다 ----------
+  const NS = "http://www.w3.org/2000/svg";
+  const fmtDate = (d) => d ? `${Number(d.slice(5, 7))}/${Number(d.slice(8, 10))}` : "";
+  const reasonText = { exit_line: "파는 선(상승 지연선)을 종가가 깨서 다음 날 시가에 팔았어요", stop: "안전 손절선에 닿아 팔았어요",
+    gap_stop: "시가가 안전 손절선 아래로 갭이 나서 시가에 팔았어요", open: "계산 끝 시점까지 아직 들고 있어요" };
+  function drawEpisode(a, eps, cur) {
+    const svg = $("bg-ep-chart"), steps = $("bg-ep-steps");
+    svg.replaceChildren(); steps.replaceChildren();
+    $("bg-ep-prev").disabled = epIndex <= 0;
+    $("bg-ep-next").disabled = epIndex >= eps.length - 1;
+    if (!eps.length) { $("bg-ep-label").textContent = "이 구간에는 거래가 없어요"; return; }
+    const e = eps[epIndex], rows = e.rows;
+    $("bg-ep-label").textContent = `${epIndex + 1} / ${eps.length} · ${e.entry_date} 진입 · ${e.net == null ? "보유 중" : pct(e.return_pct)}`;
+    const idx = new Map(rows.map((r, i) => [r.date, i]));
+    const at = (d) => idx.has(d) ? idx.get(d) : (d < rows[0].date ? -1 : rows.length);
+    const lineVal = (L, x) => { const ia = at(L.a[0]), ib = at(L.b[0]); return L.a[1] + (L.b[1] - L.a[1]) / (ib - ia) * (x - ia); };
+    const W = Math.max(320, Math.round(svg.getBoundingClientRect().width) || 960), H = 340, left = 62, right = W - 14, top = 18, bottom = H - 34;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const iSig = at(e.signal_date), iEnt = at(e.entry_date), iExit = e.exit_date ? at(e.exit_date) : rows.length - 1;
+    const ia = at(e.line.a[0]), ib = at(e.line.b[0]);
+    const vals = rows.flatMap((r) => [r.high, r.low]);
+    [ia, ib, iSig].forEach((x) => { vals.push(lineVal(e.line, x), lineVal(e.line, x) + e.line.w, lineVal(e.line, x) - e.line.w); });
+    vals.push(e.stop);
+    let min = Math.min(...vals), max = Math.max(...vals); const pad = (max - min) * 0.06; min -= pad; max += pad;
+    const x = (i) => left + (right - left) * (i / Math.max(1, rows.length - 1));
+    const y = (v) => bottom - (v - min) / (max - min) * (bottom - top);
+    const add = (tag, attrs, text) => { const n = document.createElementNS(NS, tag); Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, v)); if (text != null) n.textContent = text; svg.append(n); return n; };
+    for (let k = 0; k <= 4; k++) {
+      const v = min + (max - min) * k / 4;
+      add("line", { x1: left, x2: right, y1: y(v), y2: y(v), stroke: "#eef0f3" });
+      add("text", { x: left - 6, y: y(v) + 4, "text-anchor": "end", "font-size": 11, fill: "#6b7684" }, num(v, v >= 1000 ? 0 : 2));
+    }
+    const seg = (from, to, f) => Array.from({ length: Math.max(0, to - from + 1) }, (_, k) => from + k).map((i, k) => `${k ? "L" : "M"}${x(i).toFixed(1)},${y(f(i)).toFixed(1)}`).join(" ");
+    // 채널(빗각 ~ 저점까지 평행 복사) 칠하기: 두 고점 구간
+    const lower = Array.from({ length: ib - ia + 1 }, (_, k) => ib - k).map((i) => `L${x(i).toFixed(1)},${y(lineVal(e.line, i) - e.line.w).toFixed(1)}`).join(" ");
+    add("path", { d: `${seg(ia, ib, (i) => lineVal(e.line, i))} ${lower} Z`, fill: "#b8a6f0", opacity: .35 });
+    add("path", { d: seg(ia, iSig + 2 < rows.length ? iSig + 2 : iSig, (i) => lineVal(e.line, i)), fill: "none", stroke: "#e8590c", "stroke-width": 2.5 });
+    add("path", { d: seg(ib, Math.min(rows.length - 1, iSig + 2), (i) => lineVal(e.line, i) + e.line.w), fill: "none", stroke: "#d6336c", "stroke-width": 2.5 });
+    if (e.exit_line) {
+      const xa = Math.max(0, at(e.exit_line.b[0]));
+      add("path", { d: seg(xa, iExit, (i) => lineVal(e.exit_line, i) - e.exit_line.w), fill: "none", stroke: "#1c7ed6", "stroke-width": 2.5, "stroke-dasharray": "7 4" });
+    }
+    add("path", { d: `M${x(iEnt)},${y(e.stop)} H${x(iExit)}`, stroke: "#868e96", "stroke-width": 1.5, "stroke-dasharray": "4 3" });
+    add("path", { d: seg(0, rows.length - 1, (i) => rows[i].close), fill: "none", stroke: "#191f28", "stroke-width": 2 });
+    const dot = (i, v, label, color, dy, anchor = "middle") => {
+      add("circle", { cx: x(i), cy: y(v), r: 5.5, fill: "#fff", stroke: color, "stroke-width": 2.5 });
+      add("text", { x: x(i), y: y(v) + dy, "text-anchor": anchor, "font-size": 12, "font-weight": 700, fill: color }, label);
+    };
+    dot(ia, e.line.a[1], "고점1", "#e8590c", -10);
+    dot(ib, e.line.b[1], "고점2", "#e8590c", -10);
+    const iPlain = e.plain_signal ? at(e.plain_signal) : -1;
+    if (iPlain >= 0 && iPlain !== iSig) dot(iPlain, rows[iPlain].close, "그대로면 여기서 매수", "#868e96", 20);
+    dot(iEnt, e.entry, "매수", "#d6336c", 22);
+    if (e.exit_date) dot(iExit, e.exit, "매도", "#1c7ed6", -12);
+    [[0, rows[0].date], [rows.length - 1, rows[rows.length - 1].date]].forEach(([i, d], k) =>
+      add("text", { x: x(i), y: H - 10, "text-anchor": k ? "end" : "start", "font-size": 11, fill: "#6b7684" }, d));
+    svg.setAttribute("aria-label", `${a.name} 거래 ${epIndex + 1}: ${e.line.a[0]}과 ${e.line.b[0]} 고점을 이은 빗각, ${e.entry_date} 매수, ${e.exit_date || "보유 중"}`);
+
+    const li = (html) => { const n = document.createElement("li"); n.innerHTML = html; steps.append(n); };
+    const plainDays = iPlain >= 0 ? iSig - iPlain : null;
+    li(`<b>빗각</b>: ${fmtDate(e.line.a[0])} 고점 ${num(e.line.a[1], 0)}과 ${fmtDate(e.line.b[0])} 고점 ${num(e.line.b[1], 0)}을 이었어요.`);
+    li(`<b>채널 폭</b>: 두 고점 사이 가장 깊은 저점까지 ${num(e.line.w, 0)} ${cur}. 빗각을 이만큼 위로 올린 선이 지연선이에요.`);
+    li(`<b>매수</b>: ${fmtDate(e.signal_date)} 종가가 지연선을 넘어서 다음 날(${fmtDate(e.entry_date)}) 시가 ${num(e.entry, 0)}에 샀어요.` +
+      (plainDays > 0 ? ` 빗각 그대로였다면 ${plainDays}일 먼저(${fmtDate(e.plain_signal)}) 샀을 자리예요.` : ""));
+    li(`<b>매도</b>: ${reasonText[e.reason] || e.reason}${e.exit_date ? ` (${fmtDate(e.exit_date)}, ${num(e.exit, 0)})` : ""}. ` +
+      (e.net == null ? "" : `${e.bars}일 보유, 이 거래 수익률 ${pct(e.return_pct)}.`));
+  }
+  selector.addEventListener("change", () => { epIndex = -1; render(); });
+  $("bg-period").addEventListener("change", () => { epIndex = -1; render(); });
+  $("bg-ep-prev").addEventListener("click", () => { epIndex--; render(); });
+  $("bg-ep-next").addEventListener("click", () => { epIndex++; render(); });
   let frame;
   window.addEventListener("resize", () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(render); });
   render();

@@ -23,6 +23,29 @@ UTC = timezone.utc
 CHART_KEYS = ("date", "close", "dn_line", "dn_delay", "up_line", "up_delay")
 
 
+def episodes(rows, result):
+    """거래 하나씩 그림으로 보여 주기 위한 묶음: 그 거래에 쓴 빗각·채널·지연선과 앞뒤 가격."""
+    index = {r["date"]: i for i, r in enumerate(rows)}
+    value = lambda d, x: d["a"][1] + (d["b"][1] - d["a"][1]) / (index[d["b"][0]] - index[d["a"][0]]) * (x - index[d["a"][0]])
+    out = []
+    for t in result["trades"] + ([result["position"]] if result["position"] else []):
+        line, exit_line = t.get("entry_line"), t.get("exit_line")
+        if not line:
+            continue
+        first = min(index[line["a"][0]], index[exit_line["a"][0]] if exit_line else len(rows))
+        last = index.get(t.get("exit_date"), len(rows) - 1)
+        lo, hi = max(0, first - 3), min(len(rows) - 1, last + 3)
+        # 빗각 그대로였다면: 같은 선을 종가가 처음 넘은 날(지연선보다 먼저)
+        plain = next((rows[i]["date"] for i in range(index[line["b"][0]] + 1, index[t["signal_date"]] + 1)
+                      if rows[i]["close"] > value(line, i) and rows[i-1]["close"] <= value(line, i-1)), None)
+        out.append({"entry_date": t["entry_date"], "signal_date": t["signal_date"], "entry": t["entry"],
+                    "exit_date": t.get("exit_date"), "exit": t.get("exit"), "reason": t.get("reason", "open"),
+                    "net": t.get("net"), "return_pct": t.get("return_pct"), "bars": t["bars"], "stop": t["initial_stop"],
+                    "line": line, "exit_line": exit_line, "plain_signal": plain,
+                    "rows": [{k: rows[i][k] for k in ("date", "high", "low", "close")} for i in range(lo, hi + 1)]})
+    return out
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--offline", action="store_true", help="Rebuild from saved public data (breakout/cache)")
@@ -70,6 +93,7 @@ def main():
             for period, start in (("backtest", config["backtest_start"]), ("holdout", config["holdout_start"])):
                 item[period] = backtest(rows, delay, asset["market"], start)
                 item[f"{period}_plain"] = backtest(rows, plain, asset["market"], start)
+            item["episodes"] = episodes(rows, item["backtest"])
             item["buy_hold"] = {"backtest": buy_and_hold(rows, config["backtest_start"]),
                                 "holdout": buy_and_hold(rows, config["holdout_start"])}
             print(f"{symbol}: {len(rows)} bars, delay {item['backtest']['count']} / plain {item['backtest_plain']['count']} trades", flush=True)

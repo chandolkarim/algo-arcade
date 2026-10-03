@@ -62,7 +62,7 @@ def indicators(bars, rules=Rules()):
                     f = _line(a, b)
                     # 고점-고점 선을 두 고점 사이 가장 깊은 저점까지 평행 복사 → 채널 폭
                     width = max(f(x) - bars[x]["low"] for x in range(a[0], b[0] + 1))
-                    down = (f, max(width, 0.0))
+                    down = (f, max(width, 0.0), {"a": [bars[a[0]]["date"], a[1]], "b": [bars[b[0]]["date"], b[1]], "w": max(width, 0.0)})
                 else:
                     down = None   # 최근 두 고점이 내려가지 않으면 하락 빗각 없음
             if bars[i]["low"] == min(ls) and ls.index(min(ls)) == k:
@@ -71,20 +71,20 @@ def indicators(bars, rules=Rules()):
                     a, b = lows[-2], lows[-1]
                     f = _line(a, b)
                     width = max(bars[x]["high"] - f(x) for x in range(a[0], b[0] + 1))
-                    up = (f, max(width, 0.0))
+                    up = (f, max(width, 0.0), {"a": [bars[a[0]]["date"], a[1]], "b": [bars[b[0]]["date"], b[1]], "w": max(width, 0.0)})
                 else:
                     up = None
 
-        row = dict(bar, atr=atr, dn_line=None, dn_delay=None, up_line=None, up_delay=None,
+        row = dict(bar, atr=atr, dn_line=None, dn_delay=None, up_line=None, up_delay=None, dn_def=None, up_def=None,
                    enter_delay=False, enter_plain=False, exit_delay=False, exit_plain=False)
         if t and down:
-            f, w = down
+            f, w, row["dn_def"] = down
             row.update(dn_line=f(t), dn_delay=f(t) + w)
             # 같은 선으로 어제와 오늘을 비교해야 선이 바뀌는 날 가짜 교차가 생기지 않는다
             row["enter_plain"] = bar["close"] > f(t) and prev <= f(t - 1)
             row["enter_delay"] = bar["close"] > f(t) + w and prev <= f(t - 1) + w
         if t and up:
-            f, w = up
+            f, w, row["up_def"] = up
             row.update(up_line=f(t), up_delay=f(t) - w)
             row["exit_plain"] = bar["close"] < f(t) and prev >= f(t - 1)
             row["exit_delay"] = bar["close"] < f(t) - w and prev >= f(t - 1) - w
@@ -136,6 +136,7 @@ def advance(account, row, previous, rules=Rules(), market="stock"):
         if row["open"] <= p["stop"]:
             close(row["open"], "gap_stop")          # 손절선을 건너뛴 갭은 시가에
         elif previous[exit_key]:
+            p["exit_line"] = previous.get("up_def")
             close(row["open"], "exit_line")         # 어제 종가로 이탈 확인 → 오늘 시가
 
     if not p and not exited and account["balance"] > 0 and previous[enter_key] and previous["atr"]:
@@ -150,6 +151,7 @@ def advance(account, row, previous, rules=Rules(), market="stock"):
             fee = qty * fill * rules.fee
             account["balance"] -= fee
             p = {"side": 1, "signal_date": previous["date"], "entry_date": row["date"], "entry": fill,
+                 "entry_line": previous.get("dn_def"),
                  "qty": qty, "stop": stop, "initial_stop": stop, "signal_atr": previous["atr"], "bars": 1,
                  "fees": fee, "carry": 0.0, "dividends": 0.0}
             account["position"] = p

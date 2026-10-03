@@ -97,13 +97,13 @@
       <p id="bg-asset-status" class="bo-notice" hidden></p>
       <div id="bg-content" hidden><div class="bo-terminal">
         <div class="bo-terminal-head"><h3 id="bg-symbol-title"></h3><span id="bg-date"></span></div>
+        <p class="bo-caption">지금 상태 · 마지막 확정 일봉 기준</p>
         <div class="bo-signal-line"><span id="bg-signal" class="bo-signal"></span><p id="bg-reason"></p></div>
-        <div class="bo-chart-head"><h3>가격과 빗각, 지연선</h3>
-          <div class="ch-range" id="bg-range" role="group" aria-label="차트 기간"><button type="button" data-days="180" aria-pressed="true">6개월</button><button type="button" data-days="365" aria-pressed="false">1년</button></div></div>
-        <div class="lc-legend" id="bg-price-legend"></div>
-        <svg id="bg-price-chart" class="bo-chart" viewBox="0 0 960 320" role="img" aria-label="가격, 하락 빗각과 지연선, 상승 지연선, 지연선 방식의 모의 체결"></svg>
-        <p class="bo-caption" id="bg-chart-range"></p>
-        <p class="bo-caption">△ 지연선 방식 진입 · ◇ 청산. 선은 그날까지 확정된 고점·저점으로 그은 값이라, 새 고점·저점이 생기면 선이 바뀌어 끊겨 보여요.</p>
+        <div class="bo-chart-head"><h3>거래 하나 뜯어보기</h3>
+          <div class="bg-ep-nav" role="group" aria-label="거래 고르기"><button type="button" id="bg-ep-prev">◀ 이전</button><span id="bg-ep-label"></span><button type="button" id="bg-ep-next">다음 ▶</button></div></div>
+        <div class="bg-ep-key" aria-hidden="true"><span class="k-close">━ 종가</span><span class="k-line">━ 빗각</span><span class="k-channel">▒ 채널</span><span class="k-delay">━ 지연선(사는 선)</span><span class="k-exit">┅ 파는 선</span><span class="k-stop">┄ 안전 손절</span></div>
+        <svg id="bg-ep-chart" class="bo-chart bg-ep-chart" viewBox="0 0 960 340" role="img"></svg>
+        <ol class="bg-ep-steps" id="bg-ep-steps"></ol>
       </div></div>
       <div class="panel px-box bo-results" id="bg-results" hidden>
         <h3>지연선 vs 빗각 그대로 vs 그냥 들고 있기</h3>
