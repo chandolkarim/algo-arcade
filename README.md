@@ -269,7 +269,7 @@ python3 -m unittest discover -s clock -p 'test_*.py' -v
 | 2번 REBOUND 25/200, 5번 BREAKOUT 20 코드 및 2026-10-02 소개·가독성 수정 | ChatGPT와 작업 |
 | 1번 TRADING FLOOR 원본 | 정찬민의 로컬 프로젝트(비공개) |
 | KRX 투자자별 매매 CSV | 정찬민이 KRX 정보데이터시스템에서 직접 내려받음 |
-| 내가 직접 고친 코드 | [직접 적어 주세요 — 없으면 “없음”] |
+| 내가 직접 한 일 | 코드 직접 수정 없음. 규칙·방향 결정(200일선 조건, 의뢰소 전환, 디자인), KRX 자료 수집, 구글 폼·시트를 만들어 투표 연결, 결과 확인과 수정 지시 |
 | 글꼴 | 갈무리(Galmuri), SIL Open Font License 1.1 — `assets/fonts/LICENSE.txt` |
 | 시세 | 업비트·바이낸스 공개 시세, alternative.me 공포·탐욕 지수, ExchangeRate-API, Yahoo Finance, NAVER 금융 |
 
