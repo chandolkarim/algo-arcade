@@ -332,7 +332,7 @@ python3 -m unittest discover -s clock -p 'test_*.py' -v
 
 ## 규칙을 설명하는 단계별 차트
 
-2번 REBOUND와 5번 BREAKOUT의 ‘쉽게 말하면’에 5단계 차트를 제공합니다. 수익 청산·손절 사례를 선택하고 이전/다음/처음부터 버튼으로 확인합니다.
+2번 REBOUND와 5번 BREAKOUT의 ‘쉽게 말하면’에 5단계 차트를 제공합니다. 수익 실현·손절 사례를 선택하고 이전/다음/처음부터 버튼으로 확인합니다.
 
 - `lessons/build.py`: 가상 OHLC에 기존 두 계산 엔진을 적용합니다. 각 사례의 신호, 진입일, 청산일·이유, 손익 방향을 검사합니다. 재생성: `python3 lessons/build.py`
 - `data/strategy-lessons.js`: 검사를 통과한 설명용 가격·지표·체결 데이터. 실제 백테스트와 모의 장부에 합산하지 않습니다.

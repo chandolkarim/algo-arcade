@@ -85,7 +85,8 @@
       // 신호는 왼쪽 위, 진입은 오른쪽 아래에 적어 좁은 화면에서도 글자가 겹치지 않게 한다
       const mark=(i,v,label,color,offset,side='left')=>{
         append('circle',{cx:x(i),cy:y(v),r:5,fill:'#fff',stroke:color,'stroke-width':2.5});
-        append('text',{x:x(i)+(side==='left'?-8:8),y:y(v)+offset,'text-anchor':side==='left'?'end':'start',fill:color,'font-size':12,'font-weight':700},label);
+        const gap=slot*.28+6;  // 봉 몸통 폭만큼 띄워 글자가 봉에 겹치지 않게
+        append('text',{x:x(i)+(side==='left'?-gap:gap),y:y(v)+offset,'text-anchor':side==='left'?'end':'start',fill:color,'font-size':12,'font-weight':700},label);
       };
       if(step>=1) mark(20,rows[20].close,'신호','#6b46c1',-10);
       if(step>=2) mark(21,d.entry,'진입','#1b1438',20,'right');
