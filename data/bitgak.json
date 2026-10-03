@@ -2,8 +2,8 @@
   "schema": 1,
   "strategy": "bitgak",
   "version": "1.0.0",
-  "generated_at": "2026-10-03T07:45:50.964169+00:00",
-  "mode": "offline",
+  "generated_at": "2026-10-03T07:49:41.164321+00:00",
+  "mode": "online",
   "automatic_refresh": false,
   "backtest_start": "2022-01-01",
   "holdout_start": "2025-01-01",
@@ -27,7 +27,7 @@
       "timezone": "UTC",
       "fee": 0.0005,
       "status": "ok",
-      "fetched_at": "2026-10-03T05:47:55.497003+00:00",
+      "fetched_at": "2026-10-03T07:49:41.164321+00:00",
       "source": "Binance USDⓈ-M perpetual · UTC daily",
       "cost_note": "실제 선물 일봉·펀딩 이력. 과거 mark 가격 누락 시 당일 시가로 추정. 손절일은 시각을 몰라 당일 펀딩 지출만 보수적으로 반영.",
       "rules": {
@@ -36041,7 +36041,7 @@
       "timezone": "UTC",
       "fee": 0.0005,
       "status": "ok",
-      "fetched_at": "2026-10-03T05:47:55.497003+00:00",
+      "fetched_at": "2026-10-03T07:49:41.164321+00:00",
       "source": "Binance USDⓈ-M perpetual · UTC daily",
       "cost_note": "실제 선물 일봉·펀딩 이력. 과거 mark 가격 누락 시 당일 시가로 추정. 손절일은 시각을 몰라 당일 펀딩 지출만 보수적으로 반영.",
       "rules": {
@@ -72874,7 +72874,7 @@
       "timezone": "America/New_York",
       "fee": 0.001,
       "status": "ok",
-      "fetched_at": "2026-10-03T05:47:55.497003+00:00",
+      "fetched_at": "2026-10-03T07:49:41.164321+00:00",
       "source": "Yahoo Finance · exchange daily",
       "cost_note": "분할 반영 OHLC·배당 현금 반영. 공매도는 차입 가능 가정, 차입료 연 5% 추정. 세금·차입 제한·리콜·최소 주문 단위 미반영.",
       "rules": {
@@ -97681,7 +97681,7 @@
       "timezone": "America/New_York",
       "fee": 0.001,
       "status": "ok",
-      "fetched_at": "2026-10-03T05:47:55.497003+00:00",
+      "fetched_at": "2026-10-03T07:49:41.164321+00:00",
       "source": "Yahoo Finance · exchange daily",
       "cost_note": "분할 반영 OHLC·배당 현금 반영. 공매도는 차입 가능 가정, 차입료 연 5% 추정. 세금·차입 제한·리콜·최소 주문 단위 미반영.",
       "rules": {
@@ -122544,7 +122544,7 @@
       "timezone": "Asia/Seoul",
       "fee": 0.001,
       "status": "ok",
-      "fetched_at": "2026-10-03T05:47:55.497003+00:00",
+      "fetched_at": "2026-10-03T07:49:41.164321+00:00",
       "source": "Yahoo Finance + NAVER · exchange daily",
       "cost_note": "분할 반영 OHLC·배당 현금 반영. 공매도는 차입 가능 가정, 차입료 연 5% 추정. 세금·차입 제한·리콜·최소 주문 단위 미반영. Yahoo 누락·OHLC 오류를 NAVER 실제 일봉으로 보완: 2024-10-14, 2025-09-19.",
       "rules": {
@@ -147301,7 +147301,7 @@
       "timezone": "Asia/Seoul",
       "fee": 0.001,
       "status": "ok",
-      "fetched_at": "2026-10-03T05:47:55.497003+00:00",
+      "fetched_at": "2026-10-03T07:49:41.164321+00:00",
       "source": "Yahoo Finance + NAVER · exchange daily",
       "cost_note": "분할 반영 OHLC·배당 현금 반영. 공매도는 차입 가능 가정, 차입료 연 5% 추정. 세금·차입 제한·리콜·최소 주문 단위 미반영. Yahoo 누락·OHLC 오류를 NAVER 실제 일봉으로 보완: 2023-02-02, 2023-02-09, 2024-10-14, 2025-09-19.",
       "rules": {
