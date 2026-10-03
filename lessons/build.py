@@ -79,7 +79,18 @@ def build(kind, outcome):
                 atr=rows[signal_index]['atr'], initialStop=trade['entry']-2*rows[signal_index]['atr'])
 
 
+def tidy(value):
+    # 운영체제·파이썬 버전마다 소수 끝자리가 달라 배포 전 검사가 흔들리지 않게 반올림해 저장한다
+    if isinstance(value, float):
+        return round(value, 6)
+    if isinstance(value, dict):
+        return {k: tidy(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [tidy(v) for v in value]
+    return value
+
+
 if __name__ == '__main__':
     data = {k: {o: build(k,o) for o in ['win','loss']} for k in ['rebound','breakout']}
-    (ROOT/'data/strategy-lessons.js').write_text('window.STRATEGY_LESSONS = '+json.dumps(data,ensure_ascii=False,separators=(',',':'))+';\n')
+    (ROOT/'data/strategy-lessons.js').write_text('window.STRATEGY_LESSONS = '+json.dumps(tidy(data),ensure_ascii=False,separators=(',',':'))+';\n')
     print('Built and checked 4 fictional lessons with production engines (costs disabled).')
