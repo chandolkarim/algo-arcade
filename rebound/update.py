@@ -75,7 +75,7 @@ def page_payload(snapshot):
     assets = []
     for a in snapshot.get("assets", []):
         a = dict(a)
-        for key in ("backtest", "holdout", "paper"):
+        for key in ("backtest", "holdout", "paper", "backtest_plain", "holdout_plain"):
             if key in a:
                 a[key] = _page_result(a[key])
         for key in ("baseline", "holdout_baseline"):  # 비교 곡선과 합계만 쓴다

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>빗각 · 지연 추세선 · 알고리즘 오락실</title>
+  <meta name="description" content="의뢰 1호. 빗각(하락 추세선)을 뚫자마자 사지 않고 채널 폭만큼 더 오를 때까지 기다리면 가짜 돌파를 피할까? 6개 종목 일봉 백테스트.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="빗각 · 지연 추세선 · 알고리즘 오락실">
+  <meta property="og:description" content="의뢰 1호. 빗각을 뚫자마자 사기 vs 채널 폭만큼 기다렸다 사기, 6개 종목 일봉 백테스트.">
+  <meta property="og:url" content="https://chandolkarim.github.io/algo-arcade/machines/bitgak.html">
+  <meta property="og:image" content="https://chandolkarim.github.io/algo-arcade/assets/og.png">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/home.css"><link rel="stylesheet" href="../assets/breakout.css"><link rel="stylesheet" href="../assets/linechart.css">
+</head>
+<body class="breakout-page">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header"><div class="wrap"><a class="logo" href="../index.html"><span class="logo-coin" data-scene="coin"></span>알고리즘 오락실</a>
+    <nav class="site-nav" aria-label="주요 메뉴">
+        <ul>
+          <li><a href="../index.html#works">결과물</a></li>
+          <li><a href="../games.html">게임</a></li>
+          <li><a href="../index.html#request">의뢰하기</a></li>
+        </ul>
+      </nav>
+  </div></header>
+  <main id="main">
+    <section class="machine-hero wrap" aria-labelledby="machine-title">
+      <a class="back-link" href="../index.html#works">← 결과물 목록</a>
+      <p class="mh-top"><span class="mc-kind k-trade">매매</span><span class="mc-kind k-request">의뢰 1호</span><span class="mc-en">BITGAK</span></p>
+      <h1 class="mh-title" id="machine-title">빗각 · 지연 추세선</h1>
+      <p class="mh-q">빗각을 뚫자마자 사지 않고, 채널 폭만큼 더 오를 때까지 기다리면 가짜 돌파를 피할 수 있을까?</p>
+      <div class="mh-result"><b>기다리면 덜 사지만, 더 자주 손절</b><span id="bg-hero-span">2022년 이후 6개 종목에서 지연선은 거래가 절반 이하로 줄었지만, 손절로 끝난 비율은 오히려 더 높았어요. 수익은 종목마다 엇갈렸어요.</span></div>
+      <p class="mh-meta mh-updated" data-updated="BITGAK_DATA" data-note="주식은 매일 자동, 코인은 내 컴퓨터에서">마지막 계산 날짜를 불러오는 중</p>
+      <a class="btn hero-play" href="../index.html#request">이런 전략 의뢰하기</a>
+      <a class="code-link" href="https://github.com/chandolkarim/algo-arcade/tree/main/bitgak">코드 · 테스트 보기 (GitHub) →</a>
+    </section>
+
+    <section class="section wrap" id="easy" aria-labelledby="easy-title">
+      <div class="panel px-box easy">
+        <p class="easy-eyebrow">쉽게 말하면</p>
+        <h2 class="section-title" id="easy-title">비스듬한 벽을 넘고, 한 칸 더 올라오면 산다</h2>
+        <p class="easy-lead">내려가는 고점 두 개를 이으면 비스듬한 선, <b>빗각</b>이 생겨요. 보통은 이 선을 뚫으면 사지만, 뚫었다가 다시 내려오는 <b>가짜 돌파</b>가 많아요. 그래서 채널 폭만큼 한 칸 더 올라와야 진짜로 보고 사는 게 <b>지연 추세선</b>이에요.</p>
+        <ol class="easy-flow" style="--steps: 4">
+          <li><b>1. 빗각 긋기</b><span>내려가는 고점 두 개를 이어요. 고점은 앞뒤 5일 중 가장 높은 날이에요.</span></li>
+          <li><b>2. 채널 만들기</b><span>그 선을 두 고점 사이의 가장 깊은 저점까지 평행으로 내려 붙여요. 두 선 사이가 채널 폭이에요.</span></li>
+          <li><b>3. 지연선에서 사기</b><span>빗각을 채널 폭만큼 위로 한 번 더 올린 선(지연선)을 종가가 넘으면, 다음 날 시가에 사요.</span></li>
+          <li><b>4. 반대로 팔기</b><span>올라가는 저점 두 개로 같은 방법의 선을 아래로 만들고, 종가가 그 선을 깨면 다음 날 시가에 팔아요.</span></li>
+        </ol>
+        <h3 class="easy-sub">규칙 요약</h3>
+        <dl class="easy-rules">
+          <div><dt>대상</dt><dd>비트코인·이더리움 선물, 애플·S&P500 ETF·삼성전자·SK하이닉스 (5번과 같은 6종목)</dd></div>
+          <div><dt>봉</dt><dd>일봉 (원문은 3분봉)</dd></div>
+          <div><dt>진입</dt><dd>종가가 지연선(빗각 + 채널 폭)을 아래에서 위로 넘은 다음 날 시가. 롱만</dd></div>
+          <div><dt>청산</dt><dd>종가가 상승 지연선(저점 빗각 − 채널 폭)을 위에서 아래로 깬 다음 날 시가</dd></div>
+          <div><dt>안전 손절</dt><dd>진입가 − 2 ATR (원문에 없어 위험 크기를 정하려고 추가)</dd></div>
+          <div><dt>비교군</dt><dd>같은 빗각을 지연 없이: 빗각 자체를 넘으면 사고, 상승 빗각 자체를 깨면 팔기</dd></div>
+          <div><dt>위험·비용</dt><dd>거래 한 번에 계좌의 0.5% · 수수료 코인 0.05%·주식 0.10%, 슬리피지(불리한 체결) 0.05%</dd></div>
+          <div><dt>검증</dt><dd>2022년부터 전체 + 2025년부터 따로 · 그냥 들고 있기와 비교</dd></div>
+        </dl>
+        <div class="easy-example"><b>예시</b><p>고점 110 → 106으로 내려가는 빗각, 두 고점 사이 저점까지 거리가 11이면 → 빗각이 오늘 104일 때 지연선은 115. 종가가 105면 빗각은 넘었지만 아직 안 사고, 115를 넘어야 다음 날 아침에 사요.</p></div>
+        <details class="easy-glossary">
+          <summary>이 페이지에 나오는 말 풀이</summary>
+          <dl>
+            <div><dt>빗각</dt><dd>고점(또는 저점) 두 개를 이은 비스듬한 선. 수평선이 아닌 추세선이에요.</dd></div>
+            <div><dt>채널 폭</dt><dd>빗각과, 그 선을 평행으로 옮겨 저점에 붙인 선 사이의 거리.</dd></div>
+            <div><dt>지연 추세선</dt><dd>빗각을 채널 폭만큼 한 번 더 옮긴 선. 확인을 한 칸 늦춰 가짜 돌파를 거르려는 선이에요.</dd></div>
+            <div><dt>가짜 돌파</dt><dd>선을 뚫었다가 금방 다시 내려와 손절로 끝나는 경우. 이 페이지에선 ‘손절로 끝난 거래 비율’로 셉니다.</dd></div>
+            <div><dt>ATR</dt><dd>하루 평소 움직임 폭(최근 14일 평균). ‘2 ATR’은 평소 움직임의 2배예요.</dd></div>
+            <div><dt>시가 · 종가</dt><dd>그날 처음 거래된 값과 마지막 값. 신호는 종가로 보고, 다음 날 시가에 사고팔아요.</dd></div>
+            <div><dt>최대 낙폭</dt><dd>계좌가 가장 높았던 때에서 가장 많이 빠졌던 비율. 작을수록 덜 흔들려요.</dd></div>
+          </dl>
+        </details>
+      </div>
+    </section>
+
+    <section class="section wrap" id="summary" aria-labelledby="summary-title">
+      <div class="bo-section-head"><div><p class="bo-eyebrow">01 / 결론</p><h2 class="section-title" id="summary-title">기다렸더니 어땠나: 6종목 한눈에</h2></div><p class="bo-caption" id="bg-summary-range">2022년 이후 · 비용 차감</p></div>
+      <div class="panel px-box">
+        <p class="ch-say ch-say-light" id="bg-summary-say">계산 결과를 불러오는 중입니다.</p>
+        <div class="bo-table-scroll" tabindex="0" role="region" aria-label="6종목 비교"><table>
+          <thead><tr><th>종목</th><th>지연선</th><th>그대로</th><th>거래 수<br>지연 / 그대로</th><th>손절 비율<br>지연 / 그대로</th></tr></thead>
+          <tbody id="bg-summary"></tbody>
+        </table></div>
+        <p class="bo-small">손절로 끝난 비율이 높을수록 ‘뚫었다가 다시 내려온’ 거래가 많았다는 뜻이에요. 거래 수가 적은 종목(3~7건)은 우연의 영향이 커요.</p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="monitor" aria-labelledby="monitor-title">
+      <div class="bo-section-head"><div><p class="bo-eyebrow">02 / 종목별</p><h2 class="section-title" id="monitor-title">선은 어디에 그어졌을까?</h2></div><p class="bo-caption">마지막 수집 시점의 확정 일봉</p></div>
+      <p id="bg-global-status" class="bo-notice" role="status">저장된 계산 결과를 불러오는 중입니다.</p>
+      <noscript><p class="bo-notice">차트·기록 표시는 JavaScript가 필요합니다. <a href="../data/bitgak.json">계산 결과 JSON 보기</a></p></noscript>
+      <div class="bo-controls"><label for="bg-asset">종목</label><select id="bg-asset" disabled><option>데이터 준비 중</option></select>
+        <label for="bg-period">구간</label><select id="bg-period"><option value="backtest">2022년부터 전체</option><option value="holdout">2025년부터 따로</option></select></div>
+      <p id="bg-asset-status" class="bo-notice" hidden></p>
+      <div id="bg-content" hidden><div class="bo-terminal">
+        <div class="bo-terminal-head"><h3 id="bg-symbol-title"></h3><span id="bg-date"></span></div>
+        <div class="bo-signal-line"><span id="bg-signal" class="bo-signal"></span><p id="bg-reason"></p></div>
+        <div class="bo-chart-head"><h3>가격과 빗각, 지연선</h3>
+          <div class="ch-range" id="bg-range" role="group" aria-label="차트 기간"><button type="button" data-days="180" aria-pressed="true">6개월</button><button type="button" data-days="365" aria-pressed="false">1년</button></div></div>
+        <div class="lc-legend" id="bg-price-legend"></div>
+        <svg id="bg-price-chart" class="bo-chart" viewBox="0 0 960 320" role="img" aria-label="가격, 하락 빗각과 지연선, 상승 지연선, 지연선 방식의 모의 체결"></svg>
+        <p class="bo-caption" id="bg-chart-range"></p>
+        <p class="bo-caption">△ 지연선 방식 진입 · ◇ 청산. 선은 그날까지 확정된 고점·저점으로 그은 값이라, 새 고점·저점이 생기면 선이 바뀌어 끊겨 보여요.</p>
+      </div></div>
+      <div class="panel px-box bo-results" id="bg-results" hidden>
+        <h3>지연선 vs 빗각 그대로 vs 그냥 들고 있기</h3>
+        <div class="bo-table-scroll" tabindex="0" role="region" aria-label="방식 비교"><table>
+          <thead><tr><th>방식</th><th>누적 수익률</th><th>최대 낙폭</th><th>거래</th><th>승률</th><th>손절로 끝남</th><th>평균 보유</th></tr></thead>
+          <tbody id="bg-compare"></tbody>
+        </table></div>
+        <p class="ch-say ch-say-light" id="bg-equity-say"></p>
+        <div class="lc-legend lc-legend-light" id="bg-equity-legend"></div>
+        <svg id="bg-equity-chart" class="bo-chart" viewBox="0 0 960 250" role="img" aria-label="두 방식의 계좌 누적 수익률"></svg>
+        <p class="bo-small">누적 수익률에는 미청산 포지션의 종가 평가손익을 포함합니다. 그냥 들고 있기는 비용 없이 시작일 시가에 사서 마지막 종가까지 들고 있었을 때예요. 전략은 거래당 0.5%만 걸고 현금으로 쉬는 기간이 있어 투자 비중이 달라요.</p>
+        <h3>지연선 방식 청산 기록</h3>
+        <div class="bo-table-scroll" tabindex="0" role="region" aria-label="거래 내역"><table><thead><tr><th>진입 → 청산</th><th>순손익</th><th>보유 봉</th><th>청산 이유</th><th>진입가 → 청산가</th></tr></thead><tbody id="bg-trades"></tbody></table></div>
+        <p id="bg-cost-note" class="bo-small"></p>
+        <a class="bo-download" href="../data/bitgak.json" download>전체 계산 결과 내려받기 · JSON ↓</a>
+      </div>
+    </section>
+
+    <section class="section wrap" id="rules" aria-labelledby="rules-title">
+      <div class="panel px-box bo-method">
+        <p class="bo-eyebrow">03 / 원문과 다른 점</p><h2 class="section-title" id="rules-title">눈으로 긋던 선을 숫자로 옮기면서 정한 것</h2>
+        <dl class="easy-rules">
+          <div><dt>시간</dt><dd>원문은 3분봉 단타. 몇 년치 3분봉은 데이터가 너무 크고 수수료가 수익을 대부분 먹어서, 다른 오락기와 같은 일봉으로 했어요.</dd></div>
+          <div><dt>의미 있는 고점</dt><dd>사람이 고르던 걸 ‘앞뒤 5일 중 가장 높은 날’로 고정했어요. 오른쪽 5일이 지나야 확정되므로 미래 정보는 쓰지 않아요.</dd></div>
+          <div><dt>어느 두 점</dt><dd>확정된 고점 중 가장 최근 두 개. 뒤 고점이 더 낮을 때(내려가는 빗각)만 써요.</dd></div>
+          <div><dt>익절</dt><dd>원문에 없어서, 원문의 청산 방법(상승 지연선 하향 이탈)만 썼어요.</dd></div>
+          <div><dt>안전 손절</dt><dd>원문에 없지만, 거래당 위험을 0.5%로 맞추려고 진입가 − 2 ATR을 넣었어요.</dd></div>
+          <div><dt>방향</dt><dd>하락 빗각을 넘어 올라타는 롱만. 원문이 하락 추세 끝을 잡는 방법이라서요.</dd></div>
+        </dl>
+        <p class="bo-small">이렇게 정한 숫자(5일, 2 ATR 등)는 결과를 보기 전에 고정했고, 결과를 보고 바꾸지 않았어요. 다른 숫자를 쓰면 결과가 달라질 수 있어요.</p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="sources" aria-labelledby="sources-title"><div class="panel px-box bo-origin">
+      <p class="bo-eyebrow">04 / 의뢰와 출처</p><h2 class="section-title" id="sources-title">어디서 온 아이디어인가</h2>
+      <p>의뢰 1호. 커뮤니티에 정리된 두 글의 방법을 일봉 규칙으로 옮겼어요. 원작자의 실제 매매 방식과 완전히 같다고 볼 수는 없어요.</p>
+      <ul class="bo-sources">
+        <li><a href="https://www.valley.town/space/@hotguy/articles/6847af557e6409113b2b2d8f">‘인범 빗각’ 정리 글 — valley.town</a><span>고점을 이은 빗각, 돌파 뒤 눌림 매수, 선 이탈 시 매도.</span></li>
+        <li><a href="https://gall.dcinside.com/mgallery/board/view/?id=tenbagger&no=6047986">‘지연 추세선 긋기 강의’ — 디시인사이드 텐배거 갤러리</a><span>고점 빗각 채널을 채널 폭만큼 위로 복사한 선에서 진입, 상승 채널을 아래로 복사한 선 이탈 시 청산. 이 오락기의 규칙은 이 글을 따랐어요.</span></li>
+        <li><a href="https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Kline-Candlestick-Data">선물 일봉 — Binance</a> · <a href="https://finance.yahoo.com/">주식 일봉·배당 — Yahoo Finance</a> · <a href="https://finance.naver.com/">한국 주식 보완 — NAVER 금융</a><span>5번 BREAKOUT과 같은 데이터예요.</span></li>
+      </ul>
+      </div></section>
+
+    <section class="section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="panel px-box">
+        <h2 class="section-title" id="contact-title">이런 오락기를 원한다면</h2>
+        <p>궁금한 매매 방법이 있으면 메일로 보내 주세요. 규칙을 숫자로 함께 정리해 이렇게 검증해 드려요.</p>
+        <div class="coin-slot">
+          <a class="btn" href="../index.html#request">전략 의뢰하기</a>
+          <a class="btn btn-ghost" href="../index.html#works">다른 기계 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>시세 출처: 바이낸스 선물 일봉·펀딩, Yahoo Finance, NAVER 금융. 연구용 백테스트이며 실제 주문은 나가지 않습니다. 투자 조언이 아닙니다.</p>
+      <p>픽셀 글꼴: 갈무리(Galmuri, SIL Open Font License 1.1)</p>
+      <p>© 2026 정찬민 · <a href="https://github.com/chandolkarim">GitHub</a></p>
+    </div>
+  </footer>
+  <script src="../assets/script.js"></script><script src="../data/bitgak-data.js"></script><script src="../assets/linechart.js"></script><script src="../assets/bitgak.js"></script>
+</body>
+</html>
