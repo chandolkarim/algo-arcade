@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """BITGAK (빗각 · 지연 추세선). python3 bitgak/update.py [--offline] [--previous URL]. Public data only.
 
-지연 추세선(의뢰 규칙)과 빗각 그대로(비교군)를 같은 종목·같은 비용으로 계산한다.
+알고리즘은 빗각·지연선과 매수 신호만 찾고, 매도는 사람이 정한다. 그래서 손익 대신 신호 뒤 가격의 움직임을
+지연선 신호 · 빗각 그대로 신호 · 아무 날과 비교한다.
 시세는 5번 BREAKOUT과 같은 공개 일봉을 쓴다(--offline이면 breakout/cache를 읽는다).
 """
 import argparse
-from dataclasses import asdict, replace
+from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
@@ -14,37 +15,29 @@ import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from bitgak.engine import Rules, backtest, describe, indicators
-from rebound.engine import buy_and_hold
+from bitgak.engine import WINDOW, Rules, describe, indicators, signal_stats
 from rebound.update import crypto_data, load_deployed, page_script, stock_data, write_json
 
 HERE = ROOT / "bitgak"
 UTC = timezone.utc
-CHART_KEYS = ("date", "close", "dn_line", "dn_delay", "up_line", "up_delay")
+CHART_KEYS = ("date", "close", "dn_line", "dn_delay")
 
 
-def episodes(rows, result):
-    """거래 하나씩 그림으로 보여 주기 위한 묶음: 그 거래에 쓴 빗각·채널·지연선과 앞뒤 가격."""
+def episodes(rows, events):
+    """신호 하나씩 그림으로 보여 주기 위한 묶음: 그 신호에 쓴 빗각·채널·지연선과, 신호 뒤 60일 가격."""
     index = {r["date"]: i for i, r in enumerate(rows)}
     value = lambda d, x: d["a"][1] + (d["b"][1] - d["a"][1]) / (index[d["b"][0]] - index[d["a"][0]]) * (x - index[d["a"][0]])
     out = []
-    for t in result["trades"] + ([result["position"]] if result["position"] else []):
-        line, exit_line = t.get("entry_line"), t.get("exit_line")
-        if not line:
-            continue
-        first = min(index[line["a"][0]], index[exit_line["a"][0]] if exit_line else len(rows))
-        last = index.get(t.get("exit_date"), len(rows) - 1)
-        lo, hi = max(0, first - 3), min(len(rows) - 1, last + 3)
+    for e in events:
+        i = index[e["signal_date"]]
+        line = rows[i]["dn_def"]
+        lo, hi = max(0, index[line["a"][0]] - 3), min(len(rows) - 1, i + 1 + WINDOW)
         # 빗각 그대로였다면: 같은 선을 종가가 처음 넘은 날(지연선보다 먼저)
-        plain = next((rows[i]["date"] for i in range(index[line["b"][0]] + 1, index[t["signal_date"]] + 1)
-                      if rows[i]["close"] > value(line, i) and rows[i-1]["close"] <= value(line, i-1)), None)
-        out.append({"entry_date": t["entry_date"], "signal_date": t["signal_date"], "entry": t["entry"],
-                    "exit_date": t.get("exit_date"), "exit": t.get("exit"), "reason": t.get("reason", "open"),
-                    "net": t.get("net"), "return_pct": t.get("return_pct"), "bars": t["bars"], "stop": t["initial_stop"],
-                    "line": line, "exit_line": exit_line, "plain_signal": plain,
-                    "rows": [{k: rows[i][k] for k in ("date", "high", "low", "close")} for i in range(lo, hi + 1)]})
+        plain = next((rows[k]["date"] for k in range(index[line["b"][0]] + 1, i + 1)
+                      if rows[k]["close"] > value(line, k) and rows[k-1]["close"] <= value(line, k-1)), None)
+        out.append({**e, "line": line, "plain_signal": plain,
+                    "rows": [{k: rows[n][k] for k in ("date", "high", "low", "close")} for n in range(lo, hi + 1)]})
     return out
-
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -62,7 +55,7 @@ def main():
     snapshot = {"schema": 1, "strategy": "bitgak", "version": Rules().version, "generated_at": now.isoformat(),
                 "mode": "offline" if args.offline else "online", "automatic_refresh": bool(args.previous),
                 "backtest_start": config["backtest_start"], "holdout_start": config["holdout_start"],
-                "rules": asdict(Rules()), "assets": []}
+                "rules": asdict(Rules()), "window": WINDOW, "assets": []}
     previous = deployed or (json.loads(out_json.read_text(encoding="utf-8")) if out_json.exists() else {"assets": []})
     failures = []
     warmup = (datetime.fromisoformat(config["backtest_start"]) - timedelta(days=400)).date().isoformat()
@@ -77,8 +70,7 @@ def main():
                 loader = crypto_data if asset["market"] == "crypto" else stock_data
                 bars, source, note = loader(asset, now, warmup)
                 stored = {"fetched_at": now.isoformat(), "source": source, "note": note, "bars": bars}
-            base = replace(Rules(), fee=asset["fee"], initial=10000000.0 if asset["currency"] == "KRW" else 10000.0)
-            delay, plain = base, replace(base, variant="plain")
+            base = Rules()
             rows = indicators(stored["bars"], base)   # 두 방식의 선·신호는 같은 표에 함께 들어 있다
             if len(rows) < base.pivot * 2 + 2:
                 raise ValueError("Not enough valid daily bars")
@@ -90,13 +82,14 @@ def main():
                          "end": rows[-1]["date"], "bar_count": len(rows),
                          "input_sha256": hashlib.sha256(json.dumps(stored["bars"], sort_keys=True).encode()).hexdigest(),
                          "chart": [{k: r[k] for k in CHART_KEYS} for r in rows[-365:]]})
+            # 매도는 사람이 정한다: 손익 대신 신호 뒤 5·20·60일과 60일 안 최고·최저를 잰다
             for period, start in (("backtest", config["backtest_start"]), ("holdout", config["holdout_start"])):
-                item[period] = backtest(rows, delay, asset["market"], start)
-                item[f"{period}_plain"] = backtest(rows, plain, asset["market"], start)
-            item["episodes"] = episodes(rows, item["backtest"])
-            item["buy_hold"] = {"backtest": buy_and_hold(rows, config["backtest_start"]),
-                                "holdout": buy_and_hold(rows, config["holdout_start"])}
-            print(f"{symbol}: {len(rows)} bars, delay {item['backtest']['count']} / plain {item['backtest_plain']['count']} trades", flush=True)
+                delay, events = signal_stats(rows, "enter_delay", start)
+                item[period] = {"delay": delay, "plain": signal_stats(rows, "enter_plain", start)[0],
+                                "any": signal_stats(rows, None, start)[0]}
+                if period == "backtest":
+                    item["episodes"] = episodes(rows, events)
+            print(f"{symbol}: {len(rows)} bars, signals delay {item['backtest']['delay']['count']} / plain {item['backtest']['plain']['count']}", flush=True)
         except Exception as exc:
             failures.append(f"{symbol}: {exc}")
             old = next((a for a in previous["assets"] if a["symbol"] == symbol), None)

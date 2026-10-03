@@ -98,3 +98,5 @@
 .bg-ep-chart { background: #fff; }
 .bg-ep-steps { margin: 14px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: 15px; line-height: 1.6; color: var(--on-carpet); }
 .bg-ep-steps b { color: var(--coin); }
+.bg-ep-key .k-after { color: #e0a800; }
+.bg-state-enter { color: #c8163f; font-weight: 700; } .bg-state-watch { color: #191f28; font-weight: 700; } .bg-state-none { color: #868e96; }

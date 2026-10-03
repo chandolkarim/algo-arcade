@@ -3,7 +3,7 @@ from dataclasses import replace
 from datetime import date, timedelta
 import unittest
 
-from bitgak.engine import Rules, advance, backtest, indicators, new_account
+from bitgak.engine import Rules, after_signal, describe, indicators, signal_stats
 
 
 def day(i):
@@ -24,7 +24,7 @@ def falling_then_rising():
 
 class PivotAndLineTests(unittest.TestCase):
     def setUp(self):
-        self.rules = replace(Rules(), pivot=2, atr_period=3, fee=0, slippage=0)
+        self.rules = replace(Rules(), pivot=2, atr_period=3)
 
     def test_no_lookahead_prefix_is_stable(self):
         bars = falling_then_rising()
@@ -60,81 +60,50 @@ class PivotAndLineTests(unittest.TestCase):
         self.assertTrue(all(r["dn_line"] is None for r in rows))
 
 
-def row(i, **kw):
-    base = {"date": day(i), "open": 100.0, "high": 101.0, "low": 99.0, "close": 100.0, "atr": 2.0,
-            "enter_delay": False, "enter_plain": False, "exit_delay": False, "exit_plain": False}
-    return {**base, **kw}
+class AfterSignalTests(unittest.TestCase):
+    def rows(self):
+        out = []
+        for i in range(80):
+            out.append({"date": day(i), "open": 100.0 + i, "high": 101.0 + i, "low": 99.0 + i, "close": 100.0 + i,
+                        "enter_delay": i == 10, "enter_plain": i in (5, 10)})
+        out[30]["high"] = 200.0   # 신호 뒤 20번째 봉에서 최고
+        out[15]["low"] = 50.0     # 신호 뒤 5번째 봉에서 최저
+        return out
 
+    def test_entry_is_next_open_and_horizons_use_closes(self):
+        e = after_signal(self.rows(), 10)
+        self.assertEqual((e["signal_date"], e["entry_date"], e["entry"]), (day(10), day(11), 111.0))
+        self.assertAlmostEqual(e["r5"], (115 / 111 - 1) * 100)
+        self.assertAlmostEqual(e["r60"], (170 / 111 - 1) * 100)
 
-class TradingTests(unittest.TestCase):
-    def setUp(self):
-        self.rules = replace(Rules(), fee=0, slippage=0)
+    def test_best_and_worst_within_window(self):
+        e = after_signal(self.rows(), 10)
+        self.assertAlmostEqual(e["best"], (200 / 111 - 1) * 100)
+        self.assertEqual(e["best_day"], 20)
+        self.assertAlmostEqual(e["worst"], (50 / 111 - 1) * 100)
+        self.assertEqual(e["worst_day"], 5)
+        self.assertTrue(e["complete"])
 
-    def test_entry_at_next_open_with_atr_stop(self):
-        acc = new_account(self.rules)
-        advance(acc, row(1, open=102), row(0, enter_delay=True), self.rules)
-        p = acc["position"]
-        self.assertEqual(p["entry"], 102)
-        self.assertEqual(p["stop"], 98)
-        self.assertEqual(p["signal_date"], day(0))
-        # 위험: 손절까지 잃는 돈이 계좌의 0.5%
-        self.assertAlmostEqual(p["qty"] * (102 - 98), 10000 * 0.005)
+    def test_signal_near_the_end_is_marked_incomplete(self):
+        e = after_signal(self.rows(), 70)
+        self.assertFalse(e["complete"])
+        self.assertIsNone(e["r20"])
 
-    def test_variant_uses_its_own_signal(self):
-        acc = new_account(self.rules)
-        advance(acc, row(1), row(0, enter_plain=True), self.rules)
-        self.assertIsNone(acc["position"])
-        plain = replace(self.rules, variant="plain")
-        acc = new_account(plain)
-        advance(acc, row(1), row(0, enter_plain=True), plain)
-        self.assertIsNotNone(acc["position"])
+    def test_stats_count_signals_and_any_day(self):
+        rows = self.rows()
+        delay, events = signal_stats(rows, "enter_delay")
+        self.assertEqual((delay["count"], len(events)), (1, 1))
+        self.assertEqual(signal_stats(rows, "enter_plain")[0]["count"], 2)
+        self.assertEqual(signal_stats(rows, None)[0]["count"], 78)
+        self.assertEqual(signal_stats(rows, "enter_delay", start_date=day(11))[0]["count"], 0)
 
-    def test_exit_line_closes_at_next_open(self):
-        acc = new_account(self.rules)
-        advance(acc, row(1, open=100), row(0, enter_delay=True), self.rules)
-        advance(acc, row(2, close=103, exit_delay=True), row(1), self.rules)
-        self.assertIsNotNone(acc["position"])   # 신호 당일 종가에는 팔지 않는다
-        advance(acc, row(3, open=104), row(2, exit_delay=True), self.rules)
-        t = acc["trades"][0]
-        self.assertEqual((t["exit"], t["reason"], t["exit_date"]), (104, "exit_line", day(3)))
-
-    def test_intraday_stop_and_gap_stop(self):
-        acc = new_account(self.rules)
-        advance(acc, row(1, open=100, low=95), row(0, enter_delay=True), self.rules)
-        self.assertEqual((acc["trades"][0]["exit"], acc["trades"][0]["reason"]), (96, "stop"))
-        acc = new_account(self.rules)
-        advance(acc, row(1, open=100), row(0, enter_delay=True), self.rules)
-        advance(acc, row(2, open=90, low=89), row(1), self.rules)
-        self.assertEqual((acc["trades"][0]["exit"], acc["trades"][0]["reason"]), (90, "gap_stop"))
-
-    def test_same_bar_cannot_be_processed_twice(self):
-        acc = new_account(self.rules)
-        advance(acc, row(1), row(0), self.rules)
-        with self.assertRaises(ValueError):
-            advance(acc, row(1), row(0), self.rules)
-
-    def test_costs_reduce_net(self):
-        rules = replace(Rules(), fee=0.001, slippage=0.0005)
-        acc = new_account(rules)
-        advance(acc, row(1, open=100), row(0, enter_delay=True), rules)
-        advance(acc, row(2, open=100), row(1, exit_delay=True), rules)
-        self.assertLess(acc["trades"][0]["net"], 0)
-
-    def test_trade_keeps_the_line_it_used(self):
-        rules = replace(Rules(), pivot=2, atr_period=3, fee=0, slippage=0)
+    def test_describe_reports_distance_to_delay_line(self):
+        rules = replace(Rules(), pivot=2, atr_period=3)
         rows = indicators(falling_then_rising(), rules)
-        out = backtest(rows, rules)
-        t = (out["trades"] + ([out["position"]] if out["position"] else []))[0]
-        signal = next(r for r in rows if r["date"] == t["signal_date"])
-        self.assertEqual(t["entry_line"], signal["dn_def"])
-        self.assertEqual(t["entry_line"]["a"][0], day(4))
-
-    def test_backtest_on_synthetic_series(self):
-        rules = replace(Rules(), pivot=2, atr_period=3, fee=0, slippage=0)
-        out = backtest(indicators(falling_then_rising(), rules), rules)
-        self.assertIn("stop_rate", out)
-        self.assertEqual(out["curve"][-1]["date"], day(34))
-
+        r = next(r for r in rows if r["dn_delay"] is not None and not r["enter_delay"])
+        d = describe(r)
+        self.assertEqual(d["state"], "watch")
+        self.assertAlmostEqual(d["to_delay_pct"], (r["dn_delay"] / r["close"] - 1) * 100)
 
 if __name__ == "__main__":
     unittest.main()
