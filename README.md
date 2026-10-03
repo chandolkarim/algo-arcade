@@ -20,7 +20,7 @@
 
 ## 3. 실행·수정 방법
 
-- 파일: `index.html`(첫 화면: 프로젝트 소개·쉽게 말하면·진행 방식·결과물 6개·의뢰 현황·의뢰 양식·만든 사람), `games.html`(오늘의 한 판·BLIND CHART), `machines/*.html`(결과물 6개 + 게임 1개 상세), `requests/requests.csv`(의뢰 현황, 직접 기록), `lessons/build.py`(2·5번 단계별 설명 차트 예시), `assets/`, `data/`, `404.html`
+- 파일: `index.html`(첫 화면: 프로젝트 소개·쉽게 말하면·진행 방식·결과물 6개·게임 코너·의뢰 현황·의뢰 양식·만든 사람), `games.html`(오늘의 한 판·BLIND CHART), `machines/*.html`(결과물 6개 + 게임 1개 상세), `requests/requests.csv`(의뢰 현황, 직접 기록), `lessons/build.py`(2·5번 단계별 설명 차트 예시), `assets/`, `data/`, `404.html`
 - 로컬 확인: 저장소를 Clone한 뒤 `index.html`을 브라우저로 연다. 서버로 보려면 `python3 -m http.server 8765` 후 `http://localhost:8765/`
 - 계산 다시 하기: 아래 “기계별 설명”의 명령
 - 테스트(9묶음 121개): `for d in foreign-flow rebound records kimchi breakout blind clock arena requests; do python3 -m unittest discover -s $d -p 'test_*.py'; done`
