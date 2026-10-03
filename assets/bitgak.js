@@ -33,7 +33,7 @@
       L.to_delay_pct == null ? "—" : L.state === "enter" ? "넘음" : `+${num(L.to_delay_pct, 1)}% 남음`]);
   }));
   const ends = ok.map((a) => a.latest.date).sort();
-  if (ends.length) $("bg-now-date").textContent = `마지막 확정 일봉 ${ends[0] === ends.at(-1) ? ends[0] : `${ends[0]} ~ ${ends.at(-1)}`} 기준`;
+  if (ends.length) $("bg-now-date").textContent = `마지막 확정 일봉 ${ends[0] === ends.at(-1) ? ends[0] : `${ends[0]} ~ ${ends.at(-1)}`} 기준 · 하루 한 번 자동 갱신`;
 
   // ---------- 02 성적표 ----------
   function renderSummary() {
@@ -73,7 +73,6 @@
     $("bg-content").hidden = !ready;
     $("bg-asset-status").hidden = !a || a.status === "ok";
     if (a) $("bg-asset-status").textContent = a.status === "error" ? "시세 수집에 실패했습니다."
-      : a.market === "crypto" ? "코인 선물 시세는 GitHub 서버(미국)에서 받을 수 없어, 마지막으로 내 컴퓨터에서 계산한 결과를 보여 줍니다."
       : "이번 갱신에서 시세를 받지 못해 이전 결과를 보여 줍니다. 표시된 날짜를 확인해 주세요.";
     if (!ready) return;
     $("bg-symbol-title").textContent = `${a.name} / ${a.symbol}`;

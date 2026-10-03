@@ -16,11 +16,40 @@ import sys
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from bitgak.engine import WINDOW, Rules, describe, indicators, signal_stats
-from rebound.update import crypto_data, load_deployed, page_script, stock_data, write_json
+from urllib.parse import urlencode
+
+from rebound.update import fetch, load_deployed, milliseconds, page_script, stock_data, write_json
 
 HERE = ROOT / "bitgak"
 UTC = timezone.utc
 CHART_KEYS = ("date", "close", "dn_line", "dn_delay")
+
+
+def spot_data(asset, now, start):
+    """코인 현물 일봉 — data-api.binance.vision(공개 시세 전용 주소).
+    선물 주소(fapi)는 GitHub 서버(미국)에서 막혀(451) 자동 갱신이 안 된다. 빗각 신호는 가격만 쓰므로
+    내 컴퓨터든 Actions든 항상 같은 현물 일봉을 써서 결과가 오가며 바뀌지 않게 한다."""
+    end_ms = int(now.timestamp() * 1000)
+    cursor, raw = milliseconds(start), []
+    while cursor < end_ms:
+        batch = fetch("https://data-api.binance.vision/api/v3/klines?" + urlencode({
+            "symbol": asset["symbol"], "interval": "1d", "startTime": cursor, "endTime": end_ms, "limit": 1000}))
+        if not isinstance(batch, list):
+            raise ValueError("Unexpected Binance kline response")
+        if not batch:
+            break
+        raw.extend(batch)
+        following = int(batch[-1][0]) + 86400000
+        if following <= cursor:
+            raise ValueError("Kline pagination did not advance")
+        cursor = following
+    bars = [{"date": datetime.fromtimestamp(item[0] / 1000, UTC).date().isoformat(),
+             **dict(zip(("open", "high", "low", "close"), map(float, item[1:5])))}
+            for item in raw if int(item[6]) < end_ms]   # 아직 안 끝난 오늘 봉은 뺀다
+    for left, right in zip(bars, bars[1:]):
+        if (datetime.fromisoformat(right["date"]) - datetime.fromisoformat(left["date"])).days != 1:
+            raise ValueError("Missing crypto daily candle")
+    return bars, "Binance spot · UTC daily (data-api.binance.vision)", "현물 일봉. 빗각 신호는 가격만 쓰므로 펀딩은 쓰지 않음."
 
 
 def episodes(rows, events):
@@ -67,7 +96,7 @@ def main():
             if args.offline:
                 stored = json.loads((ROOT / "breakout" / "cache" / (symbol + ".json")).read_text(encoding="utf-8"))
             else:
-                loader = crypto_data if asset["market"] == "crypto" else stock_data
+                loader = spot_data if asset["market"] == "crypto" else stock_data
                 bars, source, note = loader(asset, now, warmup)
                 stored = {"fetched_at": now.isoformat(), "source": source, "note": note, "bars": bars}
             base = Rules()
