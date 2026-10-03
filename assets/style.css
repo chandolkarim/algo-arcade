@@ -985,3 +985,17 @@ main svg text {
 }
 main :is(td, th) { line-height: 1.65; }
 .led-strip:hover .led-track { animation-play-state: paused; }
+
+/* ---------- 줄바꿈 ----------
+   한국어는 단어(어절) 단위로만 끊고(keep-all, body에 설정),
+   제목·짧은 글은 줄 길이를 고르게(balance), 본문은 마지막 줄에 한 단어만 남지 않게(pretty) 한다. */
+h1, h2, h3, h4, summary, dt, figcaption,
+.home-eyebrow, .home-tag, .mh-q, .mh-result b, .mh-result span, .cabinet-q, .cabinet-result span,
+.steps b, .steps span, .easy-flow li b, .easy-flow li span, .home-stats span, .bh-title,
+.lesson-step-title, .ch-say, .ar-question, .ar-status, .btn {
+  text-wrap: balance;
+}
+p, li, dd, .lesson-explanation, .easy-lead, .home-lead {
+  text-wrap: balance;   /* 줄 길이를 고르게. 브라우저가 처리하지 않는 아주 긴 글은 보통 줄바꿈 */
+}
+td { text-wrap: pretty; }

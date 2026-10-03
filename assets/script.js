@@ -192,7 +192,9 @@
       const t = new Date(at);
       const when = new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(t);
       const days = Math.floor((Date.now() - t.getTime()) / 86400000);
-      el.textContent = `마지막 계산 ${when} (한국 시간)${days >= 1 ? ` · ${days}일 전` : ""}${el.dataset.note ? ` · ${el.dataset.note}` : ""}`;
+      // 갱신 방식 안내는 둘째 줄로: 좁은 화면에서 '·'가 줄 맨 앞에 오지 않게
+      el.replaceChildren(`마지막 계산 ${when} (한국 시간)${days >= 1 ? ` · ${days}일 전` : ""}`,
+        ...(el.dataset.note ? [document.createElement("br"), el.dataset.note] : []));
     });
   });
 })();
