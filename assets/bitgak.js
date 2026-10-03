@@ -64,7 +64,7 @@
     return o;
   }));
   selector.disabled = false;
-  let epIndex = -1;  // 보고 있는 신호(-1 = 가장 최근)
+  let epIndex = 0;  // 보고 있는 신호(처음엔 가장 오래된 신호부터)
   const NS = "http://www.w3.org/2000/svg";
 
   function render() {
@@ -78,7 +78,7 @@
     if (!ready) return;
     $("bg-symbol-title").textContent = `${a.name} / ${a.symbol}`;
     const eps = a.episodes;
-    if (epIndex < 0 || epIndex >= eps.length) epIndex = eps.length - 1;
+    epIndex = Math.max(0, Math.min(epIndex, eps.length - 1));
     draw(a, eps);
   }
 
@@ -143,7 +143,7 @@
       ? `<b>그 뒤 60일</b>: ${e.best_day}일째 최고 ${pct(e.best)}, ${e.worst_day}일째 최저 ${pct(e.worst)}. 20일 뒤 ${pct(e.r20)}, 60일 뒤 ${pct(e.r60)}. 언제 팔았느냐에 따라 결과가 이만큼 달라져요.`
       : `<b>그 뒤</b>: 아직 60일이 지나지 않았어요.${e.r20 != null ? ` 20일 뒤 ${pct(e.r20)}.` : ""}`);
   }
-  selector.addEventListener("change", () => { epIndex = -1; render(); });
+  selector.addEventListener("change", () => { epIndex = 0; render(); });
   $("bg-ep-prev").addEventListener("click", () => { epIndex--; render(); });
   $("bg-ep-next").addEventListener("click", () => { epIndex++; render(); });
   let frame;
