@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BITGAK (의뢰 1호). python3 bitgak/update.py [--offline] [--previous URL]. Public data only.
+"""BITGAK (빗각 · 지연 추세선). python3 bitgak/update.py [--offline] [--previous URL]. Public data only.
 
 지연 추세선(의뢰 규칙)과 빗각 그대로(비교군)를 같은 종목·같은 비용으로 계산한다.
 시세는 5번 BREAKOUT과 같은 공개 일봉을 쓴다(--offline이면 breakout/cache를 읽는다).

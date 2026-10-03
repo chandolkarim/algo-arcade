@@ -53,7 +53,7 @@ jobs:
         run: python -m unittest discover -s clock -p 'test_*.py' -v
       - name: 오늘의 한 판 계산 테스트 (미래 데이터 누수·투표 검사 포함)
         run: python -m unittest discover -s arena -p 'test_*.py' -v
-      - name: 의뢰 1호 빗각 엔진 테스트 (미래 고점 사용 금지 포함)
+      - name: 8번 BITGAK 빗각 엔진 테스트 (미래 고점 사용 금지 포함)
         run: python -m unittest discover -s bitgak -p 'test_*.py' -v
       - name: 의뢰 현황 검사 테스트 (연락처가 공개되지 않는지 포함)
         run: python -m unittest discover -s requests -p 'test_*.py' -v

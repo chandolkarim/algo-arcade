@@ -1,4 +1,4 @@
-/* BITGAK (의뢰 1호). Stored research results only. No quote requests, credentials or order actions. */
+/* BITGAK (빗각 · 지연 추세선). Stored research results only. No quote requests, credentials or order actions. */
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id);
